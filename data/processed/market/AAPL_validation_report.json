@@ -1,0 +1,29 @@
+{
+  "is_valid": true,
+  "total_records": 10852,
+  "errors": [],
+  "warnings": [],
+  "metrics": {
+    "null_counts": {
+      "company_id": 0,
+      "ticker": 0,
+      "timestamp": 0,
+      "trading_date": 0,
+      "open": 0,
+      "high": 0,
+      "low": 0,
+      "close": 0,
+      "adjusted_close": 0,
+      "volume": 0,
+      "source": 0
+    },
+    "duplicate_rows": 0,
+    "non_positive_prices": 0,
+    "high_low_inversions": 0,
+    "negative_volume": 0,
+    "min_date": "1980-12-12",
+    "max_date": "2023-12-28",
+    "unique_tickers": 1,
+    "unique_companies": 1
+  }
+}

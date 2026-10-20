@@ -1,0 +1,306 @@
+{
+  "experiment_name": "Phase 5H Portfolio Simulation & Leakage-Safe Threshold Validation",
+  "cohort": [
+    "AAPL",
+    "JPM",
+    "GOOG",
+    "TSLA"
+  ],
+  "total_observations": 1432,
+  "evaluation_period": "2019-01-02 to 2020-06-10",
+  "portfolio_config": {
+    "initial_cash": 100000.0,
+    "max_concurrent_positions": 4,
+    "max_position_weight": 0.25,
+    "max_aggregate_exposure": 1.0,
+    "min_cash_reserve": 0.0,
+    "holding_horizon_sessions": 5,
+    "allow_multiple_positions_per_ticker": false,
+    "min_order_amount": 100.0,
+    "cost_config": {
+      "entry_fee_bps": 2.5,
+      "exit_fee_bps": 2.5,
+      "half_spread_bps": 2.5,
+      "slippage_bps": 2.5
+    }
+  },
+  "fold_summaries": [
+    {
+      "fold": 0,
+      "train_sessions": 173,
+      "val_sessions": 45,
+      "val_rows": 180,
+      "sigma_train": 0.04012265158501064,
+      "selected_threshold": 0.015,
+      "fallback_used": true,
+      "fixed_buys": 0,
+      "rolling_buys": 0
+    },
+    {
+      "fold": 1,
+      "train_sessions": 218,
+      "val_sessions": 45,
+      "val_rows": 180,
+      "sigma_train": 0.04148317638673638,
+      "selected_threshold": 0.015,
+      "fallback_used": true,
+      "fixed_buys": 0,
+      "rolling_buys": 0
+    },
+    {
+      "fold": 2,
+      "train_sessions": 263,
+      "val_sessions": 45,
+      "val_rows": 180,
+      "sigma_train": 0.0407645684380223,
+      "selected_threshold": 0.005,
+      "fallback_used": false,
+      "fixed_buys": 0,
+      "rolling_buys": 13
+    },
+    {
+      "fold": 3,
+      "train_sessions": 308,
+      "val_sessions": 45,
+      "val_rows": 180,
+      "sigma_train": 0.05880056133752646,
+      "selected_threshold": 0.01,
+      "fallback_used": false,
+      "fixed_buys": 7,
+      "rolling_buys": 14
+    }
+  ],
+  "rolling_threshold_selection": [
+    {
+      "outer_fold": 0,
+      "selected_threshold": 0.015,
+      "fallback_used": true,
+      "fallback_reason": "Sparse inner validation evidence: No candidate threshold produced >= 3 active trades with >= 50% win rate.",
+      "inner_val_trade_counts": {
+        "0.5%": 2,
+        "1.0%": 0,
+        "1.5%": 0,
+        "2.0%": 0,
+        "3.0%": 0
+      },
+      "inner_val_net_returns": {
+        "0.5%": -0.023184258637216182,
+        "1.0%": 0.0,
+        "1.5%": 0.0,
+        "2.0%": 0.0,
+        "3.0%": 0.0
+      },
+      "inner_train_dates": "2019-01-02 to 2019-06-27 (N=123)",
+      "inner_val_dates": "2019-07-08 to 2019-09-09 (N=45)"
+    },
+    {
+      "outer_fold": 1,
+      "selected_threshold": 0.015,
+      "fallback_used": true,
+      "fallback_reason": "Sparse inner validation evidence: No candidate threshold produced >= 3 active trades with >= 50% win rate.",
+      "inner_val_trade_counts": {
+        "0.5%": 2,
+        "1.0%": 0,
+        "1.5%": 0,
+        "2.0%": 0,
+        "3.0%": 0
+      },
+      "inner_val_net_returns": {
+        "0.5%": -0.012694540268487549,
+        "1.0%": 0.0,
+        "1.5%": 0.0,
+        "2.0%": 0.0,
+        "3.0%": 0.0
+      },
+      "inner_train_dates": "2019-01-02 to 2019-08-30 (N=168)",
+      "inner_val_dates": "2019-09-10 to 2019-11-11 (N=45)"
+    },
+    {
+      "outer_fold": 2,
+      "selected_threshold": 0.005,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "inner_val_trade_counts": {
+        "0.5%": 41,
+        "1.0%": 0,
+        "1.5%": 0,
+        "2.0%": 0,
+        "3.0%": 0
+      },
+      "inner_val_net_returns": {
+        "0.5%": 0.012247950461722307,
+        "1.0%": 0.0,
+        "1.5%": 0.0,
+        "2.0%": 0.0,
+        "3.0%": 0.0
+      },
+      "inner_train_dates": "2019-01-02 to 2019-11-04 (N=213)",
+      "inner_val_dates": "2019-11-12 to 2020-01-16 (N=45)"
+    },
+    {
+      "outer_fold": 3,
+      "selected_threshold": 0.01,
+      "fallback_used": false,
+      "fallback_reason": null,
+      "inner_val_trade_counts": {
+        "0.5%": 20,
+        "1.0%": 3,
+        "1.5%": 0,
+        "2.0%": 0,
+        "3.0%": 0
+      },
+      "inner_val_net_returns": {
+        "0.5%": -0.02965848441312139,
+        "1.0%": 0.008407858160658083,
+        "1.5%": 0.0,
+        "2.0%": 0.0,
+        "3.0%": 0.0
+      },
+      "inner_train_dates": "2019-01-02 to 2020-01-09 (N=258)",
+      "inner_val_dates": "2020-01-17 to 2020-03-23 (N=45)"
+    }
+  ],
+  "strategy_results": {
+    "cash_benchmark": {
+      "initial_equity": 100000.0,
+      "final_equity": 100000.0,
+      "total_net_return": 0.0,
+      "max_drawdown": 0.0,
+      "sharpe_ratio": 0.0
+    },
+    "buy_and_hold_benchmark": {
+      "initial_equity": 100000.0,
+      "final_equity": 208738.5141804912,
+      "total_net_return": 1.087385141804912,
+      "annualized_return": 0.6667592379538265,
+      "max_drawdown": -0.40822986350738094,
+      "daily_volatility": 0.3683110241299602,
+      "sharpe_ratio": 1.5747262395642083,
+      "total_costs": 231.72768139641573
+    },
+    "fixed_threshold_policy": {
+      "initial_equity": 100000.0,
+      "final_equity": 100133.46431820869,
+      "total_net_return": 0.0013346431820868748,
+      "annualized_return": 0.0009263401961743245,
+      "max_drawdown": -0.0072837064173777236,
+      "daily_volatility": 0.007079431949896773,
+      "sharpe_ratio": 0.1343151552562808,
+      "total_closed_trades": 2,
+      "win_rate": 0.5,
+      "mean_net_return_per_trade": 0.0026720889912982032,
+      "total_transaction_costs": 75.13052499895483,
+      "total_rejected_orders": 5,
+      "rejection_breakdown": {
+        "MAX_TICKER_EXPOSURE": 5
+      },
+      "average_utilization": 0.006924927716734133,
+      "max_utilization": 0.2542291667409378
+    },
+    "rolling_threshold_policy": {
+      "initial_equity": 100000.0,
+      "final_equity": 95821.25267314835,
+      "total_net_return": -0.04178747326851648,
+      "annualized_return": -0.0291982815961086,
+      "max_drawdown": -0.04904074954681728,
+      "daily_volatility": 0.024795628762396237,
+      "sharpe_ratio": -1.1825801583904034,
+      "total_closed_trades": 8,
+      "win_rate": 0.375,
+      "mean_net_return_per_trade": -0.02086512924370504,
+      "total_transaction_costs": 291.07302629942455,
+      "total_rejected_orders": 19,
+      "rejection_breakdown": {
+        "MAX_TICKER_EXPOSURE": 19
+      },
+      "average_utilization": 0.02751722706985049,
+      "max_utilization": 0.505205654769638
+    }
+  },
+  "sensitivity_analysis": [
+    {
+      "type": "cost_sensitivity",
+      "cost_bps": 5.0,
+      "fixed_net_return": 0.0018360826074045327,
+      "fixed_final_equity": 100183.60826074045,
+      "fixed_costs": 25.046646371038552,
+      "rolling_net_return": -0.03986466248789439,
+      "rolling_final_equity": 96013.53375121056,
+      "rolling_costs": 97.09500528186715
+    },
+    {
+      "type": "cost_sensitivity",
+      "cost_bps": 15.0,
+      "fixed_net_return": 0.0013346431820868748,
+      "fixed_final_equity": 100133.46431820869,
+      "fixed_costs": 75.13052499895483,
+      "rolling_net_return": -0.04178747326851648,
+      "rolling_final_equity": 95821.25267314835,
+      "rolling_costs": 291.07302629942455
+    },
+    {
+      "type": "cost_sensitivity",
+      "cost_bps": 30.0,
+      "fixed_net_return": 0.000582719396964385,
+      "fixed_final_equity": 100058.27193969644,
+      "fixed_costs": 150.23280765542714,
+      "rolling_net_return": -0.0446663979385134,
+      "rolling_final_equity": 95533.36020614866,
+      "rolling_costs": 581.5106059973198
+    },
+    {
+      "type": "weight_sensitivity",
+      "max_weight": 0.15,
+      "fixed_net_return": 0.0008011222245069803,
+      "fixed_final_equity": 100080.1122224507,
+      "fixed_max_utilization": 0.15286709596757325,
+      "rolling_net_return": -0.025058761583752056,
+      "rolling_final_equity": 97494.1238416248,
+      "rolling_max_utilization": 0.3043002510728387
+    },
+    {
+      "type": "weight_sensitivity",
+      "max_weight": 0.25,
+      "fixed_net_return": 0.0013346431820868748,
+      "fixed_final_equity": 100133.46431820869,
+      "fixed_max_utilization": 0.2542291667409378,
+      "rolling_net_return": -0.04178747326851648,
+      "rolling_final_equity": 95821.25267314835,
+      "rolling_max_utilization": 0.505205654769638
+    },
+    {
+      "type": "weight_sensitivity",
+      "max_weight": 0.5,
+      "fixed_net_return": 0.0026664837370492752,
+      "fixed_final_equity": 100266.64837370493,
+      "fixed_max_utilization": 0.5057323166655587,
+      "rolling_net_return": -0.0834145728841114,
+      "rolling_final_equity": 91658.54271158886,
+      "rolling_max_utilization": 1.0007590959036154
+    },
+    {
+      "type": "concurrent_limit_sensitivity",
+      "max_concurrent": 2,
+      "fixed_net_return": 0.0013346431820868748,
+      "fixed_rejections": 5,
+      "rolling_net_return": -0.04178747326851648,
+      "rolling_rejections": 19
+    },
+    {
+      "type": "concurrent_limit_sensitivity",
+      "max_concurrent": 4,
+      "fixed_net_return": 0.0013346431820868748,
+      "fixed_rejections": 5,
+      "rolling_net_return": -0.04178747326851648,
+      "rolling_rejections": 19
+    },
+    {
+      "type": "concurrent_limit_sensitivity",
+      "max_concurrent": 8,
+      "fixed_net_return": 0.0013346431820868748,
+      "fixed_rejections": 5,
+      "rolling_net_return": -0.04178747326851648,
+      "rolling_rejections": 19
+    }
+  ]
+}

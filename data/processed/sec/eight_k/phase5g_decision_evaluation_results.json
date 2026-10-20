@@ -1,0 +1,316 @@
+{
+  "experiment_name": "Phase 5G Decision & Risk Layer Walk-Forward Evaluation",
+  "cohort": [
+    "AAPL",
+    "JPM",
+    "GOOG",
+    "TSLA"
+  ],
+  "total_observations": 720,
+  "base_parameters": {
+    "buy_threshold": 0.015,
+    "sell_threshold": -0.015,
+    "cost_bps": 15.0,
+    "max_uncertainty": 0.08,
+    "min_net_return_hurdle": 0.005
+  },
+  "aggregate_signals": {
+    "buy_count": 7,
+    "sell_count": 0,
+    "hold_count": 713,
+    "active_trade_rate": 0.009722222222222222,
+    "mean_gross_return_active": 0.0327802165817055,
+    "mean_net_return_active": 0.031280216581705496,
+    "gross_win_rate_active": 0.7142857142857143,
+    "net_win_rate_active": 0.7142857142857143,
+    "total_transaction_costs": 0.010499999999999999
+  },
+  "baselines_comparison": {
+    "baseline_1_hold_net": 0.0,
+    "baseline_2_unfiltered_gross": 0.012111454221047898,
+    "baseline_2_unfiltered_net": 0.010611454221047898,
+    "baseline_2_unfiltered_win": 0.6138888888888889,
+    "decision_layer_mean_net_active": 0.031280216581705496,
+    "decision_layer_mean_net_unconditional": 0.00030411321676658115,
+    "decision_layer_mean_net": 0.00030411321676658115,
+    "note_on_comparability": "Decision policy per-active-trade net return is +3.13% (N=7). Unconditional per-session return is +0.03% due to 713 idle cash sessions (7*0.0313/720=0.00030)."
+  },
+  "company_breakdown": {
+    "AAPL": {
+      "buy_count": 7,
+      "sell_count": 0,
+      "hold_count": 173,
+      "active_count": 7,
+      "mean_net_return": 0.031280216581705496,
+      "win_rate": 0.7142857142857143
+    },
+    "JPM": {
+      "buy_count": 0,
+      "sell_count": 0,
+      "hold_count": 180,
+      "active_count": 0,
+      "mean_net_return": 0.0,
+      "win_rate": 0.0
+    },
+    "GOOG": {
+      "buy_count": 0,
+      "sell_count": 0,
+      "hold_count": 180,
+      "active_count": 0,
+      "mean_net_return": 0.0,
+      "win_rate": 0.0
+    },
+    "TSLA": {
+      "buy_count": 0,
+      "sell_count": 0,
+      "hold_count": 180,
+      "active_count": 0,
+      "mean_net_return": 0.0,
+      "win_rate": 0.0
+    }
+  },
+  "fold_summaries": [
+    {
+      "fold": 0,
+      "train_dates": 173,
+      "val_dates": 45,
+      "val_rows": 180,
+      "sigma_uncertainty": 0.04012265158501064,
+      "buy_count": 0,
+      "sell_count": 0,
+      "hold_count": 180
+    },
+    {
+      "fold": 1,
+      "train_dates": 218,
+      "val_dates": 45,
+      "val_rows": 180,
+      "sigma_uncertainty": 0.04148317638673638,
+      "buy_count": 0,
+      "sell_count": 0,
+      "hold_count": 180
+    },
+    {
+      "fold": 2,
+      "train_dates": 263,
+      "val_dates": 45,
+      "val_rows": 180,
+      "sigma_uncertainty": 0.0407645684380223,
+      "buy_count": 0,
+      "sell_count": 0,
+      "hold_count": 180
+    },
+    {
+      "fold": 3,
+      "train_dates": 308,
+      "val_dates": 45,
+      "val_rows": 180,
+      "sigma_uncertainty": 0.05880056133752646,
+      "buy_count": 7,
+      "sell_count": 0,
+      "hold_count": 173
+    }
+  ],
+  "sensitivity_analysis": [
+    {
+      "threshold": 0.005,
+      "cost_bps": 5.0,
+      "buy_count": 418,
+      "sell_count": 29,
+      "hold_count": 273,
+      "active_trades": 447,
+      "mean_net_return": 0.014264664885455624,
+      "net_win_rate": 0.6196868008948546
+    },
+    {
+      "threshold": 0.005,
+      "cost_bps": 15.0,
+      "buy_count": 379,
+      "sell_count": 22,
+      "hold_count": 319,
+      "active_trades": 401,
+      "mean_net_return": 0.011821384092203702,
+      "net_win_rate": 0.6159600997506235
+    },
+    {
+      "threshold": 0.005,
+      "cost_bps": 25.0,
+      "buy_count": 331,
+      "sell_count": 18,
+      "hold_count": 371,
+      "active_trades": 349,
+      "mean_net_return": 0.012617802375879575,
+      "net_win_rate": 0.6103151862464183
+    },
+    {
+      "threshold": 0.005,
+      "cost_bps": 50.0,
+      "buy_count": 238,
+      "sell_count": 12,
+      "hold_count": 470,
+      "active_trades": 250,
+      "mean_net_return": 0.014073987609228513,
+      "net_win_rate": 0.616
+    },
+    {
+      "threshold": 0.01,
+      "cost_bps": 5.0,
+      "buy_count": 230,
+      "sell_count": 11,
+      "hold_count": 479,
+      "active_trades": 241,
+      "mean_net_return": 0.019065530120238528,
+      "net_win_rate": 0.6473029045643154
+    },
+    {
+      "threshold": 0.01,
+      "cost_bps": 15.0,
+      "buy_count": 213,
+      "sell_count": 10,
+      "hold_count": 497,
+      "active_trades": 223,
+      "mean_net_return": 0.018466240123893893,
+      "net_win_rate": 0.6457399103139013
+    },
+    {
+      "threshold": 0.01,
+      "cost_bps": 25.0,
+      "buy_count": 197,
+      "sell_count": 10,
+      "hold_count": 513,
+      "active_trades": 207,
+      "mean_net_return": 0.01433738615464009,
+      "net_win_rate": 0.6328502415458938
+    },
+    {
+      "threshold": 0.01,
+      "cost_bps": 50.0,
+      "buy_count": 165,
+      "sell_count": 5,
+      "hold_count": 550,
+      "active_trades": 170,
+      "mean_net_return": 0.014064933593383866,
+      "net_win_rate": 0.6352941176470588
+    },
+    {
+      "threshold": 0.015,
+      "cost_bps": 5.0,
+      "buy_count": 159,
+      "sell_count": 4,
+      "hold_count": 557,
+      "active_trades": 163,
+      "mean_net_return": 0.018287105621961976,
+      "net_win_rate": 0.656441717791411
+    },
+    {
+      "threshold": 0.015,
+      "cost_bps": 15.0,
+      "buy_count": 145,
+      "sell_count": 4,
+      "hold_count": 571,
+      "active_trades": 149,
+      "mean_net_return": 0.01637948637281682,
+      "net_win_rate": 0.6442953020134228
+    },
+    {
+      "threshold": 0.015,
+      "cost_bps": 25.0,
+      "buy_count": 128,
+      "sell_count": 4,
+      "hold_count": 588,
+      "active_trades": 132,
+      "mean_net_return": 0.0155502000645033,
+      "net_win_rate": 0.6287878787878788
+    },
+    {
+      "threshold": 0.015,
+      "cost_bps": 50.0,
+      "buy_count": 92,
+      "sell_count": 2,
+      "hold_count": 626,
+      "active_trades": 94,
+      "mean_net_return": 0.007656155250116795,
+      "net_win_rate": 0.574468085106383
+    },
+    {
+      "threshold": 0.02,
+      "cost_bps": 5.0,
+      "buy_count": 87,
+      "sell_count": 2,
+      "hold_count": 631,
+      "active_trades": 89,
+      "mean_net_return": 0.011871066593604835,
+      "net_win_rate": 0.5955056179775281
+    },
+    {
+      "threshold": 0.02,
+      "cost_bps": 15.0,
+      "buy_count": 73,
+      "sell_count": 2,
+      "hold_count": 645,
+      "active_trades": 75,
+      "mean_net_return": 0.005741413736193222,
+      "net_win_rate": 0.5466666666666666
+    },
+    {
+      "threshold": 0.02,
+      "cost_bps": 25.0,
+      "buy_count": 61,
+      "sell_count": 2,
+      "hold_count": 657,
+      "active_trades": 63,
+      "mean_net_return": -0.001854799831579876,
+      "net_win_rate": 0.5079365079365079
+    },
+    {
+      "threshold": 0.02,
+      "cost_bps": 50.0,
+      "buy_count": 48,
+      "sell_count": 1,
+      "hold_count": 671,
+      "active_trades": 49,
+      "mean_net_return": -0.01358446717467819,
+      "net_win_rate": 0.46938775510204084
+    },
+    {
+      "threshold": 0.03,
+      "cost_bps": 5.0,
+      "buy_count": 27,
+      "sell_count": 0,
+      "hold_count": 693,
+      "active_trades": 27,
+      "mean_net_return": -0.015285000080457712,
+      "net_win_rate": 0.4074074074074074
+    },
+    {
+      "threshold": 0.03,
+      "cost_bps": 15.0,
+      "buy_count": 26,
+      "sell_count": 0,
+      "hold_count": 694,
+      "active_trades": 26,
+      "mean_net_return": -0.031163493179904838,
+      "net_win_rate": 0.38461538461538464
+    },
+    {
+      "threshold": 0.03,
+      "cost_bps": 25.0,
+      "buy_count": 25,
+      "sell_count": 0,
+      "hold_count": 695,
+      "active_trades": 25,
+      "mean_net_return": -0.037051275354652656,
+      "net_win_rate": 0.36
+    },
+    {
+      "threshold": 0.03,
+      "cost_bps": 50.0,
+      "buy_count": 22,
+      "sell_count": 0,
+      "hold_count": 698,
+      "active_trades": 22,
+      "mean_net_return": -0.031083960092095617,
+      "net_win_rate": 0.4090909090909091
+    }
+  ]
+}

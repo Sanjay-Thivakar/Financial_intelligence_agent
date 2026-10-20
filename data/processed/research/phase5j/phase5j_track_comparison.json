@@ -1,0 +1,38 @@
+{
+  "Track A (Market-Only)": {
+    "n_observations": 720,
+    "rmse": 0.07765520341785316,
+    "mae": 0.04748937713558398,
+    "hit_rate": 0.6236111111111111,
+    "rank_ic": 0.0599834297519864,
+    "rank_ic_pvalue": 0.10779663401768348,
+    "eligibility_scope": "Common 4-Company Cohort (AAPL, JPM, GOOG, TSLA)"
+  },
+  "Track B (Market + Fundamentals)": {
+    "n_observations": 720,
+    "rmse": 0.0778361668653956,
+    "mae": 0.04743102512994562,
+    "hit_rate": 0.6111111111111112,
+    "rank_ic": 0.045415371814631844,
+    "rank_ic_pvalue": 0.2235536169797147,
+    "eligibility_scope": "Common 4-Company Cohort (AAPL, JPM, GOOG, TSLA)"
+  },
+  "Track C (Market + Filing Events)": {
+    "n_observations": 720,
+    "rmse": 0.0772299035788046,
+    "mae": 0.047160738839820755,
+    "hit_rate": 0.6319444444444444,
+    "rank_ic": 0.11820692169545079,
+    "rank_ic_pvalue": 0.001485712141122643,
+    "eligibility_scope": "Common 4-Company Cohort (AAPL, JPM, GOOG, TSLA)"
+  },
+  "Track D (Combined Multi-Modal)": {
+    "n_observations": 720,
+    "rmse": 0.07742108426050275,
+    "mae": 0.04717286562329106,
+    "hit_rate": 0.6083333333333333,
+    "rank_ic": 0.09044616212608435,
+    "rank_ic_pvalue": 0.015195500304213419,
+    "eligibility_scope": "Common 4-Company Cohort (AAPL, JPM, GOOG, TSLA)"
+  }
+}

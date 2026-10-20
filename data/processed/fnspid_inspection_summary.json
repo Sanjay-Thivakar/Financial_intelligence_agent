@@ -1,0 +1,282 @@
+{
+  "dataset_name": "FNSPID (Financial News and Stock Price Integration Dataset)",
+  "source_urls": {
+    "huggingface": "https://huggingface.co/datasets/Zihan1004/FNSPID",
+    "github": "https://github.com/Zdong104/FNSPID_Financial_News_Dataset",
+    "arxiv_paper": "https://arxiv.org/abs/2402.06698"
+  },
+  "license": "CC BY-NC-4.0 (Commercial and research rights released July 2025; repo discontinued)",
+  "archive_metadata": {
+    "archive_filename": "full_history.zip",
+    "archive_size_bytes": 589525596,
+    "cd_offset_bytes": 587923399,
+    "cd_size_bytes": 1602175,
+    "total_eocd_entries": 15388,
+    "macosx_resource_fork_entries": 7694,
+    "directory_header_entries": 1,
+    "valid_market_csv_entries": 7693,
+    "unique_market_tickers": 7693,
+    "duplicate_filenames": 0,
+    "case_collisions": 0,
+    "audit_note": "Reconciled against preliminary 4,425 count: 4,425 was an artifact of parsing only the upper 778KB half of the Central Directory due to an off-by-half offset. The complete 1.6MB Central Directory contains exactly 7,693 unique market CSVs."
+  },
+  "claimed_records": {
+    "stock_prices": 29700000,
+    "news_records": 15700000,
+    "target_companies": 4775
+  },
+  "file_catalog": [
+    {
+      "path": "Stock_price/full_history.zip",
+      "format": "ZIP of CSV files",
+      "size_bytes": 589525596,
+      "size_mb": 562.22,
+      "total_zip_entries": 15388,
+      "ticker_files_count": 7693
+    },
+    {
+      "path": "Stock_news/All_external.csv",
+      "format": "CSV (Git LFS)",
+      "size_bytes": 5731397037,
+      "size_gb": 5.34,
+      "content": "Aggregated external news headlines & metadata from Benzinga, Reuters, Bloomberg, etc."
+    },
+    {
+      "path": "Stock_news/nasdaq_exteral_data.csv",
+      "format": "CSV (Git LFS)",
+      "size_bytes": 23232979597,
+      "size_gb": 21.64,
+      "content": "Nasdaq-scraped news articles with body text (2022-2023 focus)"
+    }
+  ],
+  "universe_overlap": {
+    "universe_total_tickers": 1211,
+    "fnspid_total_market_tickers": 7693,
+    "raw_symbol_matching": {
+      "total_overlap_count": 742,
+      "total_overlap_pct": 61.27,
+      "total_missing_count": 469,
+      "total_missing_pct": 38.73,
+      "active_overlap_count": 447,
+      "active_overlap_pct": 88.87,
+      "active_missing_count": 56,
+      "active_missing_pct": 11.13,
+      "historical_overlap_count": 295,
+      "historical_overlap_pct": 41.67,
+      "historical_missing_count": 413,
+      "historical_missing_pct": 58.33
+    },
+    "sample_active_missing": [
+      "ABNB",
+      "APP",
+      "AXON",
+      "BALL",
+      "BF.B",
+      "BRK.B",
+      "CB",
+      "CBRE",
+      "CEG",
+      "COIN",
+      "CPAY",
+      "DASH",
+      "EG",
+      "ELV",
+      "EXE",
+      "FDXF",
+      "FERG",
+      "GEHC",
+      "GEV",
+      "HONA",
+      "HOOD",
+      "KVUE",
+      "META",
+      "MRNA",
+      "MRSH",
+      "P",
+      "PLTR",
+      "PSKY",
+      "Q",
+      "RDDT",
+      "RVTY",
+      "SNDK",
+      "SOLV",
+      "SPG",
+      "STLD",
+      "STX",
+      "SW",
+      "SYF",
+      "TDG",
+      "TDY",
+      "TKO",
+      "TXT",
+      "UDR",
+      "UNH",
+      "VLTO",
+      "VMRK",
+      "VTRS",
+      "VZ",
+      "WBD",
+      "WEC",
+      "WM",
+      "WMB",
+      "WRB",
+      "WTW",
+      "WYNN",
+      "XYZ"
+    ],
+    "alt_matches_found": {},
+    "mega_cap_coverage": {
+      "AAPL": true,
+      "MSFT": true,
+      "AMZN": true,
+      "GOOG": true,
+      "GOOGL": true,
+      "META": false,
+      "FB": true,
+      "TSLA": true,
+      "NVDA": true,
+      "JPM": true,
+      "JNJ": true,
+      "V": true,
+      "WMT": true,
+      "PG": true,
+      "XOM": true
+    },
+    "sector_coverage_all": {
+      "Communication Services": {
+        "total": 42,
+        "covered": 26,
+        "coverage_pct": 61.9
+      },
+      "Consumer Discretionary": {
+        "total": 62,
+        "covered": 54,
+        "coverage_pct": 87.1
+      },
+      "Consumer Staples": {
+        "total": 49,
+        "covered": 42,
+        "coverage_pct": 85.7
+      },
+      "Energy": {
+        "total": 39,
+        "covered": 32,
+        "coverage_pct": 82.1
+      },
+      "Financials": {
+        "total": 98,
+        "covered": 77,
+        "coverage_pct": 78.6
+      },
+      "Health Care": {
+        "total": 86,
+        "covered": 66,
+        "coverage_pct": 76.7
+      },
+      "Industrials": {
+        "total": 106,
+        "covered": 83,
+        "coverage_pct": 78.3
+      },
+      "Information Technology": {
+        "total": 100,
+        "covered": 83,
+        "coverage_pct": 83.0
+      },
+      "Materials": {
+        "total": 38,
+        "covered": 27,
+        "coverage_pct": 71.1
+      },
+      "Real Estate": {
+        "total": 34,
+        "covered": 30,
+        "coverage_pct": 88.2
+      },
+      "Utilities": {
+        "total": 38,
+        "covered": 30,
+        "coverage_pct": 78.9
+      }
+    },
+    "sector_coverage_active": {
+      "Communication Services": {
+        "total": 23,
+        "covered": 16,
+        "coverage_pct": 69.6
+      },
+      "Consumer Discretionary": {
+        "total": 47,
+        "covered": 44,
+        "coverage_pct": 93.6
+      },
+      "Consumer Staples": {
+        "total": 33,
+        "covered": 31,
+        "coverage_pct": 93.9
+      },
+      "Energy": {
+        "total": 21,
+        "covered": 19,
+        "coverage_pct": 90.5
+      },
+      "Financials": {
+        "total": 76,
+        "covered": 65,
+        "coverage_pct": 85.5
+      },
+      "Health Care": {
+        "total": 60,
+        "covered": 53,
+        "coverage_pct": 88.3
+      },
+      "Industrials": {
+        "total": 83,
+        "covered": 74,
+        "coverage_pct": 89.2
+      },
+      "Information Technology": {
+        "total": 74,
+        "covered": 68,
+        "coverage_pct": 91.9
+      },
+      "Materials": {
+        "total": 25,
+        "covered": 22,
+        "coverage_pct": 88.0
+      },
+      "Real Estate": {
+        "total": 30,
+        "covered": 26,
+        "coverage_pct": 86.7
+      },
+      "Utilities": {
+        "total": 31,
+        "covered": 29,
+        "coverage_pct": 93.5
+      }
+    }
+  },
+  "market_data_characteristics": {
+    "granularity": "Daily (YYYY-MM-DD)",
+    "intraday_available": false,
+    "fields": [
+      "Date",
+      "Open",
+      "High",
+      "Low",
+      "Close",
+      "Adj Close",
+      "Volume"
+    ],
+    "ticker_location": "In file name (not inside CSV)",
+    "date_range": "1980-12-12 to 2023-12-29 (historical inception to scrape termination)"
+  },
+  "news_data_characteristics": {
+    "granularity": "Mixed (some second/minute UTC, some EDT/EST, many date-only)",
+    "body_text_availability": "0% in evaluated All_external.csv sample; 100% in nasdaq_exteral_data.csv sample",
+    "author_availability": "Virtually 0% in evaluated samples",
+    "publisher_availability": "100% in All_external.csv; 0% in nasdaq_exteral_data.csv",
+    "multi_ticker_contamination": "High (macro roundups tag multiple stocks)"
+  }
+}

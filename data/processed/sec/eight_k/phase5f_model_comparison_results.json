@@ -1,0 +1,262 @@
+{
+  "folds": [
+    {
+      "fold": 0,
+      "train_start": "2019-01-02",
+      "train_end": "2019-09-09",
+      "train_rows": 692,
+      "train_dates_count": 173,
+      "val_start": "2019-09-17",
+      "val_end": "2019-11-18",
+      "val_rows": 180,
+      "val_dates_count": 45,
+      "models": {
+        "Variant A (Zero Return)": {
+          "rmse": 0.04863093371502478,
+          "mae": 0.029983633885468573,
+          "hit_rate": 0.5,
+          "ic": 0.0,
+          "alpha": null
+        },
+        "Variant B (Historical Median)": {
+          "rmse": 0.04637885343533227,
+          "mae": 0.02767656826071294,
+          "hit_rate": 0.7055555555555556,
+          "ic": 0.0,
+          "alpha": null
+        },
+        "Variant C (Market-Only Ridge)": {
+          "rmse": 0.04848007315247826,
+          "mae": 0.029467943717285786,
+          "hit_rate": 0.6277777777777778,
+          "ic": -0.1009599061699435,
+          "alpha": 1000.0
+        },
+        "Variant D (Market+Fund Ridge)": {
+          "rmse": 0.04842778333963717,
+          "mae": 0.02907190288602046,
+          "hit_rate": 0.6111111111111112,
+          "ic": -0.023056267168739774,
+          "alpha": 1000.0
+        },
+        "Variant E (Market+Events Ridge)": {
+          "rmse": 0.04826873723572165,
+          "mae": 0.0291879990858242,
+          "hit_rate": 0.6666666666666666,
+          "ic": 0.07951274216282396,
+          "alpha": 1000.0
+        },
+        "Variant F (Market+Fund+Events Ridge)": {
+          "rmse": 0.04816163995232007,
+          "mae": 0.028766949472020433,
+          "hit_rate": 0.6333333333333333,
+          "ic": 0.11513524079961314,
+          "alpha": 1000.0
+        }
+      }
+    },
+    {
+      "fold": 1,
+      "train_start": "2019-01-02",
+      "train_end": "2019-11-11",
+      "train_rows": 872,
+      "train_dates_count": 218,
+      "val_start": "2019-11-19",
+      "val_end": "2020-01-24",
+      "val_rows": 180,
+      "val_dates_count": 45,
+      "models": {
+        "Variant A (Zero Return)": {
+          "rmse": 0.04814592640060042,
+          "mae": 0.03173287940096014,
+          "hit_rate": 0.5,
+          "ic": 0.0,
+          "alpha": null
+        },
+        "Variant B (Historical Median)": {
+          "rmse": 0.04452927827904671,
+          "mae": 0.028896434572539098,
+          "hit_rate": 0.7222222222222222,
+          "ic": 0.0,
+          "alpha": null
+        },
+        "Variant C (Market-Only Ridge)": {
+          "rmse": 0.04256514162157293,
+          "mae": 0.028094521955042178,
+          "hit_rate": 0.7222222222222222,
+          "ic": 0.304077286335998,
+          "alpha": 1000.0
+        },
+        "Variant D (Market+Fund Ridge)": {
+          "rmse": 0.042758268677305464,
+          "mae": 0.027595907279843877,
+          "hit_rate": 0.7222222222222222,
+          "ic": 0.28363838390073765,
+          "alpha": 1000.0
+        },
+        "Variant E (Market+Events Ridge)": {
+          "rmse": 0.04267649005684574,
+          "mae": 0.028302310685111465,
+          "hit_rate": 0.6777777777777778,
+          "ic": 0.30619463563690236,
+          "alpha": 1000.0
+        },
+        "Variant F (Market+Fund+Events Ridge)": {
+          "rmse": 0.04286985051686319,
+          "mae": 0.028014618285756014,
+          "hit_rate": 0.6777777777777778,
+          "ic": 0.22723129314690782,
+          "alpha": 1000.0
+        }
+      }
+    },
+    {
+      "fold": 2,
+      "train_start": "2019-01-02",
+      "train_end": "2020-01-16",
+      "train_rows": 1052,
+      "train_dates_count": 263,
+      "val_start": "2020-01-27",
+      "val_end": "2020-03-30",
+      "val_rows": 180,
+      "val_dates_count": 45,
+      "models": {
+        "Variant A (Zero Return)": {
+          "rmse": 0.11699689412768882,
+          "mae": 0.07958837769086353,
+          "hit_rate": 0.5,
+          "ic": 0.0,
+          "alpha": null
+        },
+        "Variant B (Historical Median)": {
+          "rmse": 0.11893517062286035,
+          "mae": 0.08186312430134783,
+          "hit_rate": 0.42777777777777776,
+          "ic": 0.0,
+          "alpha": null
+        },
+        "Variant C (Market-Only Ridge)": {
+          "rmse": 0.12082947047337683,
+          "mae": 0.08267559066307037,
+          "hit_rate": 0.4444444444444444,
+          "ic": -0.0802576211199934,
+          "alpha": 1000.0
+        },
+        "Variant D (Market+Fund Ridge)": {
+          "rmse": 0.12074350157570235,
+          "mae": 0.08267704524979289,
+          "hit_rate": 0.4388888888888889,
+          "ic": -0.09457493544039423,
+          "alpha": 1000.0
+        },
+        "Variant E (Market+Events Ridge)": {
+          "rmse": 0.12026178078461743,
+          "mae": 0.08229489585480836,
+          "hit_rate": 0.46111111111111114,
+          "ic": -0.04530180972663765,
+          "alpha": 1000.0
+        },
+        "Variant F (Market+Fund+Events Ridge)": {
+          "rmse": 0.12027835154920564,
+          "mae": 0.08233100608526306,
+          "hit_rate": 0.4444444444444444,
+          "ic": -0.06074261551282447,
+          "alpha": 1000.0
+        }
+      }
+    },
+    {
+      "fold": 3,
+      "train_start": "2019-01-02",
+      "train_end": "2020-03-23",
+      "train_rows": 1232,
+      "train_dates_count": 308,
+      "val_start": "2020-03-31",
+      "val_end": "2020-06-03",
+      "val_rows": 180,
+      "val_dates_count": 45,
+      "models": {
+        "Variant A (Zero Return)": {
+          "rmse": 0.07725891409148353,
+          "mae": 0.05362086547856835,
+          "hit_rate": 0.5,
+          "ic": 0.0,
+          "alpha": null
+        },
+        "Variant B (Historical Median)": {
+          "rmse": 0.0738383066456418,
+          "mae": 0.050222126134796104,
+          "hit_rate": 0.7277777777777777,
+          "ic": 0.0,
+          "alpha": null
+        },
+        "Variant C (Market-Only Ridge)": {
+          "rmse": 0.07320828342791387,
+          "mae": 0.04971945220693763,
+          "hit_rate": 0.7,
+          "ic": -0.15520849408932372,
+          "alpha": 1000.0
+        },
+        "Variant D (Market+Fund Ridge)": {
+          "rmse": 0.07403622476165106,
+          "mae": 0.0503792451041253,
+          "hit_rate": 0.6722222222222223,
+          "ic": -0.2004012469520664,
+          "alpha": 1000.0
+        },
+        "Variant E (Market+Events Ridge)": {
+          "rmse": 0.07241396489473047,
+          "mae": 0.048857749733539,
+          "hit_rate": 0.7222222222222222,
+          "ic": -0.11729991666409456,
+          "alpha": 1000.0
+        },
+        "Variant F (Market+Fund+Events Ridge)": {
+          "rmse": 0.07315632340856158,
+          "mae": 0.049578888650124754,
+          "hit_rate": 0.6777777777777778,
+          "ic": -0.11149932611088818,
+          "alpha": 1000.0
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "Variant A (Zero Return)": {
+      "agg_rmse": 0.07800674808163718,
+      "agg_mae": 0.04873143911396516,
+      "agg_hit_rate": 0.5,
+      "agg_ic": 0.0
+    },
+    "Variant B (Historical Median)": {
+      "agg_rmse": 0.07702519881411138,
+      "agg_mae": 0.04716456331734899,
+      "agg_hit_rate": 0.6458333333333334,
+      "agg_ic": -0.19131241280720504
+    },
+    "Variant C (Market-Only Ridge)": {
+      "agg_rmse": 0.07765520341785316,
+      "agg_mae": 0.04748937713558398,
+      "agg_hit_rate": 0.6236111111111111,
+      "agg_ic": 0.0599834297519864
+    },
+    "Variant D (Market+Fund Ridge)": {
+      "agg_rmse": 0.0778361668653956,
+      "agg_mae": 0.04743102512994562,
+      "agg_hit_rate": 0.6111111111111112,
+      "agg_ic": 0.045415371814631844
+    },
+    "Variant E (Market+Events Ridge)": {
+      "agg_rmse": 0.0772299035788046,
+      "agg_mae": 0.047160738839820755,
+      "agg_hit_rate": 0.6319444444444444,
+      "agg_ic": 0.11820692169545079
+    },
+    "Variant F (Market+Fund+Events Ridge)": {
+      "agg_rmse": 0.07742108426050275,
+      "agg_mae": 0.04717286562329106,
+      "agg_hit_rate": 0.6083333333333333,
+      "agg_ic": 0.09044616212608435
+    }
+  }
+}

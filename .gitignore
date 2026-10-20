@@ -1,0 +1,87 @@
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing & Virtual Environments
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+venv/
+.venv/
+env/
+ENV/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Scratch artifacts
+scratch/
+
+
+# Frontend dependencies and generated output
+frontend/node_modules/
+frontend/dist/
+
+# Local environment and tool caches
+.venv*/
+.mypy_cache/
+.ruff_cache/
+.pyright/
+
+# Generated research datasets and model artifacts
+# Keep source scripts and documentation tracked.
+data/**/*.parquet
+data/**/*.pkl
+data/**/*.pickle
+data/**/*.joblib
+data/**/*.pt
+data/**/*.pth
+data/**/*.onnx
+
+# Logs and temporary files
+*.log
+*.tmp
+
+
+# Raw downloaded datasets — retain locally, do not commit by default
+data/raw/
+
+# Generated processed datasets — retain selected small reports/manifests
+data/processed/**/*.parquet
+data/processed/**/*.pkl
+data/processed/**/*.pickle
+data/processed/**/*.joblib
+data/processed/**/*.pt
+data/processed/**/*.pth
+data/processed/**/*.onnx

@@ -1,0 +1,34 @@
+{
+  "is_valid": true,
+  "total_records": 8830,
+  "errors": [],
+  "warnings": [
+    "High empty article text rate: 100.0% of records have no body text (headline only)."
+  ],
+  "metrics": {
+    "null_counts": {
+      "news_id": 0,
+      "company_id": 5210,
+      "ticker": 0,
+      "published_at": 0,
+      "published_date": 0,
+      "has_intraday_time": 0,
+      "headline": 0,
+      "article_text": 0,
+      "source": 0,
+      "url": 0,
+      "source_dataset": 0
+    },
+    "duplicate_news_ids": 0,
+    "empty_article_text_count": 8830,
+    "empty_article_text_pct": 100.0,
+    "intraday_timestamp_count": 8830,
+    "intraday_timestamp_pct": 100.0,
+    "universe_matched_count": 3620,
+    "universe_matched_pct": 41.0,
+    "min_date": "2009-04-29",
+    "max_date": "2020-06-10",
+    "unique_tickers": 22,
+    "unique_sources": 275
+  }
+}

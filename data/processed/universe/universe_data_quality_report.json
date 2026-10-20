@@ -1,0 +1,4048 @@
+{
+  "timestamp": "2026-10-06T05:37:58.517305+00:00",
+  "total_records": 1265,
+  "total_unique_tickers": 1211,
+  "total_unique_companies": 1169,
+  "active_constituents_count": 503,
+  "resolved_cik_count": 902,
+  "missing_cik_count": 363,
+  "duplicate_companies_count": 0,
+  "duplicate_active_ciks_count": 3,
+  "invalid_tickers_count": 0,
+  "overlapping_intervals_count": 0,
+  "status": "PASSED_WITH_WARNINGS",
+  "issues": [
+    {
+      "category": "Duplicate Active CIKs (Dual Share Classes)",
+      "severity": "INFO",
+      "identifier": "CIK_0001564708",
+      "message": "Multiple active share classes share the same corporate CIK identity",
+      "details": {
+        "cik": "0001564708",
+        "tickers": [
+          "NWSA",
+          "NWS"
+        ]
+      }
+    },
+    {
+      "category": "Duplicate Active CIKs (Dual Share Classes)",
+      "severity": "INFO",
+      "identifier": "CIK_0001652044",
+      "message": "Multiple active share classes share the same corporate CIK identity",
+      "details": {
+        "cik": "0001652044",
+        "tickers": [
+          "GOOGL",
+          "GOOG"
+        ]
+      }
+    },
+    {
+      "category": "Duplicate Active CIKs (Dual Share Classes)",
+      "severity": "INFO",
+      "identifier": "CIK_0001754301",
+      "message": "Multiple active share classes share the same corporate CIK identity",
+      "details": {
+        "cik": "0001754301",
+        "tickers": [
+          "FOXA",
+          "FOX"
+        ]
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ABI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "ABI",
+        "effective_from": "1996-01-02",
+        "effective_to": "2008-11-24"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ABKFQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "ABKFQ",
+        "effective_from": "2000-12-11",
+        "effective_to": "2008-06-11"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ABS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Albertsons",
+        "effective_from": "1996-01-02",
+        "effective_to": "2006-06-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ABX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "ABX",
+        "effective_from": "1996-01-02",
+        "effective_to": "2002-07-22"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ACAS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "American Capital",
+        "effective_from": "2007-07-09",
+        "effective_to": "2009-03-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ACKH",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "ACKH",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-11-17"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ACS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "ACS",
+        "effective_from": "2004-04-02",
+        "effective_to": "2010-02-08"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ADS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Alliance Data Systems",
+        "effective_from": "2013-12-23",
+        "effective_to": "2020-06-22"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "AFS.A",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "AFS.A",
+        "effective_from": "1998-04-08",
+        "effective_to": "2000-12-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "AGC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "AGC",
+        "effective_from": "1996-01-02",
+        "effective_to": "2001-08-29"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "AHM",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "AHM",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-10-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "AMCC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "AMCC",
+        "effective_from": "2001-01-02",
+        "effective_to": "2006-05-18"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ANDV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Andeavor",
+        "effective_from": "2007-09-27",
+        "effective_to": "2018-10-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ANRZQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "ANRZQ",
+        "effective_from": "2011-06-02",
+        "effective_to": "2012-10-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ANV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "ANV",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-04-12"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "APCC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "APCC",
+        "effective_from": "2000-06-01",
+        "effective_to": "2007-02-15"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "APOL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Apollo Education Group",
+        "effective_from": "2002-05-15",
+        "effective_to": "2013-07-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ARG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Airgas",
+        "effective_from": "2009-09-09",
+        "effective_to": "2016-05-23"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ARNC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Arconic",
+        "effective_from": "1996-01-02",
+        "effective_to": "2020-04-06"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ASN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "ASN",
+        "effective_from": "2004-12-20",
+        "effective_to": "2007-10-08"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "AT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "AT",
+        "effective_from": "1996-01-02",
+        "effective_to": "2007-11-19"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ATVI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Activision Blizzard",
+        "effective_from": "2015-08-31",
+        "effective_to": "2023-10-18"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "AV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Avaya",
+        "effective_from": "2000-10-02",
+        "effective_to": "2007-10-26"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "AVP",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Avon Products",
+        "effective_from": "1996-01-02",
+        "effective_to": "2015-03-23"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "AW",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "AW",
+        "effective_from": "1999-08-02",
+        "effective_to": "2008-12-05"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "AWE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "AWE",
+        "effective_from": "2001-07-09",
+        "effective_to": "2004-10-27"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "AYE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Allegheny Energy",
+        "effective_from": "2000-12-11",
+        "effective_to": "2011-02-28"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "AZA.A",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "AZA.A",
+        "effective_from": "1996-01-02",
+        "effective_to": "2001-06-25"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BAY",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BAY",
+        "effective_from": "1996-02-12",
+        "effective_to": "1998-08-31"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BBI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BBI",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-01-12"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BEV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BEV",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-12-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BFI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BFI",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-08-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BFO",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BFO",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-10-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BGEN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BGEN",
+        "effective_from": "2000-01-31",
+        "effective_to": "2003-11-13"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BGG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BGG",
+        "effective_from": "1996-01-02",
+        "effective_to": "2001-04-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BHGE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BHGE",
+        "effective_from": "1996-01-02",
+        "effective_to": "2019-10-18"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BHMSQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BHMSQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-12-11"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BIG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Big Lots",
+        "effective_from": "1998-01-20",
+        "effective_to": "2013-02-14"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BJS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BJ Services",
+        "effective_from": "2002-05-15",
+        "effective_to": "2010-04-29"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BKB",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BKB",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-10-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BLY",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BLY",
+        "effective_from": "1996-01-02",
+        "effective_to": "1996-12-19"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BMC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BMC Software",
+        "effective_from": "1998-10-01",
+        "effective_to": "2013-09-11"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BMGCA",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BMGCA",
+        "effective_from": "1996-07-22",
+        "effective_to": "1999-08-09"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BMS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Bemis Company",
+        "effective_from": "1996-01-02",
+        "effective_to": "2014-12-05"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BOAT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BOAT",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-01-07"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BRCM",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Broadcom Corporation",
+        "effective_from": "2000-07-03",
+        "effective_to": "2016-02-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BRL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BRL",
+        "effective_from": "2006-02-27",
+        "effective_to": "2008-12-23"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BT",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-06-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BTUUQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BTUUQ",
+        "effective_from": "2006-11-20",
+        "effective_to": "2014-09-22"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BVSN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "BVSN",
+        "effective_from": "2000-11-06",
+        "effective_to": "2001-09-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "BXLT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Baxalta",
+        "effective_from": "2015-07-01",
+        "effective_to": "2016-06-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CA",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CA Technologies",
+        "effective_from": "1996-01-02",
+        "effective_to": "2018-11-06"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CAM",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Cameron International",
+        "effective_from": "2008-01-29",
+        "effective_to": "2016-04-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CBB",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CBB",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-01-28"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CBH",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CBH",
+        "effective_from": "2006-06-06",
+        "effective_to": "2008-03-31"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CBS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CBS",
+        "effective_from": "1996-01-02",
+        "effective_to": "2019-12-05"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CBSS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CBSS",
+        "effective_from": "2004-12-20",
+        "effective_to": "2007-09-07"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CCE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Coca-Cola Enterprises",
+        "effective_from": "1998-10-08",
+        "effective_to": "2016-05-31"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CCTYQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CCTYQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2008-03-31"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CEPH",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Cephalon",
+        "effective_from": "2008-11-17",
+        "effective_to": "2011-10-14"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CFC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Countrywide Financial Corp",
+        "effective_from": "1997-06-18",
+        "effective_to": "2008-07-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CFL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CFL",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-04-28"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CFN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Carefusion",
+        "effective_from": "2009-09-01",
+        "effective_to": "2015-03-17"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CGP",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CGP",
+        "effective_from": "1996-01-02",
+        "effective_to": "2001-01-30"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CHA",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CHA",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-06-19"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CHIR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CHIR",
+        "effective_from": "2000-11-24",
+        "effective_to": "2006-04-20"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CIN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CIN",
+        "effective_from": "1996-01-02",
+        "effective_to": "2006-04-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CITGQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CITGQ",
+        "effective_from": "2004-10-27",
+        "effective_to": "2009-07-27"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CIT.A",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CIT.A",
+        "effective_from": "2000-07-17",
+        "effective_to": "2001-06-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CMB",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CMB",
+        "effective_from": "1996-01-02",
+        "effective_to": "1996-04-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CMVT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CMVT",
+        "effective_from": "1999-10-27",
+        "effective_to": "2007-02-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CMX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CMX",
+        "effective_from": "2004-03-25",
+        "effective_to": "2007-03-23"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CNG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CNG",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-01-31"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CNW",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CNW",
+        "effective_from": "1996-01-02",
+        "effective_to": "1996-12-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CNXT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CNXT",
+        "effective_from": "2000-01-31",
+        "effective_to": "2002-06-26"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "COC.B",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "COC.B",
+        "effective_from": "1999-08-09",
+        "effective_to": "2002-09-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "COG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Cabot Oil & Gas",
+        "effective_from": "2008-06-23",
+        "effective_to": "2021-10-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "COL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Rockwell Collins",
+        "effective_from": "2001-07-02",
+        "effective_to": "2018-11-27"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "COV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Covidien",
+        "effective_from": "1996-01-02",
+        "effective_to": "1996-08-16"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "COV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Covidien",
+        "effective_from": "2007-07-02",
+        "effective_to": "2009-06-05"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "COV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Covidien",
+        "effective_from": "2011-03-01",
+        "effective_to": "2015-01-27"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CPGX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Columbia Pipeline Group",
+        "effective_from": "2015-07-02",
+        "effective_to": "2016-07-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CPNLQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CPNLQ",
+        "effective_from": "2000-12-01",
+        "effective_to": "2005-12-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CPWR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Compuware",
+        "effective_from": "1999-01-04",
+        "effective_to": "2012-01-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CRR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CRR",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-05-27"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CSE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CSE",
+        "effective_from": "1996-01-22",
+        "effective_to": "1999-11-15"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CSRA",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CSRA",
+        "effective_from": "2015-11-30",
+        "effective_to": "2018-04-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CTB",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CTB",
+        "effective_from": "1996-01-02",
+        "effective_to": "2006-07-18"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CTXS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Citrix Systems",
+        "effective_from": "1999-12-01",
+        "effective_to": "2022-10-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CVC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Cablevision",
+        "effective_from": "2010-12-20",
+        "effective_to": "2016-06-21"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CVG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Convergys",
+        "effective_from": "2000-06-13",
+        "effective_to": "2009-12-21"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CVH",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Coventry Health Care",
+        "effective_from": "2005-08-30",
+        "effective_to": "2013-05-07"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CYM",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CYM",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-10-18"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "CYR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "CYR",
+        "effective_from": "1996-01-02",
+        "effective_to": "1996-03-28"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "DALRQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "DALRQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2005-08-19"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "DCNAQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "DCNAQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2006-03-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "DDR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "DDR",
+        "effective_from": "2007-03-23",
+        "effective_to": "2009-03-30"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "DF",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Dean Foods",
+        "effective_from": "2006-04-03",
+        "effective_to": "2013-05-24"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "DGN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "DGN",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-10-13"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "DI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "DI",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-09-30"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "DIGI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "DIGI",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-08-28"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "DISH",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Dish Network",
+        "effective_from": "2017-03-13",
+        "effective_to": "2023-06-20"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "DNR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Denbury Resources",
+        "effective_from": "2009-04-02",
+        "effective_to": "2015-03-23"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "DO",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Diamond Offshore Drilling",
+        "effective_from": "2009-02-26",
+        "effective_to": "2016-10-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "DPHIQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "DPHIQ",
+        "effective_from": "1999-05-28",
+        "effective_to": "2005-10-11"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "DTV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "DirecTV",
+        "effective_from": "2006-12-04",
+        "effective_to": "2015-07-27"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "DWD",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "DWD",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-06-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ECH",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "ECH",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-07-10"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "EDS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "EDS",
+        "effective_from": "1998-08-11",
+        "effective_to": "2008-08-26"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "EFU",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "EFU",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-11-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "EKDKQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "EKDKQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2010-12-20"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "EMC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "EMC Corporation",
+        "effective_from": "1996-03-28",
+        "effective_to": "2016-09-07"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ENDP",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Endo International",
+        "effective_from": "2015-01-27",
+        "effective_to": "2017-03-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "EOP",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "EOP",
+        "effective_from": "2001-10-10",
+        "effective_to": "2007-02-12"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ESV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Ensco plc",
+        "effective_from": "2007-01-04",
+        "effective_to": "2009-12-23"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ESV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Ensco plc",
+        "effective_from": "2012-07-31",
+        "effective_to": "2016-03-30"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ETS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "ETS",
+        "effective_from": "1996-01-02",
+        "effective_to": "2001-08-06"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "EVHC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Envision Healthcare",
+        "effective_from": "2016-12-02",
+        "effective_to": "2018-10-11"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "FBF",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "FBF",
+        "effective_from": "1996-01-02",
+        "effective_to": "2004-04-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "FBO",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "FBO",
+        "effective_from": "1996-01-02",
+        "effective_to": "1996-03-13"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "FDO",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Family Dollar",
+        "effective_from": "2001-08-06",
+        "effective_to": "2015-07-07"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "FII",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Federated Investors",
+        "effective_from": "2003-04-16",
+        "effective_to": "2013-01-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "FJ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "FJ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-11-24"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "FLMIQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "FLMIQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-12-24"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "FLTWQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "FLTWQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-01-31"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "FPC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "FPC",
+        "effective_from": "1999-06-22",
+        "effective_to": "2000-12-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "FRC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "First Republic Bank",
+        "effective_from": "2019-01-02",
+        "effective_to": "2023-05-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "FSH",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "FSH",
+        "effective_from": "2004-08-03",
+        "effective_to": "2006-11-10"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "FSL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "FSL",
+        "effective_from": "2004-12-03",
+        "effective_to": "2006-12-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "FTL.A",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "FTL.A",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-10-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "FWLT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "FWLT",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-01-31"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GAPTQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "GAPTQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-08-30"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GDT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "GDT",
+        "effective_from": "1996-12-19",
+        "effective_to": "2006-04-24"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GDW",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "GDW",
+        "effective_from": "1996-01-02",
+        "effective_to": "2006-10-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GENZ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Genzyme",
+        "effective_from": "2001-12-14",
+        "effective_to": "2011-04-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GFS.A",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "GFS.A",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-07-16"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GGP",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "General Growth Properties",
+        "effective_from": "2007-07-02",
+        "effective_to": "2008-11-13"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GGP",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "General Growth Properties",
+        "effective_from": "2013-12-10",
+        "effective_to": "2018-08-28"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GIDL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "GIDL",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-07-17"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GLK",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Great Lakes Chemical",
+        "effective_from": "1996-01-02",
+        "effective_to": "2005-07-05"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GMCR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Keurig Green Mountain",
+        "effective_from": "2014-03-24",
+        "effective_to": "2016-03-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GPS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Gap",
+        "effective_from": "1996-01-02",
+        "effective_to": "2022-02-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GPU",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "GPU",
+        "effective_from": "1996-01-02",
+        "effective_to": "2001-11-07"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GRA",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "WR Grace",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-12-11"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GSX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "GSX",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-10-07"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GTW",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "GTW",
+        "effective_from": "1998-04-27",
+        "effective_to": "2006-08-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GWF",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "GWF",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-07-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "GX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "GX",
+        "effective_from": "1999-09-29",
+        "effective_to": "2001-10-10"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HAR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Harman International",
+        "effective_from": "2006-02-01",
+        "effective_to": "2017-03-13"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HBOC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "HBOC",
+        "effective_from": "1997-10-23",
+        "effective_to": "1999-01-13"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HCR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "HCR",
+        "effective_from": "1998-09-28",
+        "effective_to": "2007-11-09"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HDLM",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "HDLM",
+        "effective_from": "1996-01-02",
+        "effective_to": "1996-03-08"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HET",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "HET",
+        "effective_from": "1996-01-02",
+        "effective_to": "2008-01-29"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HFC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "HollyFrontier",
+        "effective_from": "2018-06-18",
+        "effective_to": "2021-06-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HFS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "HFS",
+        "effective_from": "1996-08-16",
+        "effective_to": "1997-12-18"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HM",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "HM",
+        "effective_from": "1996-01-02",
+        "effective_to": "2001-12-17"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HMA",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "HMA",
+        "effective_from": "2001-11-07",
+        "effective_to": "2007-03-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HNZ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Heinz",
+        "effective_from": "1996-01-02",
+        "effective_to": "2013-06-07"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HOT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Starwood Hotels and Resorts",
+        "effective_from": "2000-11-17",
+        "effective_to": "2016-09-23"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HRS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Harris Corporation",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-11-08"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HRS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Harris Corporation",
+        "effective_from": "2008-09-22",
+        "effective_to": "2019-06-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HSH",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "HSH",
+        "effective_from": "1996-01-02",
+        "effective_to": "2012-06-29"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "HSP",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Hospira",
+        "effective_from": "2004-05-03",
+        "effective_to": "2015-09-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "I",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "I",
+        "effective_from": "1996-01-02",
+        "effective_to": "1996-04-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "IMNX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "IMNX",
+        "effective_from": "2001-09-21",
+        "effective_to": "2002-07-16"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "INCLF",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "INCLF",
+        "effective_from": "1996-01-02",
+        "effective_to": "2002-07-22"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "JEC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Jacobs Engineering Group",
+        "effective_from": "2007-10-26",
+        "effective_to": "2019-12-10"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "JH",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "JH",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-04-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "JHF",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "JHF",
+        "effective_from": "2001-06-29",
+        "effective_to": "2004-04-29"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "JNS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Janus Capital Group",
+        "effective_from": "2000-07-13",
+        "effective_to": "2011-11-23"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "JNY",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Jones Apparel Group",
+        "effective_from": "2001-12-17",
+        "effective_to": "2009-03-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "JOS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "JOS",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-05-10"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "JOY",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Joy Global",
+        "effective_from": "2011-02-28",
+        "effective_to": "2015-10-08"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "JP",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "JP",
+        "effective_from": "1996-01-02",
+        "effective_to": "2006-04-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "KG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "King Pharmaceuticals",
+        "effective_from": "2000-10-03",
+        "effective_to": "2010-12-20"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "KM",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "KM",
+        "effective_from": "1996-01-02",
+        "effective_to": "2002-01-17"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "KORS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Michael Kors",
+        "effective_from": "2013-11-13",
+        "effective_to": "2018-09-19"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "KRB",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "KRB",
+        "effective_from": "1996-01-02",
+        "effective_to": "2006-01-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "KRFT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Kraft Foods",
+        "effective_from": "2012-10-02",
+        "effective_to": "2015-07-06"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "KRI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "KRI",
+        "effective_from": "1996-01-02",
+        "effective_to": "2006-06-28"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "KSE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "KeySpan",
+        "effective_from": "2000-08-21",
+        "effective_to": "2007-08-27"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "KSU",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Kansas City Southern",
+        "effective_from": "1999-04-05",
+        "effective_to": "2000-07-13"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "KSU",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Kansas City Southern",
+        "effective_from": "2013-05-24",
+        "effective_to": "2021-12-14"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "KWP",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "KWP",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-11-16"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "LDW.B",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "LDW.B",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-12-08"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "LIFE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Life Technologies",
+        "effective_from": "2008-11-24",
+        "effective_to": "2014-01-24"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "LLL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "L3 Technologies",
+        "effective_from": "2004-12-01",
+        "effective_to": "2019-07-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "LLX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "LLX",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-10-23"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "LM",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Legg Mason",
+        "effective_from": "2006-04-24",
+        "effective_to": "2016-12-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "LOR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "LOR",
+        "effective_from": "1996-01-02",
+        "effective_to": "1996-04-23"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "LSI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "LSI Corporation",
+        "effective_from": "1996-01-02",
+        "effective_to": "2014-05-07"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "LUB",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "LUB",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-01-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "LVLT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Level 3 Communications",
+        "effective_from": "2014-11-05",
+        "effective_to": "2017-10-13"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "LXK",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Lexmark",
+        "effective_from": "1999-08-13",
+        "effective_to": "2012-10-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MAY",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MAY",
+        "effective_from": "1996-01-02",
+        "effective_to": "2005-08-29"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MCIC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MCIC",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-09-15"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MDP",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Meredith Corp",
+        "effective_from": "1996-01-02",
+        "effective_to": "2011-01-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MDR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MDR",
+        "effective_from": "1996-01-02",
+        "effective_to": "2003-08-20"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MEA",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MEA",
+        "effective_from": "1996-01-02",
+        "effective_to": "2002-01-30"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MEDI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MEDI",
+        "effective_from": "2000-06-16",
+        "effective_to": "2007-06-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MEL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MEL",
+        "effective_from": "1996-01-02",
+        "effective_to": "2007-07-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MERQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MERQ",
+        "effective_from": "2000-06-29",
+        "effective_to": "2006-01-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MFE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "McAfee",
+        "effective_from": "2008-12-23",
+        "effective_to": "2011-03-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MII",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MII",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-06-22"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MJN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Mead Johnson Nutrition",
+        "effective_from": "2009-12-21",
+        "effective_to": "2017-06-15"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MKG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MKG",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-10-18"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MNK",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Mallinckrodt",
+        "effective_from": "2014-08-19",
+        "effective_to": "2017-07-26"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MOLX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Molex",
+        "effective_from": "1999-12-01",
+        "effective_to": "2013-12-09"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MST",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MST",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-08-14"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MTL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MTL",
+        "effective_from": "1998-02-23",
+        "effective_to": "1999-09-20"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MTLQQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MTLQQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2009-06-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MWI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MWI",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-05-28"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MWV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MWV",
+        "effective_from": "1996-01-02",
+        "effective_to": "2015-07-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MWW",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Monster Worldwide",
+        "effective_from": "2001-06-04",
+        "effective_to": "2011-12-19"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MYG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MYG",
+        "effective_from": "1996-01-02",
+        "effective_to": "2006-04-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "MZIAQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MZIAQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-06-29"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NAE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "NAE",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-08-07"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NAV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "NAV",
+        "effective_from": "1996-01-02",
+        "effective_to": "2006-12-20"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NCE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "NCE",
+        "effective_from": "1998-11-03",
+        "effective_to": "2000-08-21"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NCR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "NCR Corporation",
+        "effective_from": "2000-01-04",
+        "effective_to": "2007-10-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NFB",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "NFB",
+        "effective_from": "2002-07-17",
+        "effective_to": "2006-12-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NFX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Newfield Exploration",
+        "effective_from": "2010-12-20",
+        "effective_to": "2019-02-15"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NGH",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "NGH",
+        "effective_from": "1998-09-16",
+        "effective_to": "2000-12-12"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NLC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "NLC",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-08-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NLSN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Nielsen Holdings",
+        "effective_from": "2013-07-09",
+        "effective_to": "2022-10-12"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NLV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "NLV",
+        "effective_from": "1996-04-01",
+        "effective_to": "2000-01-06"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NMK",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "NMK",
+        "effective_from": "1996-01-02",
+        "effective_to": "2002-02-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NRTLQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "NRTLQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2002-07-22"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NSI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "NSI",
+        "effective_from": "1996-01-02",
+        "effective_to": "2001-12-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NVLS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Novellus Systems",
+        "effective_from": "2000-06-19",
+        "effective_to": "2012-06-05"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NXTL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "NXTL",
+        "effective_from": "1998-04-01",
+        "effective_to": "2005-08-15"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NYN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "NYN",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-08-15"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "NYX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "NYSE Euronext",
+        "effective_from": "2007-10-25",
+        "effective_to": "2013-11-13"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "OAT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "OAT",
+        "effective_from": "1996-01-02",
+        "effective_to": "2001-08-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "OK",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "OK",
+        "effective_from": "1999-12-02",
+        "effective_to": "2001-04-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "OMX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "OfficeMax",
+        "effective_from": "1996-01-02",
+        "effective_to": "2008-06-23"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ONE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "ONE",
+        "effective_from": "1996-01-02",
+        "effective_to": "2004-07-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "ORX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "ORX",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-03-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "OWENQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "OWENQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-10-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PALM",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PALM",
+        "effective_from": "2000-07-28",
+        "effective_to": "2002-08-14"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PAS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PAS",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-01-30"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PBCT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "People's United Financial",
+        "effective_from": "2008-11-13",
+        "effective_to": "2022-04-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PBG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PBG",
+        "effective_from": "2001-05-14",
+        "effective_to": "2010-03-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PBY",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PBY",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-04-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PCL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Plum Creek Timber",
+        "effective_from": "2002-01-17",
+        "effective_to": "2016-02-22"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PCS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "MetroPCS",
+        "effective_from": "1998-11-24",
+        "effective_to": "2004-04-23"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PDG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PDG",
+        "effective_from": "1996-01-02",
+        "effective_to": "2002-07-22"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PEAK",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PEAK",
+        "effective_from": "2019-11-05",
+        "effective_to": "2024-03-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PEL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PEL",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-06-19"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PETM",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PetSmart",
+        "effective_from": "2012-10-05",
+        "effective_to": "2015-03-12"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PHA",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PHA",
+        "effective_from": "1996-01-02",
+        "effective_to": "2003-04-16"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PHB",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PHB",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-10-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PMCS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PMCS",
+        "effective_from": "2001-08-03",
+        "effective_to": "2007-07-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PMI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PMI",
+        "effective_from": "1996-01-02",
+        "effective_to": "1996-05-31"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PNU",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PNU",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-04-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "POM",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Pepco Holdings",
+        "effective_from": "2007-11-09",
+        "effective_to": "2016-03-24"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PPW",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PPW",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-11-30"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PRD",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PRD",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-12-12"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PSFT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PSFT",
+        "effective_from": "1998-10-02",
+        "effective_to": "2004-12-29"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PTV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Pactiv",
+        "effective_from": "1999-11-05",
+        "effective_to": "2010-11-17"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PVN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PVN",
+        "effective_from": "1996-01-02",
+        "effective_to": "2005-10-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PVT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PVT",
+        "effective_from": "1998-08-31",
+        "effective_to": "1999-07-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PWER",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PWER",
+        "effective_from": "2000-10-23",
+        "effective_to": "2005-03-14"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PWJ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PWJ",
+        "effective_from": "1999-06-04",
+        "effective_to": "2000-11-06"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PXD",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Pioneer Natural Resources",
+        "effective_from": "2008-09-24",
+        "effective_to": "2024-05-08"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "PZE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "PZE",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-12-31"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "QLGC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "QLGC",
+        "effective_from": "2000-12-12",
+        "effective_to": "2011-01-18"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "QTRN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Quintiles Transnational",
+        "effective_from": "1999-11-16",
+        "effective_to": "2003-09-26"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RAD",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Rite Aid",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-07-27"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RAI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Reynolds American",
+        "effective_from": "2002-09-04",
+        "effective_to": "2017-07-25"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RAL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "RAL",
+        "effective_from": "1996-01-02",
+        "effective_to": "2001-12-13"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RATL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "RATL",
+        "effective_from": "2002-02-01",
+        "effective_to": "2003-02-21"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RBD",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "RBD",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-03-25"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RBK",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "RBK",
+        "effective_from": "1996-01-02",
+        "effective_to": "2006-02-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RDC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Rowan Companies",
+        "effective_from": "1996-01-02",
+        "effective_to": "2014-08-19"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RDS.A",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "RDS.A",
+        "effective_from": "1996-01-02",
+        "effective_to": "2002-07-22"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RLM",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "RLM",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-05-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RML",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "RML",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-12-12"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RNB",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "RNB",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-01-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RRD",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "RR Donnelley",
+        "effective_from": "1996-01-02",
+        "effective_to": "2012-12-12"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RSHCQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "RSHCQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2011-07-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "IMS Health",
+        "effective_from": "1996-11-04",
+        "effective_to": "2010-02-26"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "RYC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "RYC",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-08-13"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SAI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SAIC",
+        "effective_from": "1997-07-17",
+        "effective_to": "1999-01-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SAPE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SAPE",
+        "effective_from": "2000-05-05",
+        "effective_to": "2002-05-13"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SBL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Symbol Technologies",
+        "effective_from": "2000-12-11",
+        "effective_to": "2007-01-10"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SBNY",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Signature Bank",
+        "effective_from": "2021-12-20",
+        "effective_to": "2023-03-15"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SCG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SCANA",
+        "effective_from": "2009-01-02",
+        "effective_to": "2019-01-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SDS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SDS",
+        "effective_from": "2002-07-22",
+        "effective_to": "2005-08-12"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SEBL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SEBL",
+        "effective_from": "2000-05-05",
+        "effective_to": "2006-02-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SFA",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SFA",
+        "effective_from": "1996-01-02",
+        "effective_to": "2006-02-27"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SFS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SFS",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-07-28"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SGID",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SGID",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-06-21"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SHN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SHN",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-01-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SIVB",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SVB Financial Group",
+        "effective_from": "2018-03-19",
+        "effective_to": "2023-03-15"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SK",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SK",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-04-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SLR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Solectron",
+        "effective_from": "1998-12-31",
+        "effective_to": "2007-10-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SMI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SMI",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-12-12"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SMS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Shared Medical Systems",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-06-08"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SNI",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Scripps Networks Interactive",
+        "effective_from": "2008-07-01",
+        "effective_to": "2018-03-07"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SOLS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Solstice Advanced Materials",
+        "effective_from": "2025-10-30",
+        "effective_to": "2025-12-22"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SOTR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SOTR",
+        "effective_from": "1999-03-01",
+        "effective_to": "2004-11-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SOV",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SOV",
+        "effective_from": "2004-07-01",
+        "effective_to": "2009-01-30"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SRCL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Stericycle",
+        "effective_from": "2008-11-19",
+        "effective_to": "2018-12-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "STO",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "STO",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-11-18"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SUB",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SUB",
+        "effective_from": "1998-01-28",
+        "effective_to": "2001-03-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SUNEQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SUNEQ",
+        "effective_from": "2007-05-31",
+        "effective_to": "2011-12-19"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SVU",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Supervalu",
+        "effective_from": "1996-01-02",
+        "effective_to": "2012-05-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SWN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Southwestern Energy",
+        "effective_from": "2008-06-06",
+        "effective_to": "2017-04-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "SXCL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "SXCL",
+        "effective_from": "1999-10-01",
+        "effective_to": "2001-05-14"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TA",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "TA",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-07-22"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TCOMA",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "TCOMA",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-03-10"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TDM",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "TDM",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-09-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "TECO Energy",
+        "effective_from": "2001-10-10",
+        "effective_to": "2016-07-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TEG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Integrys Energy Group",
+        "effective_from": "2007-02-22",
+        "effective_to": "2015-06-30"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "THY",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "THY",
+        "effective_from": "1996-01-02",
+        "effective_to": "1996-10-16"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TIE",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Titanium Metals",
+        "effective_from": "2007-10-29",
+        "effective_to": "2012-12-24"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TIN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "TIN",
+        "effective_from": "1996-01-02",
+        "effective_to": "2007-12-31"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TLAB",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Tellabs",
+        "effective_from": "1996-01-02",
+        "effective_to": "2011-12-21"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TMC.A",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "TMC.A",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-06-13"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TMK",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "TMK",
+        "effective_from": "1996-01-02",
+        "effective_to": "2019-08-08"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TOS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "TOS",
+        "effective_from": "1999-09-20",
+        "effective_to": "2001-09-17"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TOY",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "TOY",
+        "effective_from": "1996-01-02",
+        "effective_to": "2005-07-22"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TRB",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Tribune Media",
+        "effective_from": "1996-01-02",
+        "effective_to": "2007-12-21"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TRW",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "TRW",
+        "effective_from": "1996-01-02",
+        "effective_to": "2002-12-12"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TSG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Sabre Corporation",
+        "effective_from": "2000-03-16",
+        "effective_to": "2007-04-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TSS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "TSYS",
+        "effective_from": "2008-01-02",
+        "effective_to": "2019-09-23"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TUP",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "TUP",
+        "effective_from": "1996-05-31",
+        "effective_to": "2004-03-25"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TWC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Time Warner Cable",
+        "effective_from": "2009-03-30",
+        "effective_to": "2016-05-18"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "TWTR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Twitter",
+        "effective_from": "2018-06-07",
+        "effective_to": "2022-11-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "UAWGQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "UAWGQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2002-05-15"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "UCC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "UCC",
+        "effective_from": "1996-01-02",
+        "effective_to": "1999-05-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "UCM",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "UCM",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-10-23"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "UMG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "UMG",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-06-15"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "UN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "UN",
+        "effective_from": "1996-01-02",
+        "effective_to": "2002-07-22"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "UPR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "UPR",
+        "effective_from": "1996-10-16",
+        "effective_to": "2000-07-17"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "USBC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "USBC",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-08-04"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "USH",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "USH",
+        "effective_from": "1996-01-02",
+        "effective_to": "1997-06-18"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "USHC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "USHC",
+        "effective_from": "1996-01-02",
+        "effective_to": "1996-07-19"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "USS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "USS",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-10-02"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "USW",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "USW",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-07-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "UVN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "UVN",
+        "effective_from": "2001-02-07",
+        "effective_to": "2007-03-29"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "VAT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "VAT",
+        "effective_from": "1996-01-02",
+        "effective_to": "1996-09-06"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "VO",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "VO",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-12-11"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "VSTNQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "VSTNQ",
+        "effective_from": "2000-06-29",
+        "effective_to": "2006-01-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "VTSS",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "VTSS",
+        "effective_from": "2000-12-12",
+        "effective_to": "2002-08-21"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "WAMUQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "WAMUQ",
+        "effective_from": "1997-07-02",
+        "effective_to": "2008-09-30"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "WCG",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "WellCare",
+        "effective_from": "2018-09-17",
+        "effective_to": "2020-01-28"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "WCOEQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "WCOEQ",
+        "effective_from": "1996-04-01",
+        "effective_to": "2002-05-15"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "WFT",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "WFT",
+        "effective_from": "2005-07-22",
+        "effective_to": "2009-02-26"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "WIN",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Windstream Communications",
+        "effective_from": "2006-07-18",
+        "effective_to": "2015-04-07"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "WLA",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "WLA",
+        "effective_from": "1996-01-02",
+        "effective_to": "2000-06-20"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "WLL",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "WLL",
+        "effective_from": "1996-01-02",
+        "effective_to": "2002-02-11"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "WLP",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Wellpoint",
+        "effective_from": "1999-06-09",
+        "effective_to": "2004-12-01"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "WMX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "WMX",
+        "effective_from": "1996-01-02",
+        "effective_to": "1998-07-17"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "WNDXQ",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "WNDXQ",
+        "effective_from": "1996-01-02",
+        "effective_to": "2004-12-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "WPX",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "WPX Energy",
+        "effective_from": "2012-01-03",
+        "effective_to": "2014-03-24"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "WRK",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "WRK",
+        "effective_from": "2015-07-02",
+        "effective_to": "2024-07-08"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "WYND",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "WYND",
+        "effective_from": "2006-08-01",
+        "effective_to": "2018-05-31"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "XEC",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "Cimarex Energy",
+        "effective_from": "2014-06-20",
+        "effective_to": "2020-03-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "XTO",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "XTO Energy",
+        "effective_from": "2004-12-29",
+        "effective_to": "2010-06-28"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "YNR",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "YNR",
+        "effective_from": "2000-01-06",
+        "effective_to": "2000-10-03"
+      }
+    },
+    {
+      "category": "Missing CIKs (Historical Delisted Entities)",
+      "severity": "WARNING",
+      "identifier": "YRCW",
+      "message": "SEC CIK could not be resolved from EDGAR active registries",
+      "details": {
+        "company_name": "YRCW",
+        "effective_from": "1996-01-02",
+        "effective_to": "1996-11-04"
+      }
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "AAPL": {
+    "ticker": "AAPL",
+    "cik": "0000320193",
+    "company_id": "US_CIK_0000320193",
+    "name": "Apple Inc.",
+    "filings_count": 15,
+    "item_counts": {
+      "2.02": 7,
+      "9.01": 11,
+      "5.02": 2,
+      "5.07": 2,
+      "8.01": 3,
+      "7.01": 1
+    },
+    "usable_acceptance_timestamps": 15,
+    "excluded_by_timestamp": 0,
+    "coverage_status": "active_with_events",
+    "sessions_with_events": 15,
+    "sessions_verified_zero_events": 348,
+    "sessions_unknown": 0
+  },
+  "JPM": {
+    "ticker": "JPM",
+    "cik": "0000019617",
+    "company_id": "US_CIK_0000019617",
+    "name": "JPMorgan Chase & Co.",
+    "filings_count": 48,
+    "item_counts": {
+      "2.02": 6,
+      "9.01": 45,
+      "7.01": 9,
+      "5.02": 6,
+      "3.03": 5,
+      "5.03": 5,
+      "8.01": 27,
+      "5.07": 2
+    },
+    "usable_acceptance_timestamps": 48,
+    "excluded_by_timestamp": 0,
+    "coverage_status": "active_with_events",
+    "sessions_with_events": 41,
+    "sessions_verified_zero_events": 322,
+    "sessions_unknown": 0
+  },
+  "GOOG": {
+    "ticker": "GOOG",
+    "cik": "0001652044",
+    "company_id": "US_CIK_0001652044",
+    "name": "Alphabet Inc.",
+    "filings_count": 15,
+    "item_counts": {
+      "2.02": 6,
+      "9.01": 11,
+      "8.01": 3,
+      "5.02": 7,
+      "5.07": 2
+    },
+    "usable_acceptance_timestamps": 15,
+    "excluded_by_timestamp": 0,
+    "coverage_status": "active_with_events",
+    "sessions_with_events": 15,
+    "sessions_verified_zero_events": 348,
+    "sessions_unknown": 0
+  },
+  "TSLA": {
+    "ticker": "TSLA",
+    "cik": "0001318605",
+    "company_id": "US_CIK_0001318605",
+    "name": "Tesla, Inc.",
+    "filings_count": 31,
+    "item_counts": {
+      "2.02": 13,
+      "7.01": 10,
+      "9.01": 23,
+      "1.01": 9,
+      "1.02": 2,
+      "2.03": 7,
+      "5.02": 5,
+      "8.01": 8,
+      "3.03": 2,
+      "3.02": 1,
+      "5.07": 1
+    },
+    "usable_acceptance_timestamps": 31,
+    "excluded_by_timestamp": 0,
+    "coverage_status": "active_with_events",
+    "sessions_with_events": 30,
+    "sessions_verified_zero_events": 333,
+    "sessions_unknown": 0
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "is_valid": false,
+  "total_records": 45770,
+  "errors": [
+    "Found 959 non-positive price values."
+  ],
+  "warnings": [
+    "Found 959 rows where open is outside [low, high]."
+  ],
+  "metrics": {
+    "null_counts": {
+      "company_id": 0,
+      "ticker": 0,
+      "timestamp": 0,
+      "trading_date": 0,
+      "open": 0,
+      "high": 0,
+      "low": 0,
+      "close": 0,
+      "adjusted_close": 0,
+      "volume": 0,
+      "source": 0
+    },
+    "duplicate_rows": 0,
+    "non_positive_prices": 959,
+    "high_low_inversions": 0,
+    "negative_volume": 0,
+    "min_date": "1962-01-02",
+    "max_date": "2023-12-28",
+    "unique_tickers": 5,
+    "unique_companies": 5
+  }
+}
