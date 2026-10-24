@@ -4,19 +4,55 @@ An open, modular framework designed to evaluate how different financial informat
 
 ---
 
-## Prototype Dashboard (Dark Financial Terminal)
+## Prototype Dashboard & Research Terminal (Phase 6 Integrated)
 
-The quantitative research prototype dashboard provides interactive historical market analysis, SEC point-in-time fundamentals verification, walk-forward baseline comparisons, and carefully labeled experimental forward-return forecasting.
+The quantitative research terminal provides unified cross-tab analysis across five core modules:
+1. **Overview**: Company capability inventory, CIK identity, historical observation bounds, and recent session returns.
+2. **Market Charts**: Verifiable historical split-adjusted prices (2018–2023 for pilot; 1980–2023 for cohort; 2017–2020 for truncated), SMA 20/50, and 14-day RSI overlays.
+3. **Model Lab**: Walk-forward benchmark evaluations (Phase 5D, 5J, 5K) and institutional multi-asset simulation summaries.
+4. **Prediction Research**: Archived out-of-sample forward-return predictions (Phase 5K) and isolated 4-company prototype runtime inference.
+5. **60-Company Screener**: Full 60-company research cohort with 8-stage risk gating, transaction cost deductions (15 bps round-trip invariant), and direct cross-tab navigation.
 
 ### Quickstart
+
 ```bash
-# 1. Start FastAPI backend (serves pre-built dashboard on port 8000)
+# 1. Start FastAPI backend (Port 8000)
 python -m uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --reload
 
-# 2. Open dashboard in browser
-# http://127.0.0.1:8000/
+# 2. Start Vite frontend dev server (Port 5173)
+cd frontend
+npm run dev
+
+# 3. Open terminal in browser
+# http://localhost:5173/?ticker=CAT&tab=market-charts
 ```
-For complete architecture and configuration details, see [Prototype Dashboard Guide](docs/prototype_dashboard_guide.md).
+
+### Verification & Testing Commands
+
+```bash
+# Backend Pytest Regression Suites (87 core tests + 35 research tests, 100% pass)
+python -m pytest tests/test_phase6_market_layer.py tests/test_phase6_capability_contract.py tests/test_phase6_prediction_research.py tests/test_api.py tests/test_phase5l_screener_api.py tests/test_storage_policy_and_interface.py -v
+
+# Frontend Unit Tests (13/13 pass)
+cd frontend && npm test
+
+# Frontend Production Build & Code-Splitting Check
+cd frontend && npm run build
+```
+
+### Research Architecture & Data Invariants
+
+1. **Strict Runtime vs Archived Separation**:
+   - **Runtime Inference (`/api/models/predict`)**: Only supported for the 4 pilot companies (`AAPL`, `JPM`, `GOOG`, `TSLA`). Non-prototype companies return a transparent `status: "unavailable"` message rather than fabricating outputs.
+   - **Archived Research Predictions (`/api/research/companies/{ticker}/predictions`)**: Sourced directly from immutable walk-forward holdout parquet artifacts (`data/processed/research/phase5k/phase5k_predictions_oos.parquet`).
+2. **Offline Data Boundaries & Truncation**:
+   - 55 companies have complete historical observations through 2023 (or full evaluation window).
+   - 5 companies (`BLK`, `CSCO`, `CVS`, `EQIX`, `FCX`) have truncated historical market records ending on **2020-04-01 (315 trading sessions)**. They are transparently badged as `TRUNCATED` across all views.
+3. **Corporate Identity Safeguards**:
+   - **AA (Alcoa)**: Strictly excluded across all market, prediction, and capability endpoints due to corporate split ambiguity (Nov 2016 division into Arconic Inc. [ARNC] and Alcoa Corp [AA]).
+   - **GOOGL**: Rejected with HTTP 404 and explicit guidance pointing to canonical Class C constituent `GOOG`.
+4. **No Live Feeds / No Investment Advice**: All data represents static, reproducible offline historical datasets. None of the signals constitute personalized investment advice.
+
 
 ---
 

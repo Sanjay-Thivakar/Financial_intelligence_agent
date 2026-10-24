@@ -2,6 +2,7 @@
 Typed Pydantic Schemas for Financial Intelligence Agent Dashboard API.
 """
 
+from enum import Enum
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field
 
@@ -255,4 +256,185 @@ class BulkSignalsResponse(BaseModel):
     total_signals: int
     signal_summary: Dict[str, int] = Field(default_factory=dict)
     signals: List[Dict[str, Any]] = Field(default_factory=list)
+
+
+# =====================================================================
+# Phase 6.2 — Canonical Company Universe & Capability Contract (v1)
+# =====================================================================
+
+class CapabilityStatus(str, Enum):
+    """Semantic status of a specific modality or feature capability."""
+    SUPPORTED = "SUPPORTED"
+    NOT_DOWNLOADED_IN_PILOT = "NOT_DOWNLOADED_IN_PILOT"
+    EXCLUDED_BY_POLICY = "EXCLUDED_BY_POLICY"
+    UNAVAILABLE = "UNAVAILABLE"
+    UNVERIFIED = "UNVERIFIED"
+
+
+class MarketCoverageStatus(str, Enum):
+    """Descriptive data completeness classification for historical market series."""
+    COMPLETE = "COMPLETE"
+    NEAR_COMPLETE = "NEAR_COMPLETE"
+    TRUNCATED = "TRUNCATED"
+    EXCLUDED = "EXCLUDED"
+    UNVERIFIED = "UNVERIFIED"
+
+
+class IdentityStatus(str, Enum):
+    """Entity identity resolution and universe classification."""
+    CANONICAL_CONSTITUENT = "CANONICAL_CONSTITUENT"
+    EXCLUDED_AMBIGUOUS_IDENTITY = "EXCLUDED_AMBIGUOUS_IDENTITY"
+    ALIAS_SHARE_CLASS = "ALIAS_SHARE_CLASS"
+
+
+class CompanyIdentity(BaseModel):
+    """Stable entity identifier, corporate CIK, and canonical ticker representation."""
+    company_id: str
+    canonical_ticker: str
+    ticker_aliases: List[str] = Field(default_factory=list)
+    related_share_classes: List[str] = Field(default_factory=list)
+    share_class_description: Optional[str] = None
+    company_name: str
+    cik: Optional[str] = None
+    sector: Optional[str] = None
+    universe_membership: str = "HISTORICAL_RESEARCH_COHORT"
+    identity_status: IdentityStatus = IdentityStatus.CANONICAL_CONSTITUENT
+    identity_notes: Optional[str] = None
+
+
+class MarketArtifactCoverage(BaseModel):
+    """Raw physical market series bounds from physical parquet store."""
+    status: CapabilityStatus = CapabilityStatus.SUPPORTED
+    earliest_date: Optional[str] = None
+    latest_date: Optional[str] = None
+    total_sessions: Optional[int] = None
+    source_artifact: str = "data/processed/market/phase5i_market_expansion.parquet"
+    feature_data_available: bool = True
+    feature_schema_compatibility: str = "17_technical_indicators_v1"
+    limitations_note: Optional[str] = None
+
+
+class EvaluationWindowCoverage(BaseModel):
+    """Phase 5J walk-forward evaluation window metrics and completeness (2019-01-02 to 2020-06-03)."""
+    window_start_date: str = "2019-01-02"
+    window_end_date: str = "2020-06-03"
+    expected_window_sessions: int = 363
+    observed_window_sessions: int
+    completeness_pct: float
+    completeness_denominator: int = 363
+    is_truncated: bool = False
+    descriptive_category: MarketCoverageStatus
+    source_manifest: str = "data/processed/universe/phase5j_company_eligibility.csv"
+    limitations_note: Optional[str] = None
+
+
+class MultiModalCoverage(BaseModel):
+    """Multi-modal dataset availability (SEC facts, 8-K events, News)."""
+    sec_fundamentals_status: CapabilityStatus
+    sec_fundamentals_notes: Optional[str] = None
+    sec_events_status: CapabilityStatus
+    sec_events_notes: Optional[str] = None
+    news_status: CapabilityStatus = CapabilityStatus.EXCLUDED_BY_POLICY
+    news_notes: Optional[str] = None
+
+
+class EvaluationTrackEligibility(BaseModel):
+    """Walk-forward evaluation track and fold eligibility from Phase 5J."""
+    track_a_market_only: bool = True
+    track_b_market_plus_fund: bool = False
+    track_c_market_plus_events: bool = False
+    track_d_combined: bool = False
+    eligible_folds: List[int] = Field(default_factory=list)
+    fold_limitations: Optional[str] = None
+    source_manifest: str = "data/processed/universe/phase5j_company_eligibility.csv"
+
+
+class HistoricalPredictionCoverage(BaseModel):
+    """Archived out-of-sample forward-return prediction metadata from Phase 5K."""
+    archived_predictions_available: bool = True
+    available_models: List[str] = Field(default_factory=list)
+    available_folds: List[int] = Field(default_factory=list)
+    earliest_prediction_date: Optional[str] = None
+    latest_prediction_date: Optional[str] = None
+    source_artifact: str = "data/processed/research/phase5k/phase5k_predictions_oos.parquet"
+
+
+class RuntimeExecutionCapabilities(BaseModel):
+    """Runtime model inference, decision gating, and portfolio simulation capabilities."""
+    runtime_inference_supported: bool = False
+    runtime_inference_model: Optional[str] = None
+    runtime_decision_supported: bool = False
+    historical_decision_supported: bool = True
+    portfolio_simulation_status: CapabilityStatus = CapabilityStatus.UNVERIFIED
+    portfolio_simulation_notes: Optional[str] = (
+        "Offline batch multi-asset simulation engine only. Interactive per-company simulation "
+        "is unverified; runtime execution is unsupported."
+    )
+    interactive_trade_execution: bool = False
+
+
+class CompanyCapabilityItem(BaseModel):
+    """Comprehensive company capability contract representing all verified dimensions."""
+    identity: CompanyIdentity
+    market_artifact: MarketArtifactCoverage
+    evaluation_window: EvaluationWindowCoverage
+    multi_modal: MultiModalCoverage
+    evaluation_tracks: EvaluationTrackEligibility
+    predictions: HistoricalPredictionCoverage
+    runtime: RuntimeExecutionCapabilities
+    provenance_sources: List[str] = Field(default_factory=list)
+    data_limitations: List[str] = Field(default_factory=list)
+
+
+class CompanyCapabilityListResponse(BaseModel):
+    """Versioned capability contract response for the validated 60-company cohort."""
+    status: str = "success"
+    version: str = "v1"
+    total_cohort_count: int
+    as_of_reference: str = "2020-06-03"
+    companies: List[CompanyCapabilityItem] = Field(default_factory=list)
+    excluded_entities: List[Dict[str, Any]] = Field(default_factory=list)
+
+
+# =====================================================================
+# Phase 6.5 — Company Archived Prediction Series Schemas
+# =====================================================================
+
+class ArchivedPredictionRecord(BaseModel):
+    """Single out-of-sample prediction record from Phase 5K historical research archive."""
+    trading_date: str
+    fold: int
+    model_id: str
+    predicted_return: float
+    target_return: float
+    residual: float
+    sigma_train: float
+    adjusted_close: float
+
+
+class CompanyArchivedPredictionsResponse(BaseModel):
+    """Archived out-of-sample forward-return prediction series for a validated company."""
+    status: str = "available"  # "available", "empty", "unavailable"
+    ticker: str
+    company_name: str
+    company_id: str
+    sector: str
+    total_records: int
+    returned_records: int
+    available_models: List[str] = Field(default_factory=list)
+    available_folds: List[int] = Field(default_factory=list)
+    earliest_date: Optional[str] = None
+    latest_date: Optional[str] = None
+    is_truncated: bool = False
+    source_artifact: str = "data/processed/research/phase5k/phase5k_predictions_oos.parquet"
+    target_definition: str = "5-session forward return: decision at session T close, entry at session T+1 open, exit at session T+5 close"
+    disclaimer: str = (
+        "Historical out-of-sample research archive (2019-2020). Predictions were computed strictly "
+        "using walk-forward trained models on training splits with 5-session purge gaps. "
+        "Realized forward returns reflect actual historical price action (T+1 open to T+5 close) "
+        "and are NOT model predictions. Not investment advice or live runtime inference."
+    )
+    predictions: List[ArchivedPredictionRecord] = Field(default_factory=list)
+
+
 

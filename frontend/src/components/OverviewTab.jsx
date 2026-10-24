@@ -2,21 +2,41 @@ import React from 'react';
 import {
   TrendingUp,
   Database,
-  Calendar,
   FileText,
   Newspaper,
   Layers,
   AlertTriangle,
-  CheckCircle,
-  XCircle,
-  HelpCircle,
+  AlertCircle,
 } from 'lucide-react';
 
-export default function OverviewTab({ companyMeta, marketData, loading, onNavigateToCharts }) {
-  if (loading || !companyMeta) {
+export default function OverviewTab({
+  companyMeta,
+  marketData,
+  marketLoading,
+  capabilitiesLoading,
+  marketError,
+  capabilitiesError,
+  selectedTicker,
+  onNavigateToCharts,
+}) {
+  // 1. Loading state if capability inventory is still loading
+  if (capabilitiesLoading && !companyMeta) {
     return (
       <div className="card" style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>
-        <p>Loading company overview and historical market state...</p>
+        <p className="font-mono">Loading company capability inventory from backend...</p>
+      </div>
+    );
+  }
+
+  // 2. Error / Missing state if companyMeta cannot be found
+  if (!companyMeta) {
+    return (
+      <div className="card" style={{ padding: '40px', textAlign: 'center', color: 'var(--accent-red)' }}>
+        <AlertCircle size={28} style={{ margin: '0 auto 12px', display: 'block' }} />
+        <p style={{ fontWeight: 600 }}>Capability metadata unavailable for ticker "{selectedTicker}".</p>
+        {capabilitiesError && (
+          <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '6px' }}>{capabilitiesError}</p>
+        )}
       </div>
     );
   }
@@ -26,9 +46,25 @@ export default function OverviewTab({ companyMeta, marketData, loading, onNaviga
       ? marketData.series[marketData.series.length - 1]
       : null;
 
-  const return1d = latestPt && latestPt.market_return_1d !== null ? latestPt.market_return_1d * 100 : null;
-  const return5d = latestPt && latestPt.market_return_5d !== null ? latestPt.market_return_5d * 100 : null;
-  const vol21d = latestPt && latestPt.market_volatility_21d !== null ? latestPt.market_volatility_21d * 100 : null;
+  const return1d =
+    latestPt && latestPt.market_return_1d !== null && latestPt.market_return_1d !== undefined
+      ? latestPt.market_return_1d * 100
+      : null;
+  const return5d =
+    latestPt && latestPt.market_return_5d !== null && latestPt.market_return_5d !== undefined
+      ? latestPt.market_return_5d * 100
+      : null;
+  const vol21d =
+    latestPt && latestPt.market_volatility_21d !== null && latestPt.market_volatility_21d !== undefined
+      ? latestPt.market_volatility_21d * 100
+      : null;
+
+  // Modality capability statuses from contract
+  const secStatus = companyMeta.capability?.multi_modal?.sec_fundamentals_status || 'NOT_DOWNLOADED_IN_PILOT';
+  const newsStatus = companyMeta.capability?.multi_modal?.news_status || 'EXCLUDED_BY_POLICY';
+  const marketArtifactStatus = companyMeta.capability?.market_artifact?.status || 'SUPPORTED';
+  const evalWindowCategory = companyMeta.capability?.evaluation_window?.descriptive_category || 'COMPLETE';
+  const runtimeInference = companyMeta.capability?.runtime?.runtime_inference_supported === true;
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -36,30 +72,58 @@ export default function OverviewTab({ companyMeta, marketData, loading, onNaviga
       <div className="disclaimer-banner">
         <AlertTriangle size={16} style={{ color: 'var(--accent-amber)', flexShrink: 0, marginTop: '2px' }} />
         <div>
-          <strong>HISTORICAL RESEARCH REPOSITORY:</strong> All observations reflect static historical market quotes and SEC filings from the verified prototype database. Observations are never labeled as live, and no external paid APIs or simulated real-time data feeds are invoked.
+          <strong>HISTORICAL RESEARCH REPOSITORY:</strong> All observations reflect static historical market quotes and SEC filings from the verified research database. Observations are never labeled as live, and no external paid APIs or simulated real-time data feeds are invoked.
         </div>
       </div>
+
+      {/* Market Error Banner if market query failed */}
+      {marketError && (
+        <div className="disclaimer-banner" style={{ borderLeftColor: 'var(--accent-red)', background: 'rgba(244, 63, 94, 0.08)' }}>
+          <AlertCircle size={16} style={{ color: 'var(--accent-red)', flexShrink: 0, marginTop: '2px' }} />
+          <div>
+            <strong style={{ color: 'var(--accent-red)' }}>MARKET OBSERVATIONS QUERY ISSUE:</strong> {marketError}. Entity capability and research universe metadata remain active below.
+          </div>
+        </div>
+      )}
 
       {/* Hero Metric Grid */}
       <div className="metric-grid">
         <div className="metric-box">
           <span className="metric-label">Latest Session Close</span>
-          <span className="metric-value">
-            {latestPt ? `$${latestPt.adjusted_close.toFixed(2)}` : 'N/A'}
+          <span className="metric-value font-mono">
+            {marketLoading ? (
+              <span style={{ color: 'var(--text-muted)', fontSize: '18px' }}>Loading...</span>
+            ) : latestPt ? (
+              `$${latestPt.adjusted_close.toFixed(2)}`
+            ) : (
+              'N/A'
+            )}
           </span>
-          <span className="metric-sub">
-            Date: {latestPt ? latestPt.trading_date : 'N/A'} (Historical)
+          <span className="metric-sub font-mono">
+            {marketLoading
+              ? 'Fetching observations...'
+              : latestPt
+              ? `Date: ${latestPt.trading_date} (Historical)`
+              : marketError
+              ? 'Market Data Unavailable'
+              : 'No series points'}
           </span>
         </div>
 
         <div className="metric-box">
           <span className="metric-label">1-Day Session Return</span>
           <span
-            className={`metric-value ${
+            className={`metric-value font-mono ${
               return1d === null ? '' : return1d >= 0 ? 'text-positive' : 'text-negative'
             }`}
           >
-            {return1d !== null ? `${return1d >= 0 ? '+' : ''}${return1d.toFixed(2)}%` : 'N/A'}
+            {marketLoading ? (
+              <span style={{ color: 'var(--text-muted)', fontSize: '18px' }}>Loading...</span>
+            ) : return1d !== null ? (
+              `${return1d >= 0 ? '+' : ''}${return1d.toFixed(2)}%`
+            ) : (
+              'N/A'
+            )}
           </span>
           <span className="metric-sub">Based on Adjusted Close</span>
         </div>
@@ -67,11 +131,17 @@ export default function OverviewTab({ companyMeta, marketData, loading, onNaviga
         <div className="metric-box">
           <span className="metric-label">5-Day Cumulative Return</span>
           <span
-            className={`metric-value ${
+            className={`metric-value font-mono ${
               return5d === null ? '' : return5d >= 0 ? 'text-positive' : 'text-negative'
             }`}
           >
-            {return5d !== null ? `${return5d >= 0 ? '+' : ''}${return5d.toFixed(2)}%` : 'N/A'}
+            {marketLoading ? (
+              <span style={{ color: 'var(--text-muted)', fontSize: '18px' }}>Loading...</span>
+            ) : return5d !== null ? (
+              `${return5d >= 0 ? '+' : ''}${return5d.toFixed(2)}%`
+            ) : (
+              'N/A'
+            )}
           </span>
           <span className="metric-sub">Price action lookback</span>
         </div>
@@ -79,7 +149,13 @@ export default function OverviewTab({ companyMeta, marketData, loading, onNaviga
         <div className="metric-box">
           <span className="metric-label">21-Day Volatility (Ann.)</span>
           <span className="metric-value font-mono">
-            {vol21d !== null ? `${vol21d.toFixed(1)}%` : 'N/A'}
+            {marketLoading ? (
+              <span style={{ color: 'var(--text-muted)', fontSize: '18px' }}>Loading...</span>
+            ) : vol21d !== null ? (
+              `${vol21d.toFixed(1)}%`
+            ) : (
+              'N/A'
+            )}
           </span>
           <span className="metric-sub">Square-root-252 scaled</span>
         </div>
@@ -87,7 +163,13 @@ export default function OverviewTab({ companyMeta, marketData, loading, onNaviga
         <div className="metric-box">
           <span className="metric-label">RSI (14-Day)</span>
           <span className="metric-value font-mono">
-            {latestPt && latestPt.market_rsi_14d !== null ? latestPt.market_rsi_14d.toFixed(1) : 'N/A'}
+            {marketLoading ? (
+              <span style={{ color: 'var(--text-muted)', fontSize: '18px' }}>Loading...</span>
+            ) : latestPt && latestPt.market_rsi_14d !== null && latestPt.market_rsi_14d !== undefined ? (
+              latestPt.market_rsi_14d.toFixed(1)
+            ) : (
+              'N/A'
+            )}
           </span>
           <span className="metric-sub">Momentum oscillator</span>
         </div>
@@ -102,7 +184,9 @@ export default function OverviewTab({ companyMeta, marketData, loading, onNaviga
               <Database size={14} />
               <span>Company Entity Verification</span>
             </span>
-            <span className="badge-tag badge-status">Verified CIK</span>
+            <span className={`badge-tag ${companyMeta.cik ? 'badge-status' : 'badge-offline'}`}>
+              {companyMeta.cik ? 'Verified CIK' : 'Unindexed CIK'}
+            </span>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '12px' }}>
@@ -116,20 +200,26 @@ export default function OverviewTab({ companyMeta, marketData, loading, onNaviga
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '6px' }}>
               <span style={{ color: 'var(--text-muted)' }}>SEC Central Index Key (CIK)</span>
-              <span className="font-mono">{companyMeta.cik}</span>
+              <span className="font-mono">{companyMeta.cik || 'Unavailable'}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '6px' }}>
               <span style={{ color: 'var(--text-muted)' }}>GICS Economic Sector</span>
-              <span>{companyMeta.sector}</span>
+              <span>{companyMeta.sector || 'Unassigned'}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '6px' }}>
-              <span style={{ color: 'var(--text-muted)' }}>S&P 500 Index Interval</span>
+              <span style={{ color: 'var(--text-muted)' }}>Research Universe Membership</span>
               <span className="font-mono" style={{ fontSize: '11px' }}>{companyMeta.membership_interval}</span>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '2px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '6px' }}>
               <span style={{ color: 'var(--text-muted)' }}>Historical Data Bounds</span>
               <span className="font-mono" style={{ color: 'var(--accent-blue)' }}>
-                {companyMeta.min_date} → {companyMeta.max_date} ({companyMeta.total_sessions.toLocaleString()} sessions)
+                {companyMeta.min_date} → {companyMeta.max_date} ({companyMeta.total_sessions ? companyMeta.total_sessions.toLocaleString() : 'N/A'} sessions)
+              </span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '2px' }}>
+              <span style={{ color: 'var(--text-muted)' }}>Runtime Inference Status</span>
+              <span className={`badge-tag ${runtimeInference ? 'badge-status' : 'badge-experimental'}`} style={{ fontSize: '10px' }}>
+                {runtimeInference ? 'Runtime Supported' : 'Historical Research Only'}
               </span>
             </div>
           </div>
@@ -169,7 +259,11 @@ export default function OverviewTab({ companyMeta, marketData, loading, onNaviga
                   </div>
                 </div>
               </div>
-              <span className="badge-tag badge-status">Active (100%)</span>
+              {marketArtifactStatus === 'SUPPORTED' ? (
+                <span className="badge-tag badge-status">Active ({evalWindowCategory})</span>
+              ) : (
+                <span className="badge-tag badge-offline">{marketArtifactStatus}</span>
+              )}
             </div>
 
             {/* Layer 2: SEC Fundamentals */}
@@ -193,8 +287,12 @@ export default function OverviewTab({ companyMeta, marketData, loading, onNaviga
                   </div>
                 </div>
               </div>
-              {companyMeta.sec_coverage_status === 'active_with_facts' ? (
+              {secStatus === 'SUPPORTED' ? (
                 <span className="badge-tag badge-status">Active with Facts</span>
+              ) : secStatus === 'NOT_DOWNLOADED_IN_PILOT' ? (
+                <span className="badge-tag badge-offline" title="Not downloaded in pilot; preserved strictly as NaN; zero fabrication">
+                  Not Downloaded in Pilot (NaN)
+                </span>
               ) : (
                 <span className="badge-tag badge-offline" title="Preserved strictly as NaN; zero fabrication">
                   Unavailable (NaN)
@@ -223,10 +321,14 @@ export default function OverviewTab({ companyMeta, marketData, loading, onNaviga
                   </div>
                 </div>
               </div>
-              {companyMeta.news_coverage_status === 'active_with_headlines' ? (
+              {newsStatus === 'SUPPORTED' ? (
                 <span className="badge-tag badge-status">441 Headlines</span>
+              ) : newsStatus === 'EXCLUDED_BY_POLICY' ? (
+                <span className="badge-tag badge-offline" title="Excluded by policy; body text unverified">
+                  Excluded by Policy
+                </span>
               ) : (
-                <span className="badge-tag badge-offline">Unavailable in Pilot</span>
+                <span className="badge-tag badge-offline">Not Downloaded in Pilot</span>
               )}
             </div>
           </div>

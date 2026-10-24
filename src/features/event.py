@@ -99,7 +99,15 @@ class SECEventFeatureEngine:
         # Strictly enforce: acceptance time + buffer must be strictly less than or equal to decision time
         # Boundary rule: a filing accepted at or after (T_decision - buffer) is excluded
         cutoff_boundary = dec_ts - buffer_td
+
+        # Conservative date-only fallback: if record lacks genuine intraday time (midnight)
+        if acc_ts.hour == 0 and acc_ts.minute == 0 and acc_ts.second == 0:
+            dec_date_str = dec_ts.strftime("%Y-%m-%d")
+            acc_date_str = acc_ts.strftime("%Y-%m-%d")
+            return acc_date_str < dec_date_str
+
         return acc_ts < cutoff_boundary
+
 
     def get_as_of_snapshot(
         self,
@@ -107,6 +115,7 @@ class SECEventFeatureEngine:
         decision_timestamp: Any,
         trading_date: Optional[str] = None,
         lookback_sessions: Optional[int] = None,
+        window_start_utc: Optional[Any] = None,
     ) -> Dict[str, Any]:
         """
         Computes factual SEC corporate event features for a company at an exact decision cutoff.
@@ -161,8 +170,9 @@ class SECEventFeatureEngine:
         snapshot["sec_days_since_last_8k"] = float(age_days)
 
         # Compute preceding 5-session window boundary
-        # If trading_date is provided, use MarketCalendar to find the start of the 5-session window
-        if trading_date:
+        if window_start_utc is not None:
+            w_start_utc = pd.to_datetime(window_start_utc, utc=True)
+        elif trading_date:
             date_clean = str(trading_date)[:10]
             # Window encompasses the 5 trading sessions ending on trading_date
             # Preceding 5 sessions: find session 5 sessions prior
@@ -176,10 +186,12 @@ class SECEventFeatureEngine:
                 prior_date = dt.strftime("%Y-%m-%d")
 
             # Cutoff timestamp for the session immediately prior to the 5-session window
-            window_start_utc = MarketCalendar.get_session_open_cutoff_utc(prior_date, buffer_minutes=15)
+            w_start_utc = MarketCalendar.get_session_open_cutoff_utc(prior_date, buffer_minutes=15)
         else:
             # Fallback: 7 calendar days (~5 trading days)
-            window_start_utc = dec_utc - timedelta(days=7)
+            w_start_utc = dec_utc - timedelta(days=7)
+
+        window_start_utc = w_start_utc
 
         # Filter filings strictly within [window_start_utc, dec_utc]
         # Any filing in window must satisfy:

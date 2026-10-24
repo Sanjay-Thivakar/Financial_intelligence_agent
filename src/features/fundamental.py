@@ -77,9 +77,32 @@ class FundamentalFeatureEngine:
             return self._build_empty_snapshot(snapshot)
 
         # 1. Filter strictly to publicly available facts as of cutoff
-        available_facts = comp_facts[comp_facts["acceptance_timestamp"] <= as_of_utc]
+        # Enforce both intraday timestamp boundary and conservative date-only fallback
+        initial_mask = comp_facts["acceptance_timestamp"] <= as_of_utc
+        if not initial_mask.any():
+            return self._build_empty_snapshot(snapshot)
+
+        candidate_facts = comp_facts[initial_mask].copy()
+
+        # Conservative date-only fallback: if a fact lacks genuine intraday time
+        # (hour==0, minute==0, second==0), it cannot enter same-day decision cutoff
+        as_of_date_str = as_of_utc.strftime("%Y-%m-%d")
+        is_midnight = (
+            (candidate_facts["acceptance_timestamp"].dt.hour == 0) &
+            (candidate_facts["acceptance_timestamp"].dt.minute == 0) &
+            (candidate_facts["acceptance_timestamp"].dt.second == 0)
+        )
+        if "filed_date" in candidate_facts.columns:
+            filed_dates = candidate_facts["filed_date"].astype(str).str[:10]
+        else:
+            filed_dates = candidate_facts["acceptance_timestamp"].dt.strftime("%Y-%m-%d")
+        is_same_day = filed_dates >= as_of_date_str
+        leakage_mask = is_midnight & is_same_day
+
+        available_facts = candidate_facts[~leakage_mask]
         if available_facts.empty:
             return self._build_empty_snapshot(snapshot)
+
 
         snapshot["fundamental_available"] = True
 

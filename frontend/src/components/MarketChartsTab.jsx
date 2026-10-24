@@ -12,7 +12,7 @@ import {
   Filler,
 } from 'chart.js';
 import { Line, Bar } from 'react-chartjs-2';
-import { Sliders, Info, Calendar } from 'lucide-react';
+import { Sliders, Info, AlertCircle } from 'lucide-react';
 
 ChartJS.register(
   CategoryScale,
@@ -26,7 +26,7 @@ ChartJS.register(
   Filler
 );
 
-export default function MarketChartsTab({ marketData, selectedTicker, loading, companyMeta }) {
+export default function MarketChartsTab({ marketData, selectedTicker, loading, marketError, companyMeta }) {
   const [showSMA20, setShowSMA20] = useState(true);
   const [showSMA50, setShowSMA50] = useState(true);
   const [timeRange, setTimeRange] = useState('250'); // Default to ~250 trading days (1 year)
@@ -34,7 +34,19 @@ export default function MarketChartsTab({ marketData, selectedTicker, loading, c
   if (loading) {
     return (
       <div className="card" style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>
-        <p>Loading historical market series for {selectedTicker}...</p>
+        <p className="font-mono">Loading historical market series for {selectedTicker}...</p>
+      </div>
+    );
+  }
+
+  if (marketError) {
+    return (
+      <div className="card" style={{ padding: '40px', textAlign: 'center', color: 'var(--accent-red)' }}>
+        <AlertCircle size={28} style={{ margin: '0 auto 12px', display: 'block' }} />
+        <p style={{ fontWeight: 600 }}>Market Data Query Error for {selectedTicker}</p>
+        <p className="font-mono" style={{ fontSize: '12px', marginTop: '8px', color: 'var(--text-muted)' }}>
+          {marketError}
+        </p>
       </div>
     );
   }
@@ -42,7 +54,7 @@ export default function MarketChartsTab({ marketData, selectedTicker, loading, c
   if (!marketData || !marketData.series || marketData.series.length === 0) {
     return (
       <div className="card" style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>
-        <p>No historical market data available for {selectedTicker}.</p>
+        <p>No historical market observations found for {selectedTicker}.</p>
       </div>
     );
   }
@@ -254,14 +266,17 @@ export default function MarketChartsTab({ marketData, selectedTicker, loading, c
     },
   };
 
+  const latestObsDate = marketData.latest_date || dates[dates.length - 1];
+  const earliestObsDate = marketData.earliest_date || dates[0];
+  const dataSource = marketData.data_source || 'Phase 5I S&P 500 Historical Parquet';
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       {/* Notice Banner */}
       <div className="disclaimer-banner">
         <Info size={16} style={{ color: 'var(--accent-amber)', flexShrink: 0, marginTop: '2px' }} />
         <div>
-          <strong>PRICE ADJUSTMENT SEMANTICS:</strong> {marketData.adjustment_semantics}.
-          All quotes represent verifiable historical daily session aggregates. No fabricated or simulated live feeds are rendered.
+          <strong>PRICE ADJUSTMENT SEMANTICS:</strong> {marketData.adjustment_semantics || 'Split and dividend adjusted prices'}. All quotes represent verifiable historical daily session aggregates ending {latestObsDate}. No live or simulated real-time data feeds are invoked.
         </div>
       </div>
 
@@ -271,7 +286,7 @@ export default function MarketChartsTab({ marketData, selectedTicker, loading, c
           <div className="card-title">
             <Sliders size={14} />
             <span>
-              {selectedTicker} Historical Price & Technical Overlays ({dates[0]} → {dates[dates.length - 1]})
+              {selectedTicker} {companyMeta?.company_name ? `— ${companyMeta.company_name}` : ''} Historical Price & Technical Overlays ({dates[0]} → {dates[dates.length - 1]})
             </span>
           </div>
 
@@ -319,7 +334,7 @@ export default function MarketChartsTab({ marketData, selectedTicker, loading, c
           <div className="card-header">
             <span className="card-title">Trading Volume (Shares)</span>
             <span className="font-mono" style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-              Source: Tiingo/Yahoo S&P 500 Parquet
+              Source: {dataSource}
             </span>
           </div>
           <div style={{ height: '180px' }}>
@@ -331,7 +346,7 @@ export default function MarketChartsTab({ marketData, selectedTicker, loading, c
           <div className="card-header">
             <span className="card-title">RSI (14-Day) & Volatility (21-Day Annualized)</span>
             <span className="font-mono" style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-              Computed on Adjusted Close
+              Computed on Adjusted Close ({earliestObsDate} → {latestObsDate})
             </span>
           </div>
           <div style={{ height: '180px' }}>

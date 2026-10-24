@@ -4,11 +4,19 @@ import { Activity, ShieldAlert, Cpu, Database, CheckCircle2, AlertCircle } from 
 export default function Header({
   activeTab,
   setActiveTab,
-  companies,
+  companies = [],
   selectedTicker,
   setSelectedTicker,
   apiConnected,
+  capabilitiesLoading,
+  capabilitiesError,
+  _excludedEntities = [],
+  activeCompanyMeta,
 }) {
+  const isPrototypeSelected = ['AAPL', 'JPM', 'GOOG', 'TSLA'].includes(selectedTicker);
+  const prototypeCompanies = companies.filter((c) => ['AAPL', 'JPM', 'GOOG', 'TSLA'].includes(c.ticker));
+  const expandedCompanies = companies.filter((c) => !['AAPL', 'JPM', 'GOOG', 'TSLA'].includes(c.ticker));
+
   return (
     <>
       <header className="terminal-header">
@@ -80,22 +88,44 @@ export default function Header({
       </header>
 
       <div className="terminal-subbar">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
           <span style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: 600 }}>
             Eligible Universe:
           </span>
+
+          {/* Quick-Access Prototype Pills */}
           <div className="company-pills">
-            {companies.map((comp) => (
+            {prototypeCompanies.map((comp) => (
               <button
                 key={comp.ticker}
                 className={`company-pill ${selectedTicker === comp.ticker ? 'active' : ''}`}
                 onClick={() => setSelectedTicker(comp.ticker)}
                 id={`pill-ticker-${comp.ticker}`}
+                title={`${comp.company_name} (${comp.sector})`}
               >
                 <span>{comp.ticker}</span>
-                <span style={{ opacity: 0.6, fontSize: '10px' }}>({comp.sector.split(' ')[0]})</span>
+                <span style={{ opacity: 0.6, fontSize: '10px' }}>
+                  ({comp.sector ? comp.sector.split(' ')[0] : 'Pilot'})
+                </span>
               </button>
             ))}
+
+            {/* Active Expanded Cohort Pill if currently selected */}
+            {!isPrototypeSelected && selectedTicker && (
+              <button
+                key={selectedTicker}
+                className="company-pill active"
+                id={`pill-ticker-${selectedTicker}`}
+                title={activeCompanyMeta?.company_name || selectedTicker}
+              >
+                <span>{selectedTicker}</span>
+                <span style={{ opacity: 0.6, fontSize: '10px' }}>
+                  ({activeCompanyMeta?.sector ? activeCompanyMeta.sector.split(' ')[0] : 'Cohort'})
+                </span>
+              </button>
+            )}
+
+            {/* Excluded Entity Guardrail Pill */}
             <button
               className="company-pill company-pill-excluded"
               title="AA is excluded: Historical identity unresolved (2016 split into ARNC & AA)"
@@ -104,6 +134,48 @@ export default function Header({
             >
               <span>AA (Excluded)</span>
             </button>
+          </div>
+
+          {/* 60-Company Capability Universe Dropdown */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <select
+              className="company-select-dropdown"
+              value={selectedTicker}
+              onChange={(e) => setSelectedTicker(e.target.value)}
+              id="select-company-universe"
+              aria-label="Select company from 60-company research universe"
+              disabled={capabilitiesLoading || companies.length === 0}
+            >
+              {prototypeCompanies.length > 0 && (
+                <optgroup label="Prototype Pilot (4 Companies)">
+                  {prototypeCompanies.map((c) => (
+                    <option key={c.ticker} value={c.ticker}>
+                      {c.ticker} — {c.company_name} ({c.sector})
+                    </option>
+                  ))}
+                </optgroup>
+              )}
+              {expandedCompanies.length > 0 && (
+                <optgroup label="Expanded Research Cohort (56 Companies)">
+                  {expandedCompanies.map((c) => (
+                    <option key={c.ticker} value={c.ticker}>
+                      {c.ticker} — {c.company_name} ({c.sector})
+                    </option>
+                  ))}
+                </optgroup>
+              )}
+            </select>
+
+            {capabilitiesLoading && (
+              <span className="font-mono" style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                Loading cohort...
+              </span>
+            )}
+            {capabilitiesError && (
+              <span className="badge-tag badge-offline" title={capabilitiesError}>
+                Universe Offline
+              </span>
+            )}
           </div>
         </div>
 

@@ -253,6 +253,48 @@ body {
   font-size: 11px;
 }
 
+.company-select-dropdown {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  outline: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  max-width: 280px;
+}
+
+.company-select-dropdown:hover {
+  border-color: var(--border-active);
+}
+
+.company-select-dropdown:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 2px var(--accent-blue-dim);
+}
+
+.company-select-dropdown optgroup {
+  background: var(--bg-surface);
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.company-select-dropdown option {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: normal;
+  padding: 4px;
+}
+
 .terminal-content {
   flex: 1;
   padding: 20px;

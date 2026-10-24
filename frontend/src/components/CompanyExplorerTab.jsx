@@ -2,27 +2,18 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {
   Database,
   Search,
-  Filter,
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
   ShieldAlert,
-  CheckCircle2,
-  XCircle,
   AlertTriangle,
   ArrowRight,
-  Clock,
   ChevronLeft,
   ChevronRight,
   RefreshCw,
   SlidersHorizontal,
   Layers,
-  Activity,
-  Info,
   X,
-  TrendingUp,
-  TrendingDown,
-  Lock,
   BarChart2,
   Eye,
 } from 'lucide-react';
@@ -45,7 +36,7 @@ const FOLD_DATES = [
   { id: '2019-11-18', label: 'Fold 0 Earliest OOS (2019-11-18) — 60 Active' },
 ];
 
-export default function CompanyExplorerTab({ companies, selectedTicker, onSelectCompany }) {
+export default function CompanyExplorerTab({ _companies, selectedTicker, onSelectCompany, onNavigateTab }) {
   // Screener state
   const [screenerData, setScreenerData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -416,6 +407,39 @@ export default function CompanyExplorerTab({ companies, selectedTicker, onSelect
                   ({companyDetail?.sector || ''})
                 </span>
               </div>
+
+              {onNavigateTab && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginLeft: '12px' }}>
+                  <button
+                    type="button"
+                    className="chart-toggle-btn active"
+                    onClick={() => {
+                      if (onSelectCompany) onSelectCompany(inspectingTicker);
+                      onNavigateTab('overview');
+                    }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 10px', fontSize: '11px' }}
+                    id="btn-detail-nav-overview"
+                    title={`Open ${inspectingTicker} in Overview tab`}
+                  >
+                    <span>View in Overview</span>
+                    <ArrowRight size={12} />
+                  </button>
+                  <button
+                    type="button"
+                    className="chart-toggle-btn"
+                    onClick={() => {
+                      if (onSelectCompany) onSelectCompany(inspectingTicker);
+                      onNavigateTab('charts');
+                    }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '4px 10px', fontSize: '11px' }}
+                    id="btn-detail-nav-charts"
+                    title={`Open ${inspectingTicker} in Market Charts tab`}
+                  >
+                    <span>Market Charts</span>
+                    <ArrowRight size={12} />
+                  </button>
+                </div>
+              )}
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -791,7 +815,6 @@ export default function CompanyExplorerTab({ companies, selectedTicker, onSelect
                     const isPass = stage.status === 'PASS';
                     const isFail = stage.status === 'FAIL';
                     const isHold = stage.status === 'HOLD';
-                    const isNotEval = stage.status === 'NOT EVALUATED';
 
                     const badgeColor = isPass
                       ? 'var(--accent-green)'
@@ -1214,7 +1237,6 @@ export default function CompanyExplorerTab({ companies, selectedTicker, onSelect
                       const isBuy = c.signal === 'BUY';
                       const isSell = c.signal === 'SELL';
                       const isHold = c.signal === 'HOLD';
-                      const isUnavail = c.signal === 'UNAVAILABLE';
 
                       return (
                         <tr
@@ -1333,21 +1355,39 @@ export default function CompanyExplorerTab({ companies, selectedTicker, onSelect
                             </span>
                           </td>
 
-                          {/* Action Button */}
+                          {/* Action Buttons */}
                           <td style={{ padding: '8px 10px', textAlign: 'center' }}>
-                            <button
-                              type="button"
-                              className={`chart-toggle-btn ${isSelected ? 'active' : ''}`}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleInspectCompany(c.ticker);
-                              }}
-                              style={{ fontSize: '10px', padding: '3px 8px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
-                              id={`btn-inspect-${c.ticker}`}
-                            >
-                              <Eye size={11} />
-                              <span>Inspect</span>
-                            </button>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                              <button
+                                type="button"
+                                className={`chart-toggle-btn ${isSelected ? 'active' : ''}`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleInspectCompany(c.ticker);
+                                }}
+                                style={{ fontSize: '10px', padding: '3px 8px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                                id={`btn-inspect-${c.ticker}`}
+                                title={`Inspect ${c.ticker} research profile`}
+                              >
+                                <Eye size={11} />
+                                <span>Inspect</span>
+                              </button>
+                              <button
+                                type="button"
+                                className="chart-toggle-btn"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  if (onSelectCompany) onSelectCompany(c.ticker);
+                                  if (onNavigateTab) onNavigateTab('overview');
+                                }}
+                                style={{ fontSize: '10px', padding: '3px 8px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                                id={`btn-open-overview-${c.ticker}`}
+                                title={`Open ${c.ticker} in Overview tab`}
+                              >
+                                <span>Overview</span>
+                                <ArrowRight size={11} />
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       );

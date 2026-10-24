@@ -25,6 +25,9 @@ from src.api.schemas import (
     CompanyResearchDetailResponse,
     SignalDetailResponse,
     BulkSignalsResponse,
+    CompanyCapabilityItem,
+    CompanyCapabilityListResponse,
+    CompanyArchivedPredictionsResponse,
 )
 from src.decision.schema import DecisionContractResponse
 from src.api.service import dashboard_service, EXCLUDED_COMPANIES
@@ -99,12 +102,22 @@ def get_company_market(
     """
     Returns historical market quotes (OHLCV, Adjusted Close) and computed technical indicators
     (SMA, RSI, Volatility, Returns, Forward Target) for the requested company.
+    Supports both the four-company prototype catalog and the expanded 60-company research cohort.
     """
-    ticker_clean = ticker.upper()
+    ticker_clean = ticker.strip().upper()
     if ticker_clean in EXCLUDED_COMPANIES:
         raise HTTPException(
             status_code=400,
             detail=f"Company {ticker_clean} is excluded: {EXCLUDED_COMPANIES[ticker_clean]}",
+        )
+    if ticker_clean == "GOOGL":
+        raise HTTPException(
+            status_code=404,
+            detail=(
+                "Ticker 'GOOGL' is a distinct share class (Class A voting) of Alphabet Inc. "
+                "(CIK 0001652044) and is not a separately supported market ticker in this research cohort "
+                "(which tracks GOOG Class C). Market data is not interchangeable."
+            ),
         )
 
     try:
@@ -116,6 +129,8 @@ def get_company_market(
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=404, detail=f"Market data artifact for ticker '{ticker_clean}' is not available: {e}")
 
     if not response:
         raise HTTPException(
@@ -257,6 +272,58 @@ def get_company_research_detail(
         raise HTTPException(status_code=500, detail=f"Internal error processing research detail: {e}")
 
 
+@app.get("/api/research/companies/{ticker}/predictions", response_model=CompanyArchivedPredictionsResponse)
+def get_company_archived_predictions(
+    ticker: str,
+    model_id: Optional[str] = Query(None, description="Candidate model identifier"),
+    fold: Optional[int] = Query(None, description="Walk-forward fold identifier (0, 1, 2, 3)"),
+    limit: int = Query(200, ge=1, le=1000, description="Maximum prediction records to return"),
+    offset: int = Query(0, ge=0, description="Offset for pagination"),
+):
+    """
+    Returns verified archived out-of-sample forward-return predictions for a company
+    from the Phase 5K research archive (phase5k_predictions_oos.parquet).
+    Preserves strict separation between historical predictions and live runtime inference.
+    """
+    ticker_clean = ticker.strip().upper()
+    if ticker_clean in EXCLUDED_COMPANIES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Company {ticker_clean} is excluded: {EXCLUDED_COMPANIES[ticker_clean]}",
+        )
+    if ticker_clean == "GOOGL":
+        raise HTTPException(
+            status_code=404,
+            detail=(
+                "Ticker 'GOOGL' is a distinct share class (Class A voting) of Alphabet Inc. "
+                "(CIK 0001652044) and is not a separately supported market ticker in this research cohort "
+                "(which tracks GOOG Class C). Market data is not interchangeable."
+            ),
+        )
+
+    try:
+        resp = dashboard_service.get_company_archived_predictions(
+            ticker=ticker_clean,
+            model_id=model_id,
+            fold=fold,
+            limit=limit,
+            offset=offset,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Internal error processing archived predictions: {e}")
+
+    if not resp:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Ticker '{ticker_clean}' is not part of the validated 60-company research cohort.",
+        )
+    return resp
+
+
 @app.get("/api/research/signals", response_model=BulkSignalsResponse)
 def get_research_signals(
     model_id: str = Query("ridge_regression", description="Candidate model identifier"),
@@ -294,6 +361,50 @@ def get_company_signal_detail(
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal error processing signal detail: {e}")
+
+
+# =====================================================================
+# Phase 6.2 — Canonical Company Universe & Capability Contract Endpoints
+# =====================================================================
+
+@app.get("/api/v1/companies/capabilities", response_model=CompanyCapabilityListResponse, tags=["Capabilities"])
+def list_company_capabilities():
+    """
+    Returns the authoritative capability inventory for the validated 60-company research cohort.
+    Exposes granular coverage states, multi-modal availability, evaluation track eligibility,
+    archived prediction metadata, and runtime inference compatibility.
+    """
+    try:
+        return dashboard_service.get_company_capabilities_list()
+    except Exception as e:
+        logger.error(f"Error serving company capabilities: {e}")
+        raise HTTPException(status_code=500, detail=f"Internal error loading capability inventory: {e}")
+
+
+@app.get("/api/v1/companies/capabilities/{ticker}", response_model=CompanyCapabilityItem, tags=["Capabilities"])
+def get_company_capability(ticker: str):
+    """
+    Returns the comprehensive capability record for a single company in the expanded research cohort.
+    Rejects unknown, excluded, or unsupported share-class tickers (such as GOOGL) with HTTP 404.
+    """
+    ticker_clean = ticker.strip().upper()
+    if ticker_clean == "GOOGL":
+        raise HTTPException(
+            status_code=404,
+            detail=(
+                "Ticker 'GOOGL' is a distinct share class (Class A voting) of Alphabet Inc. "
+                "(CIK 0001652044) and is not a separately supported market ticker in this research cohort "
+                "(which tracks GOOG Class C). Share classes are not interchangeable."
+            ),
+        )
+    cap = dashboard_service.get_company_capability(ticker_clean)
+    if not cap:
+        ex_msg = EXCLUDED_COMPANIES.get(ticker_clean, "")
+        detail = f"Ticker '{ticker_clean}' is not found in the validated research cohort."
+        if ex_msg:
+            detail += f" {ex_msg}"
+        raise HTTPException(status_code=404, detail=detail)
+    return cap
 
 
 # Static frontend mounting if built

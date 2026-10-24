@@ -30,6 +30,20 @@ from src.api.schemas import (
     CompanyResearchDetailResponse,
     SignalDetailResponse,
     BulkSignalsResponse,
+    CapabilityStatus,
+    MarketCoverageStatus,
+    IdentityStatus,
+    CompanyIdentity,
+    MarketArtifactCoverage,
+    EvaluationWindowCoverage,
+    MultiModalCoverage,
+    EvaluationTrackEligibility,
+    HistoricalPredictionCoverage,
+    RuntimeExecutionCapabilities,
+    CompanyCapabilityItem,
+    CompanyCapabilityListResponse,
+    ArchivedPredictionRecord,
+    CompanyArchivedPredictionsResponse,
 )
 from src.decision.schema import (
     SignalType,
@@ -288,6 +302,60 @@ class DashboardService:
             notes=meta["notes"],
         )
 
+    def _load_expanded_market_data(self, ticker: str) -> Optional[pd.DataFrame]:
+        """
+        Loads and validates historical market data for an expanded-cohort company from Phase 5I artifacts,
+        then computes technical features and forward targets.
+        """
+        p_single = DATA_DIR / "market" / "phase5i" / f"{ticker}.parquet"
+        p_cons = DATA_DIR / "market" / "phase5i_market_expansion.parquet"
+
+        raw_df = None
+        if p_single.exists():
+            try:
+                raw_df = pd.read_parquet(p_single)
+            except Exception as e:
+                logger.error(f"Error reading per-company market artifact {p_single}: {e}")
+                raw_df = None
+
+        if raw_df is None or raw_df.empty:
+            if not p_cons.exists():
+                logger.error(f"Consolidated market expansion artifact missing: {p_cons}")
+                return None
+            try:
+                raw_df = pd.read_parquet(p_cons, filters=[("ticker", "==", ticker)])
+            except Exception as e:
+                logger.error(f"Error reading consolidated market artifact {p_cons}: {e}")
+                return None
+
+        if raw_df is None or raw_df.empty:
+            return None
+
+        # Data integrity checks
+        required_cols = ["trading_date", "open", "high", "low", "close", "adjusted_close", "volume"]
+        missing_cols = [c for c in required_cols if c not in raw_df.columns]
+        if missing_cols:
+            raise ValueError(f"Market data for {ticker} missing required columns: {missing_cols}")
+
+        if raw_df["trading_date"].isna().any():
+            raise ValueError(f"Null trading dates detected in market artifact for {ticker}")
+
+        # Check for duplicate trading dates
+        if raw_df.duplicated(subset=["trading_date"]).any():
+            dup_dates = raw_df[raw_df.duplicated(subset=["trading_date"])]["trading_date"].tolist()
+            raise ValueError(f"Duplicate market observations detected for {ticker} on dates: {dup_dates[:5]}")
+
+        # Filter valid positive prices (handling any pre-1984 zero open data anomalies)
+        raw_df = raw_df[(raw_df["open"] > 0) & (raw_df["close"] > 0) & (raw_df["adjusted_close"] > 0)].copy()
+        if raw_df.empty:
+            return None
+
+        raw_df = raw_df.sort_values("trading_date").reset_index(drop=True)
+
+        # Compute technical indicators and forward targets
+        features_with_targets = self._compute_company_market_features(raw_df)
+        return features_with_targets
+
     def get_company_market(
         self,
         ticker: str,
@@ -298,14 +366,46 @@ class DashboardService:
         """
         Returns real historical quotes and computed technical indicators.
         Strictly excludes excluded companies.
+        Supports both the legacy prototype catalog and the expanded 60-company research cohort.
         """
-        ticker = ticker.upper()
-        if ticker in EXCLUDED_COMPANIES:
-            raise ValueError(f"Company {ticker} is excluded: {EXCLUDED_COMPANIES[ticker]}")
-        if ticker not in COMPANY_CATALOG:
+        ticker_clean = ticker.strip().upper()
+        if ticker_clean in EXCLUDED_COMPANIES:
+            raise ValueError(f"Company {ticker_clean} is excluded: {EXCLUDED_COMPANIES[ticker_clean]}")
+        if ticker_clean == "GOOGL":
+            # Share classes are not interchangeable market instruments
             return None
 
-        df = self._feature_data_cache.get(ticker)
+        df = self._feature_data_cache.get(ticker_clean)
+        data_source = None
+        comp_id = None
+        comp_name = None
+
+        if ticker_clean in COMPANY_CATALOG:
+            # Legacy 4-company prototype path
+            meta = COMPANY_CATALOG[ticker_clean]
+            comp_id = meta["company_id"]
+            comp_name = meta["company_name"]
+            data_source = "Tiingo / Yahoo-derived Prototype S&P 500 Market Sample (Offline Parquet)"
+        else:
+            # Expanded 60-company cohort path: validate via capability contract
+            self._ensure_capabilities_initialized()
+            cap = self._capabilities_cache.get(ticker_clean)
+            if not cap:
+                return None  # Unknown ticker outside validated cohort
+
+            if cap.market_artifact.status != CapabilityStatus.SUPPORTED:
+                return None  # Market artifact unavailable for this cohort member
+
+            comp_id = cap.identity.company_id
+            comp_name = cap.identity.company_name
+            data_source = "FNSPID / Yahoo-derived Historical Market Expansion (Phase 5I Offline Parquet)"
+
+            if df is None or df.empty:
+                # Load from Phase 5I artifacts and compute features
+                df = self._load_expanded_market_data(ticker_clean)
+                if df is not None and not df.empty:
+                    self._feature_data_cache[ticker_clean] = df
+
         if df is None or df.empty:
             return None
 
@@ -351,16 +451,15 @@ class DashboardService:
                 )
             )
 
-        meta = COMPANY_CATALOG[ticker]
         latest_pt = series_points[-1] if series_points else None
         latest_date = latest_pt.trading_date if latest_pt else "N/A"
         latest_price = latest_pt.adjusted_close if latest_pt else 0.0
 
         return CompanyMarketResponse(
-            ticker=ticker,
-            company_id=meta["company_id"],
-            company_name=meta["company_name"],
-            data_source="Tiingo / Yahoo-derived Prototype S&P 500 Market Sample (Offline Parquet)",
+            ticker=ticker_clean,
+            company_id=comp_id,
+            company_name=comp_name,
+            data_source=data_source,
             adjustment_semantics="Adjusted close accounts for splits and cash dividends; derived adjusted open uses ratio adjustment factor (adj_close/close * open)",
             total_points=len(series_points),
             latest_observation_date=latest_date,
@@ -1612,6 +1711,124 @@ class DashboardService:
             disclaimer=disclaimer,
         )
 
+    def get_company_archived_predictions(
+        self,
+        ticker: str,
+        model_id: Optional[str] = None,
+        fold: Optional[int] = None,
+        limit: int = 200,
+        offset: int = 0,
+    ) -> Optional[CompanyArchivedPredictionsResponse]:
+        """
+        Returns verified archived out-of-sample forward-return predictions for a company
+        from the Phase 5K research archive (phase5k_predictions_oos.parquet).
+        Preserves strict separation between historical predictions and live runtime inference.
+        """
+        self._ensure_phase5l_initialized()
+
+        tk_clean = ticker.strip().upper()
+
+        # Verify ticker in 60-company universe
+        match_co = self._phase5l_eligibility_df[self._phase5l_eligibility_df["ticker"] == tk_clean]
+        if match_co.empty:
+            return None
+
+        co_row = match_co.iloc[0]
+        c_name = str(co_row["company_name"])
+        c_id = str(co_row["company_id"])
+        sec = str(co_row["sector"])
+        comp_pct = float(co_row["completeness_pct"])
+        is_trunc = comp_pct < 95.0
+
+        # Validate candidate model ID if provided
+        valid_models = {
+            "zero_baseline",
+            "median_baseline",
+            "ridge_regression",
+            "elastic_net",
+            "hist_gradient_boosting",
+            "ridge_cs_demeaned",
+            "ridge_cs_scaled",
+            "ridge_sector_neutral",
+        }
+        if model_id is not None and model_id not in valid_models:
+            raise ValueError(f"Model identifier '{model_id}' is invalid. Valid models: {sorted(valid_models)}")
+
+        # Validate fold if provided
+        valid_folds = {0, 1, 2, 3}
+        if fold is not None and fold not in valid_folds:
+            raise ValueError(f"Fold '{fold}' is invalid. Valid folds: {sorted(valid_folds)}")
+
+        # Check OOS parquet artifact
+        p_oos = DATA_DIR / "research" / "phase5k" / "phase5k_predictions_oos.parquet"
+        if not p_oos.exists() or self._phase5l_oos_df is None or self._phase5l_oos_df.empty:
+            raise FileNotFoundError(f"Missing out-of-sample predictions parquet archive: {p_oos}")
+
+        # Sub-slice for ticker
+        sub_co = self._phase5l_oos_df[self._phase5l_oos_df["ticker"] == tk_clean]
+        if sub_co.empty:
+            return CompanyArchivedPredictionsResponse(
+                status="empty",
+                ticker=tk_clean,
+                company_name=c_name,
+                company_id=c_id,
+                sector=sec,
+                total_records=0,
+                returned_records=0,
+                available_models=[],
+                available_folds=[],
+                is_truncated=is_trunc,
+                predictions=[],
+            )
+
+        avail_models = sorted(sub_co["model_id"].unique().tolist())
+        avail_folds = sorted(sub_co["fold"].unique().tolist())
+        earliest_d = str(sub_co["trading_date"].min())
+        latest_d = str(sub_co["trading_date"].max())
+
+        # Apply filters
+        filtered = sub_co
+        if model_id is not None:
+            filtered = filtered[filtered["model_id"] == model_id]
+        if fold is not None:
+            filtered = filtered[filtered["fold"] == fold]
+
+        filtered = filtered.sort_values(["trading_date", "model_id"])
+        total_rec = len(filtered)
+
+        paged = filtered.iloc[offset : offset + limit]
+
+        records: List[ArchivedPredictionRecord] = []
+        for _, r in paged.iterrows():
+            records.append(
+                ArchivedPredictionRecord(
+                    trading_date=str(r["trading_date"]),
+                    fold=int(r["fold"]),
+                    model_id=str(r["model_id"]),
+                    predicted_return=round(float(r["predicted_return"]), 6),
+                    target_return=round(float(r["target_return"]), 6),
+                    residual=round(float(r["residual"]), 6),
+                    sigma_train=round(float(r["sigma_train"]), 6),
+                    adjusted_close=round(float(r["adjusted_close"]), 2),
+                )
+            )
+
+        return CompanyArchivedPredictionsResponse(
+            status="available" if total_rec > 0 else "empty",
+            ticker=tk_clean,
+            company_name=c_name,
+            company_id=c_id,
+            sector=sec,
+            total_records=total_rec,
+            returned_records=len(records),
+            available_models=avail_models,
+            available_folds=avail_folds,
+            earliest_date=earliest_d,
+            latest_date=latest_d,
+            is_truncated=is_trunc,
+            predictions=records,
+        )
+
     def get_research_signals(
         self,
         model_id: str = "ridge_regression",
@@ -1686,7 +1903,336 @@ class DashboardService:
             is_experimental=True,
         )
 
+    # =====================================================================
+    # Phase 6.2 — Canonical Company Universe & Capability Contract Builder
+    # =====================================================================
+
+    def _ensure_capabilities_initialized(self):
+        """Constructs and caches canonical company capabilities from verified local sources."""
+        if hasattr(self, "_capabilities_initialized") and self._capabilities_initialized:
+            return
+
+        self._ensure_phase5l_initialized()
+
+        p_elig = DATA_DIR / "universe" / "phase5j_company_eligibility.csv"
+        p_exp_mkt = DATA_DIR / "market" / "phase5i_market_expansion.parquet"
+        p_oos = DATA_DIR / "research" / "phase5k" / "phase5k_predictions_oos.parquet"
+        p_sec_facts = DATA_DIR / "sec" / "facts" / "pilot_financial_facts.parquet"
+        p_sec_events = DATA_DIR / "sec" / "eight_k" / "phase5f_8k_events.parquet"
+
+        p_elig = DATA_DIR / "universe" / "phase5j_company_eligibility.csv"
+        p_exp_mkt = DATA_DIR / "market" / "phase5i_market_expansion.parquet"
+        p_oos = DATA_DIR / "research" / "phase5k" / "phase5k_predictions_oos.parquet"
+        p_sec_facts = DATA_DIR / "sec" / "facts" / "pilot_financial_facts.parquet"
+        p_sec_events = DATA_DIR / "sec" / "eight_k" / "phase5f_8k_events.parquet"
+
+        if not p_elig.exists():
+            raise FileNotFoundError(f"Authoritative eligibility manifest missing: {p_elig}")
+
+        required_cols = [
+            "company_id", "ticker", "company_name", "sector", "cik",
+            "total_sessions", "earliest_date", "latest_date", "window_sessions", "completeness_pct",
+            "folds_eligible", "track_a_market_only", "track_b_market_plus_fund",
+            "track_c_market_plus_events", "track_d_combined",
+            "market_notes", "fundamentals_notes", "events_notes", "news_notes"
+        ]
+        missing_cols = [c for c in required_cols if c not in self._phase5l_eligibility_df.columns]
+        if missing_cols:
+            raise ValueError(f"Eligibility manifest missing required columns: {missing_cols}")
+
+        # Check market artifact presence and verify constituent tickers
+        market_tickers_present = set()
+        market_artifact_exists = p_exp_mkt.exists()
+        if market_artifact_exists:
+            try:
+                mkt_df_cols = pd.read_parquet(p_exp_mkt, columns=["ticker"])
+                market_tickers_present = set(mkt_df_cols["ticker"].unique())
+            except Exception as e:
+                logger.warning(f"Failed to read market expansion parquet: {e}")
+                market_artifact_exists = False
+
+        # Pre-aggregate prediction metadata by ticker from out-of-sample archive
+        oos_meta_by_ticker = {}
+        prediction_artifact_exists = p_oos.exists()
+        if prediction_artifact_exists and self._phase5l_oos_df is not None and not self._phase5l_oos_df.empty:
+            for tk, grp in self._phase5l_oos_df.groupby("ticker"):
+                oos_meta_by_ticker[str(tk)] = {
+                    "models": sorted([str(m) for m in grp["model_id"].unique()]),
+                    "folds": sorted([int(f) for f in grp["fold"].unique()]),
+                    "earliest": str(grp["trading_date"].min()),
+                    "latest": str(grp["trading_date"].max()),
+                }
+
+        # Base provenance sources
+        base_provenance = [
+            "data/processed/universe/phase5j_company_eligibility.csv",
+            "data/processed/market/phase5i_market_expansion.parquet",
+            "data/processed/research/phase5k/phase5k_predictions_oos.parquet",
+        ]
+
+        # Alias dictionary (empty: distinct share classes are not aliases)
+        alias_map = {}
+
+        capabilities_map = {}
+
+        for _, row in self._phase5l_eligibility_df.iterrows():
+            tk = str(row["ticker"]).strip().upper()
+            c_name = str(row["company_name"]).strip()
+            c_id = str(row["company_id"]).strip()
+            cik_str = f"{int(row['cik']):010d}" if pd.notna(row["cik"]) else None
+            sec = str(row["sector"]).strip() if pd.notna(row["sector"]) else None
+            comp_pct = float(row["completeness_pct"]) if pd.notna(row["completeness_pct"]) else 0.0
+            tot_sess = int(row["total_sessions"]) if pd.notna(row["total_sessions"]) else 0
+            early_d = str(row["earliest_date"]) if pd.notna(row["earliest_date"]) else None
+            late_d = str(row["latest_date"]) if pd.notna(row["latest_date"]) else None
+            window_sess = (
+                int(row["window_sessions"])
+                if ("window_sessions" in row and pd.notna(row["window_sessions"]))
+                else int(round(363 * comp_pct / 100.0))
+            )
+            is_trunc = comp_pct < 95.0
+
+            # 1. Identity (GOOG and GOOGL preserved as distinct share-classes)
+            rel_share_classes = ["GOOGL"] if tk == "GOOG" else []
+            share_class_desc = "Class C (Non-voting)" if tk == "GOOG" else None
+            id_notes = (
+                "Alphabet Inc. dual-class share pair: Class C (GOOG) tracked in market dataset; "
+                "Class A (GOOGL) reported in SEC EDGAR submissions. Share classes are distinct market instruments."
+                if tk == "GOOG"
+                else None
+            )
+
+            identity = CompanyIdentity(
+                company_id=c_id,
+                canonical_ticker=tk,
+                ticker_aliases=[],
+                related_share_classes=rel_share_classes,
+                share_class_description=share_class_desc,
+                company_name=c_name,
+                cik=cik_str,
+                sector=sec,
+                universe_membership="HISTORICAL_RESEARCH_COHORT",
+                identity_status=IdentityStatus.CANONICAL_CONSTITUENT,
+                identity_notes=id_notes,
+            )
+
+            # 2. Market Artifact Coverage & Evaluation-Window Coverage Separation
+            if not market_artifact_exists:
+                mkt_status = CapabilityStatus.UNAVAILABLE
+                feat_avail = False
+                mkt_limitations = "Physical market expansion artifact unavailable."
+            elif tk not in market_tickers_present:
+                mkt_status = CapabilityStatus.UNAVAILABLE
+                feat_avail = False
+                mkt_limitations = f"Ticker {tk} missing from physical market expansion artifact."
+            else:
+                mkt_status = CapabilityStatus.SUPPORTED
+                feat_avail = True
+                mkt_limitations = str(row["market_notes"]) if pd.notna(row["market_notes"]) else None
+
+            market_artifact = MarketArtifactCoverage(
+                status=mkt_status,
+                earliest_date=early_d if mkt_status == CapabilityStatus.SUPPORTED else None,
+                latest_date=late_d if mkt_status == CapabilityStatus.SUPPORTED else None,
+                total_sessions=tot_sess if mkt_status == CapabilityStatus.SUPPORTED else 0,
+                source_artifact="data/processed/market/phase5i_market_expansion.parquet",
+                feature_data_available=feat_avail,
+                feature_schema_compatibility="17_technical_indicators_v1",
+                limitations_note=mkt_limitations,
+            )
+
+            # Descriptive categorization (separate from fold eligibility)
+            if comp_pct >= 99.9:
+                cov_cat = MarketCoverageStatus.COMPLETE
+            elif comp_pct >= 95.0:
+                cov_cat = MarketCoverageStatus.NEAR_COMPLETE
+            else:
+                cov_cat = MarketCoverageStatus.TRUNCATED
+
+            evaluation_window = EvaluationWindowCoverage(
+                window_start_date="2019-01-02",
+                window_end_date="2020-06-03",
+                expected_window_sessions=363,
+                observed_window_sessions=window_sess,
+                completeness_pct=round(comp_pct, 2),
+                completeness_denominator=363,
+                is_truncated=is_trunc,
+                descriptive_category=cov_cat,
+                source_manifest="data/processed/universe/phase5j_company_eligibility.csv",
+                limitations_note=mkt_limitations,
+            )
+
+            # 3. Multi-modal Coverage
+            fund_elig = str(row.get("fundamentals_eligibility", "")).upper()
+            fund_notes = str(row.get("fundamentals_notes", "")) if pd.notna(row.get("fundamentals_notes")) else None
+            facts_exists = p_sec_facts.exists()
+            if fund_elig == "ELIGIBLE":
+                fund_status = CapabilityStatus.SUPPORTED if facts_exists else CapabilityStatus.UNAVAILABLE
+            else:
+                fund_status = CapabilityStatus.NOT_DOWNLOADED_IN_PILOT
+
+            evt_elig = str(row.get("events_eligibility", "")).upper()
+            evt_notes = str(row.get("events_notes", "")) if pd.notna(row.get("events_notes")) else None
+            events_exists = p_sec_events.exists()
+            if evt_elig == "ELIGIBLE":
+                evt_status = CapabilityStatus.SUPPORTED if events_exists else CapabilityStatus.UNAVAILABLE
+            else:
+                evt_status = CapabilityStatus.NOT_DOWNLOADED_IN_PILOT
+
+            news_notes = str(row.get("news_notes", "")) if pd.notna(row.get("news_notes")) else None
+            news_status = CapabilityStatus.EXCLUDED_BY_POLICY
+
+            multi_modal = MultiModalCoverage(
+                sec_fundamentals_status=fund_status,
+                sec_fundamentals_notes=fund_notes,
+                sec_events_status=evt_status,
+                sec_events_notes=evt_notes,
+                news_status=news_status,
+                news_notes=news_notes,
+            )
+
+            # 4. Evaluation Track & Authoritative Fold Eligibility from Manifest
+            t_a = str(row.get("track_a_market_only", "")).upper().startswith("ELIGIBLE")
+            t_b = str(row.get("track_b_market_plus_fund", "")).upper() == "ELIGIBLE"
+            t_c = str(row.get("track_c_market_plus_events", "")).upper() == "ELIGIBLE"
+            t_d = str(row.get("track_d_combined", "")).upper() == "ELIGIBLE"
+
+            # Parse folds_eligible e.g. "Fold 0; Fold 1; Fold 2; Fold 3"
+            folds_raw = str(row.get("folds_eligible", ""))
+            folds_list = []
+            for f_str in ["0", "1", "2", "3"]:
+                if f"Fold {f_str}" in folds_raw:
+                    folds_list.append(int(f_str))
+
+            fold_lim = None
+            if 3 not in folds_list:
+                fold_lim = (
+                    "Ineligible for Fold 3 Holdout evaluation (terminates on 2020-04-01 with only 2 out-of-sample sessions; "
+                    "produces UNAVAILABLE signal in Holdout fold)"
+                )
+
+            evaluation = EvaluationTrackEligibility(
+                track_a_market_only=t_a,
+                track_b_market_plus_fund=t_b,
+                track_c_market_plus_events=t_c,
+                track_d_combined=t_d,
+                eligible_folds=folds_list,
+                fold_limitations=fold_lim,
+            )
+
+            # 5. Historical Predictions (from out-of-sample archive)
+            pred_meta = oos_meta_by_ticker.get(tk, {})
+            has_preds = bool(pred_meta)
+
+            predictions = HistoricalPredictionCoverage(
+                archived_predictions_available=has_preds,
+                available_models=pred_meta.get("models", []),
+                available_folds=pred_meta.get("folds", []),
+                earliest_prediction_date=pred_meta.get("earliest"),
+                latest_prediction_date=pred_meta.get("latest"),
+                source_artifact="data/processed/research/phase5k/phase5k_predictions_oos.parquet",
+            )
+
+            # 6. Runtime Execution & Portfolio Simulation Capabilities
+            is_pilot = tk in COMPANY_CATALOG
+            runtime = RuntimeExecutionCapabilities(
+                runtime_inference_supported=is_pilot,
+                runtime_inference_model=(
+                    "Ridge-Market-Only-v1 (Alpha=1000.0, Walk-Forward Fold 3)" if is_pilot else None
+                ),
+                runtime_decision_supported=is_pilot,
+                historical_decision_supported=has_preds,
+                portfolio_simulation_status=CapabilityStatus.UNVERIFIED,
+                portfolio_simulation_notes=(
+                    "Offline batch multi-asset simulation engine only. Interactive per-company simulation "
+                    "is unverified; runtime execution is unsupported."
+                ),
+                interactive_trade_execution=False,
+            )
+
+            # 7. Provenance & Limitations
+            co_provenance = list(base_provenance)
+            if fund_status == CapabilityStatus.SUPPORTED and p_sec_facts.exists():
+                co_provenance.append("data/processed/sec/facts/pilot_financial_facts.parquet")
+            if evt_status == CapabilityStatus.SUPPORTED and p_sec_events.exists():
+                co_provenance.append("data/processed/sec/eight_k/phase5f_8k_events.parquet")
+
+            limitations_list = []
+            if is_trunc:
+                limitations_list.append(
+                    f"Market history truncated on 2020-04-01 ({tot_sess} total sessions; {comp_pct:.2f}% coverage in evaluation window)."
+                )
+                limitations_list.append(
+                    "Excluded from Fold 3 Holdout evaluation (produces UNAVAILABLE state in Holdout fold)."
+                )
+            if fund_status == CapabilityStatus.NOT_DOWNLOADED_IN_PILOT:
+                limitations_list.append(
+                    "Point-in-time SEC 10-K/10-Q facts unobserved (not downloaded into local pilot store; synthetic data prohibited)."
+                )
+            if evt_status == CapabilityStatus.NOT_DOWNLOADED_IN_PILOT:
+                limitations_list.append(
+                    "SEC Form 8-K unscheduled events unobserved (not downloaded into local pilot store; zero-event imputation prohibited)."
+                )
+            limitations_list.append(
+                "Third-party commercial news text excluded due to licensing redistribution policy."
+            )
+            if not is_pilot:
+                limitations_list.append(
+                    "Runtime in-memory model inference unfitted in prototype service; historical walk-forward out-of-sample predictions available."
+                )
+
+            item = CompanyCapabilityItem(
+                identity=identity,
+                market_artifact=market_artifact,
+                evaluation_window=evaluation_window,
+                multi_modal=multi_modal,
+                evaluation_tracks=evaluation,
+                predictions=predictions,
+                runtime=runtime,
+                provenance_sources=co_provenance,
+                data_limitations=limitations_list,
+            )
+
+            capabilities_map[tk] = item
+
+        self._capabilities_cache = capabilities_map
+        self._ticker_alias_map = alias_map
+        self._capabilities_list = sorted(list(capabilities_map.values()), key=lambda x: x.identity.canonical_ticker)
+        self._capabilities_initialized = True
+
+    def get_company_capabilities_list(self) -> CompanyCapabilityListResponse:
+        """Returns the canonical capability inventory for the 60-company research cohort."""
+        self._ensure_capabilities_initialized()
+        excluded_list = [
+            {
+                "ticker": "AA",
+                "company_name": "Alcoa Inc. / Arconic Inc.",
+                "cik": "0000004281",
+                "reason": EXCLUDED_COMPANIES.get("AA", "Corporate split identity ambiguity"),
+                "identity_status": "EXCLUDED_AMBIGUOUS_IDENTITY",
+                "membership": "EXCLUDED",
+            }
+        ]
+        return CompanyCapabilityListResponse(
+            status="success",
+            version="v1",
+            total_cohort_count=len(self._capabilities_list),
+            as_of_reference="2020-06-03",
+            companies=self._capabilities_list,
+            excluded_entities=excluded_list,
+        )
+
+    def get_company_capability(self, ticker: str) -> Optional[CompanyCapabilityItem]:
+        """Returns the capability record for a single company or resolves supported aliases."""
+        self._ensure_capabilities_initialized()
+        tk = ticker.strip().upper()
+        # Resolve alias if present
+        if tk in self._ticker_alias_map:
+            tk = self._ticker_alias_map[tk]
+        return self._capabilities_cache.get(tk)
+
 
 # Singleton instance
 dashboard_service = DashboardService()
+
 

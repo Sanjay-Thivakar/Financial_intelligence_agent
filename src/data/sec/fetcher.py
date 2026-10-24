@@ -51,6 +51,27 @@ class SECFetcher:
             time.sleep(self.min_request_interval - elapsed)
         self._last_request_time = time.time()
 
+    def _get(self, url: str, max_retries: int = 3) -> Optional[requests.Response]:
+        """Performs a throttled GET request with automatic retry on transient connection drops."""
+        for attempt in range(max_retries):
+            self._throttle()
+            try:
+                resp = self.session.get(url, timeout=30)
+                if resp.status_code == 404:
+                    return None
+                resp.raise_for_status()
+                return resp
+            except Exception as e:
+                logger.warning(f"Attempt {attempt+1}/{max_retries} failed for {url}: {e}")
+                time.sleep(0.5 * (attempt + 1))
+                # Re-initialize session to clear broken persistent connections
+                self.session = requests.Session()
+                self.session.headers.update({
+                    "User-Agent": self.user_agent,
+                    "Accept-Encoding": "gzip, deflate",
+                })
+        return None
+
     def fetch_submissions(self, cik: str, force_refresh: bool = False) -> Dict[str, Any]:
         """Fetches submissions metadata JSON for a 10-digit zero-padded CIK."""
         cik_clean = str(cik).strip().zfill(10)
@@ -62,14 +83,11 @@ class SECFetcher:
                 return json.load(f)
 
         url = f"{self.BASE_URL}/submissions/CIK{cik_clean}.json"
-        self._throttle()
-
         logger.info(f"Fetching SEC submissions for CIK {cik_clean} from {url}")
-        resp = self.session.get(url, timeout=30)
-        if resp.status_code == 404:
-            logger.warning(f"CIK {cik_clean} not found on SEC EDGAR (HTTP 404)")
+        resp = self._get(url)
+        if resp is None:
+            logger.warning(f"Could not retrieve submissions for CIK {cik_clean}")
             return {}
-        resp.raise_for_status()
 
         data = resp.json()
         with open(cache_file, "w", encoding="utf-8") as f:
@@ -86,14 +104,11 @@ class SECFetcher:
                 return json.load(f)
 
         url = f"{self.BASE_URL}/submissions/{filename}"
-        self._throttle()
-
         logger.info(f"Fetching SEC submission file {filename} from {url}")
-        resp = self.session.get(url, timeout=30)
-        if resp.status_code == 404:
-            logger.warning(f"Submission file {filename} not found on SEC EDGAR (HTTP 404)")
+        resp = self._get(url)
+        if resp is None:
+            logger.warning(f"Could not retrieve submission file {filename}")
             return {}
-        resp.raise_for_status()
 
         data = resp.json()
         with open(cache_file, "w", encoding="utf-8") as f:
@@ -152,14 +167,11 @@ class SECFetcher:
                 return json.load(f)
 
         url = f"{self.BASE_URL}/api/xbrl/companyfacts/CIK{cik_clean}.json"
-        self._throttle()
-
         logger.info(f"Fetching SEC company facts for CIK {cik_clean} from {url}")
-        resp = self.session.get(url, timeout=30)
-        if resp.status_code == 404:
-            logger.warning(f"No XBRL facts found for CIK {cik_clean} (HTTP 404)")
+        resp = self._get(url)
+        if resp is None:
+            logger.warning(f"Could not retrieve company facts for CIK {cik_clean}")
             return {}
-        resp.raise_for_status()
 
         data = resp.json()
         with open(cache_file, "w", encoding="utf-8") as f:
