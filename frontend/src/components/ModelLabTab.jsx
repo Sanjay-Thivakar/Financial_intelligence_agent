@@ -15,15 +15,30 @@ import {
   AlertTriangle,
   Layers,
   Database,
+  ShieldAlert,
+  TrendingDown,
 } from 'lucide-react';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export default function ModelLabTab({ evalData, loading, selectedTicker, companyMeta }) {
-  const [activeResearchPhase, setActiveResearchPhase] = useState('phase5d'); // 'phase5d', 'phase5j', 'phase5k'
+  const [activeResearchPhase, setActiveResearchPhase] = useState('phase5d'); // 'phase5d', 'phase5j', 'phase5k', 'phase8'
   const [activeCohort, setActiveCohort] = useState('panel'); // for Phase 5D: 'panel' or 'two_company'
   const [phase5jData, setPhase5jData] = useState(null);
   const [phase5kData, setPhase5kData] = useState(null);
+  const [phase8Data, setPhase8Data] = useState(null);
+
+  // Fetch Phase 8 financial reports research summary
+  useEffect(() => {
+    fetch('/api/models/research/phase8')
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data && data.status === 'available') {
+          setPhase8Data(data);
+        }
+      })
+      .catch((err) => console.error('Failed to load Phase 8 research:', err));
+  }, []);
 
   // Fetch Phase 5J research summary
   useEffect(() => {
@@ -138,7 +153,9 @@ export default function ModelLabTab({ evalData, loading, selectedTicker, company
               ? evalData.provenance
               : activeResearchPhase === 'phase5j'
               ? 'Phase 5J Validated 60-Company Cross-Sectional Report (docs/phase5j_cross_sectional_evaluation_report.md)'
-              : 'Phase 5K Systematic Model Improvement Report (docs/phase5k_model_improvement_report.md)'}
+              : activeResearchPhase === 'phase5k'
+              ? 'Phase 5K Systematic Model Improvement Report (docs/phase5k_model_improvement_report.md)'
+              : 'Phase 8 Financial Reports Specialist Model Report (docs/PHASE_8_FINAL_ACCEPTANCE_REPORT.md)'}
           </span>
           . All reported scores reflect audited 4-fold walk-forward validation with 5-session purge gaps and training-only preprocessing.
         </div>
@@ -241,6 +258,13 @@ export default function ModelLabTab({ evalData, loading, selectedTicker, company
                 id="btn-eval-phase5k"
               >
                 Phase 5K: Model Improvement (8 Candidates)
+              </button>
+              <button
+                className={`chart-toggle-btn ${activeResearchPhase === 'phase8' ? 'active' : ''}`}
+                onClick={() => setActiveResearchPhase('phase8')}
+                id="btn-eval-phase8"
+              >
+                Phase 8: Financial Reports Specialist (305 Co)
               </button>
             </div>
           </div>
@@ -621,6 +645,604 @@ export default function ModelLabTab({ evalData, loading, selectedTicker, company
                         </tr>
                       );
                     })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* =========================================================================
+            VIEW 4: PHASE 8 — FINANCIAL REPORTS SPECIALIST MODEL (305 COMPANIES)
+            ========================================================================= */}
+        {activeResearchPhase === 'phase8' && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {/* Scientific Finding & Governance Banner */}
+            <div className="disclaimer-banner" style={{ borderLeftColor: 'var(--accent-red)', background: 'rgba(244, 63, 94, 0.06)' }}>
+              <ShieldAlert size={20} style={{ color: 'var(--accent-red)', flexShrink: 0, marginTop: '2px' }} />
+              <div>
+                <strong style={{ color: 'var(--accent-red)', fontSize: '13px', letterSpacing: '0.3px' }}>
+                  RESEARCH FINDING: STATISTICALLY NULL INCREMENTAL ALPHA (Holdout p = 0.3468)
+                </strong>
+                <p style={{ marginTop: '5px', fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                  Phase 8 completed a rigorous like-for-like evaluation comparing the Market Baseline (<span className="font-mono">M_MKT</span>, 15 features),
+                  the Financial Specialist (<span className="font-mono">M_FIN</span>, 15 features), and the Combined Model (<span className="font-mono">M_COMB</span>, 30 features).
+                  Adding 15 point-in-time SEC XBRL financial features to 15 market features produced an incremental Information Coefficient delta of{' '}
+                  <strong className="font-mono text-negative">ΔIC = -0.0043 (two-sided HAC t = -0.9417, p = 0.3468)</strong> in the independent 2022–2023 holdout.
+                  The standalone financial specialist alone achieved <span className="font-mono">Mean IC = -0.0008 (HAC t = -0.1392, p = 0.8893)</span>.
+                  Quarterly accounting facts provide <strong>zero statistically significant incremental predictive power</strong> over a 5-day horizon (fail to reject H₀).
+                </p>
+                <div style={{ marginTop: '8px', fontSize: '11px', color: 'var(--accent-amber)', lineHeight: '1.5' }}>
+                  <strong>Governance Warning:</strong> Institutional economic simulation proves gross Sharpe ratios (0.16 to 0.67) are completely eliminated by portfolio turnover (118.4% two-way daily churn)
+                  under realistic transaction friction (10–30 bps), resulting in net Sharpe ratios of <strong>-1.29 to -5.19</strong>.
+                  These models are NOT profitable trading strategies and must not be used for live capital allocation.
+                </div>
+              </div>
+            </div>
+
+            {/* Model Architecture Specifications Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '14px' }}>
+              <div className="card" style={{ borderTop: '3px solid var(--accent-blue)', background: 'var(--bg-card)' }}>
+                <div className="card-header" style={{ paddingBottom: '10px' }}>
+                  <span className="card-title" style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Layers size={15} style={{ color: 'var(--accent-blue)' }} />
+                    <span style={{ color: 'var(--text-primary)' }}>M_MKT: Market Baseline</span>
+                  </span>
+                  <span className="badge-tag badge-status">15 Features</span>
+                </div>
+                <div style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                  <div><strong style={{ color: 'var(--text-primary)' }}>Features:</strong> 1d/5d/21d returns, 5d/21d/63d volatility, momentum, SMA distances, z-scores, RSI, volume ratios.</div>
+                  <div style={{ marginTop: '6px' }}><strong style={{ color: 'var(--text-primary)' }}>Estimator:</strong> L2 Ridge Regression (α = 1000.0, sector-neutral).</div>
+                  <div style={{ marginTop: '6px' }}><strong style={{ color: 'var(--text-primary)' }}>Target:</strong> 5-day sector-neutral excess return (<span className="font-mono">target_sec_excess</span>).</div>
+                </div>
+              </div>
+
+              <div className="card" style={{ borderTop: '3px solid var(--accent-cyan)', background: 'var(--bg-card)' }}>
+                <div className="card-header" style={{ paddingBottom: '10px' }}>
+                  <span className="card-title" style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Database size={15} style={{ color: 'var(--accent-cyan)' }} />
+                    <span style={{ color: 'var(--text-primary)' }}>M_FIN: Financial Specialist</span>
+                  </span>
+                  <span className="badge-tag badge-experimental">15 Features</span>
+                </div>
+                <div style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                  <div><strong style={{ color: 'var(--text-primary)' }}>Features:</strong> Margins, ROA, ROE, debt-to-assets, debt-to-equity, current ratio, cash flows, Sloan accruals, filing age.</div>
+                  <div style={{ marginTop: '6px' }}><strong style={{ color: 'var(--text-primary)' }}>Estimator:</strong> L2 Ridge Regression (α = 1000.0, sector-neutral).</div>
+                  <div style={{ marginTop: '6px' }}><strong style={{ color: 'var(--text-primary)' }}>Target:</strong> 5-day sector-neutral excess return (<span className="font-mono">target_sec_excess</span>).</div>
+                </div>
+              </div>
+
+              <div className="card" style={{ borderTop: '3px solid var(--accent-purple, #a855f7)', background: 'var(--bg-card)' }}>
+                <div className="card-header" style={{ paddingBottom: '10px' }}>
+                  <span className="card-title" style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <Layers size={15} style={{ color: 'var(--accent-purple, #a855f7)' }} />
+                    <span style={{ color: 'var(--text-primary)' }}>M_COMB: Combined Model</span>
+                  </span>
+                  <span className="badge-tag" style={{ background: 'rgba(168, 85, 247, 0.12)', color: 'var(--accent-purple)', border: '1px solid rgba(168, 85, 247, 0.3)' }}>30 Features</span>
+                </div>
+                <div style={{ fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.6' }}>
+                  <div><strong style={{ color: 'var(--text-primary)' }}>Features:</strong> Full concatenation of 15 Market + 15 Point-in-Time Financial features.</div>
+                  <div style={{ marginTop: '6px' }}><strong style={{ color: 'var(--text-primary)' }}>Estimator:</strong> L2 Ridge Regression (α = 1000.0, sector-neutral).</div>
+                  <div style={{ marginTop: '6px' }}><strong style={{ color: 'var(--text-primary)' }}>Target:</strong> 5-day sector-neutral excess return (<span className="font-mono">target_sec_excess</span>).</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Independent Final Holdout Results (2022-2023) */}
+            <div className="card">
+              <div className="card-header" style={{ flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
+                <span className="card-title" style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Award size={16} style={{ color: 'var(--accent-blue)' }} />
+                  <span>Independent Holdout Evaluation (2022–2023)</span>
+                </span>
+                <div className="meta-chip-group">
+                  <div className="meta-chip">
+                    <span className="meta-chip-label">Window:</span>
+                    <span className="meta-chip-value">2022-01-10 → 2023-12-20</span>
+                  </div>
+                  <div className="meta-chip">
+                    <span className="meta-chip-label">Rows:</span>
+                    <span className="meta-chip-value">113,549 obs</span>
+                  </div>
+                  <div className="meta-chip">
+                    <span className="meta-chip-label">Universe:</span>
+                    <span className="meta-chip-value">234 Tickers</span>
+                  </div>
+                  <span className="badge-tag badge-experimental font-mono" title="Reused historical holdout from earlier research phases; serves as benchmark rather than unseen blind holdout">
+                    Reused Historical Holdout
+                  </span>
+                </div>
+              </div>
+
+              <div className="data-table-container">
+                <table className="data-table" style={{ minWidth: '1020px' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ width: '230px' }}>Model Architecture</th>
+                      <th style={{ width: '170px' }}>Feature Set</th>
+                      <th className="num-col" style={{ width: '105px' }}>Mean Daily IC</th>
+                      <th className="num-col" style={{ width: '105px' }}>Median Daily IC</th>
+                      <th className="num-col" style={{ width: '90px' }}>% Pos Days</th>
+                      <th className="num-col" style={{ width: '95px' }}>HAC SE (L=4)</th>
+                      <th className="num-col" style={{ width: '90px' }}>HAC t-stat</th>
+                      <th className="num-col" style={{ width: '105px' }}>HAC p-value</th>
+                      <th className="num-col" style={{ width: '80px' }}>Hit Rate</th>
+                      <th className="num-col" style={{ width: '75px' }}>MAE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div style={{ fontWeight: 600, color: 'var(--accent-blue)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span className="font-mono">M_MKT</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>(Market-Only)</span>
+                        </div>
+                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '2px' }}>Frozen M4 Ridge Regression</div>
+                      </td>
+                      <td>
+                        <span className="badge-tag badge-status">15 Market Features</span>
+                      </td>
+                      <td className="num-col text-positive" style={{ fontWeight: 600 }}>+0.0248</td>
+                      <td className="num-col">+0.0207</td>
+                      <td className="num-col">56.5%</td>
+                      <td className="num-col">0.0089</td>
+                      <td className="num-col text-positive">+2.783</td>
+                      <td className="num-col" style={{ color: 'var(--accent-green)', fontWeight: 600 }}>0.0056</td>
+                      <td className="num-col">50.8%</td>
+                      <td className="num-col">4.88%</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div style={{ fontWeight: 600, color: 'var(--accent-cyan)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span className="font-mono">M_FIN</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>(Financial Specialist)</span>
+                        </div>
+                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '2px' }}>Quarterly Fundamental Ridge</div>
+                      </td>
+                      <td>
+                        <span className="badge-tag badge-experimental">15 Point-in-Time XBRL</span>
+                      </td>
+                      <td className="num-col">+0.0076</td>
+                      <td className="num-col">+0.0069</td>
+                      <td className="num-col">53.7%</td>
+                      <td className="num-col">0.0075</td>
+                      <td className="num-col">+1.018</td>
+                      <td className="num-col" style={{ color: 'var(--text-muted)' }}>0.3092</td>
+                      <td className="num-col">50.3%</td>
+                      <td className="num-col">4.89%</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div style={{ fontWeight: 600, color: 'var(--accent-purple)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span className="font-mono">M_COMB</span>
+                          <span style={{ color: 'var(--text-primary)', fontWeight: 500 }}>(Market + Financials)</span>
+                        </div>
+                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '2px' }}>Combined Concatenated Ridge</div>
+                      </td>
+                      <td>
+                        <span className="badge-tag" style={{ background: 'rgba(168, 85, 247, 0.12)', color: 'var(--accent-purple)', border: '1px solid rgba(168, 85, 247, 0.3)' }}>
+                          30 Features
+                        </span>
+                      </td>
+                      <td className="num-col text-positive" style={{ fontWeight: 600 }}>+0.0205</td>
+                      <td className="num-col">+0.0227</td>
+                      <td className="num-col">56.1%</td>
+                      <td className="num-col">0.0088</td>
+                      <td className="num-col text-positive">+2.340</td>
+                      <td className="num-col" style={{ color: 'var(--accent-green)', fontWeight: 600 }}>0.0197</td>
+                      <td className="num-col">50.8%</td>
+                      <td className="num-col">4.88%</td>
+                    </tr>
+                    <tr className="delta-row">
+                      <td>
+                        <div style={{ color: 'var(--accent-amber)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span>Incremental Delta</span>
+                          <span className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>(M_COMB − M_MKT)</span>
+                        </div>
+                        <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '2px' }}>Net Financial Contribution</div>
+                      </td>
+                      <td>
+                        <span className="badge-tag badge-offline" style={{ fontSize: '10px' }}>Alpha Differential</span>
+                      </td>
+                      <td className="num-col text-negative" style={{ fontWeight: 700 }}>-0.0043</td>
+                      <td className="num-col">+0.0020</td>
+                      <td className="num-col">51.6%</td>
+                      <td className="num-col">0.0046</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 700 }}>-0.9417</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 700 }}>
+                        <span>0.3468</span>
+                        <span style={{ marginLeft: '4px', fontSize: '10px', opacity: 0.85 }}>(Fail)</span>
+                      </td>
+                      <td className="num-col">0.0%</td>
+                      <td className="num-col">0.00%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div style={{ marginTop: '10px', fontSize: '11px', color: 'var(--text-muted)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
+                <span>* Newey-West HAC adjustments use lag length L=4. Incremental delta p-value (p = 0.3468, t = -0.9417) fails two-sided significance; standalone financial specialist holdout test yields p = 0.8893 (t = -0.1392).</span>
+                <span style={{ color: 'var(--accent-amber)' }}>Warning: Reused historical holdout evaluated for verification only.</span>
+              </div>
+            </div>
+
+            {/* 4-Fold Walk-Forward Cross-Validation (2020-2021) */}
+            <div className="card">
+              <div className="card-header" style={{ flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
+                <span className="card-title" style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Layers size={16} style={{ color: 'var(--accent-blue)' }} />
+                  <span>4-Fold Walk-Forward Cross-Validation (2020–2021)</span>
+                </span>
+                <div className="meta-chip-group">
+                  <div className="meta-chip">
+                    <span className="meta-chip-label">Window:</span>
+                    <span className="meta-chip-value">2020-01-08 → 2021-12-31</span>
+                  </div>
+                  <div className="meta-chip">
+                    <span className="meta-chip-label">Dev Obs:</span>
+                    <span className="meta-chip-value">117,988 rows</span>
+                  </div>
+                  <div className="meta-chip">
+                    <span className="meta-chip-label">Universe:</span>
+                    <span className="meta-chip-value">290 Tickers</span>
+                  </div>
+                  <span className="badge-tag badge-status font-mono">Development Panel</span>
+                </div>
+              </div>
+
+              <div className="data-table-container">
+                <table className="data-table" style={{ minWidth: '940px' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ width: '85px' }}>Fold</th>
+                      <th style={{ width: '220px' }}>Validation Window</th>
+                      <th className="num-col" style={{ width: '130px' }}>Validation Rows</th>
+                      <th className="num-col" style={{ width: '115px' }}>M_MKT IC</th>
+                      <th className="num-col" style={{ width: '115px' }}>M_FIN IC</th>
+                      <th className="num-col" style={{ width: '115px' }}>M_COMB IC</th>
+                      <th className="num-col" style={{ width: '160px' }}>ΔIC (COMB − MKT)</th>
+                      <th className="center-col" style={{ width: '120px' }}>Fold Winner</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="font-mono" style={{ fontWeight: 600 }}>Fold 0</td>
+                      <td className="font-mono" style={{ color: 'var(--text-secondary)' }}>2020-01-08 → 2020-07-06</td>
+                      <td className="num-col">29,484</td>
+                      <td className="num-col">+0.0135</td>
+                      <td className="num-col">+0.0052</td>
+                      <td className="num-col">+0.0088</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 600 }}>-0.0047</td>
+                      <td className="center-col"><span className="badge-tag badge-status">M_MKT</span></td>
+                    </tr>
+                    <tr>
+                      <td className="font-mono" style={{ fontWeight: 600 }}>Fold 1</td>
+                      <td className="font-mono" style={{ color: 'var(--text-secondary)' }}>2020-07-07 → 2020-12-31</td>
+                      <td className="num-col">31,048</td>
+                      <td className="num-col text-positive" style={{ fontWeight: 600 }}>+0.0464</td>
+                      <td className="num-col">+0.0143</td>
+                      <td className="num-col">+0.0382</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 600 }}>-0.0082</td>
+                      <td className="center-col"><span className="badge-tag badge-status">M_MKT</span></td>
+                    </tr>
+                    <tr>
+                      <td className="font-mono" style={{ fontWeight: 600 }}>Fold 2</td>
+                      <td className="font-mono" style={{ color: 'var(--text-secondary)' }}>2021-01-04 → 2021-07-01</td>
+                      <td className="num-col">29,788</td>
+                      <td className="num-col">+0.0270</td>
+                      <td className="num-col text-negative">-0.0045</td>
+                      <td className="num-col">+0.0125</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 600 }}>-0.0145</td>
+                      <td className="center-col"><span className="badge-tag badge-status">M_MKT</span></td>
+                    </tr>
+                    <tr>
+                      <td className="font-mono" style={{ fontWeight: 600 }}>Fold 3</td>
+                      <td className="font-mono" style={{ color: 'var(--text-secondary)' }}>2021-07-02 → 2021-12-31</td>
+                      <td className="num-col">27,668</td>
+                      <td className="num-col text-positive" style={{ fontWeight: 600 }}>+0.0617</td>
+                      <td className="num-col">+0.0210</td>
+                      <td className="num-col">+0.0270</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 600 }}>-0.0347</td>
+                      <td className="center-col"><span className="badge-tag badge-status">M_MKT</span></td>
+                    </tr>
+                    <tr className="summary-row">
+                      <td colSpan={2} style={{ fontWeight: 700 }}>Average Walk-Forward Development Performance</td>
+                      <td className="num-col" style={{ fontWeight: 600 }}>117,988 Total</td>
+                      <td className="num-col text-positive" style={{ fontWeight: 700 }}>+0.0372</td>
+                      <td className="num-col">+0.0090</td>
+                      <td className="num-col">+0.0216</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 700 }}>-0.0155 (p = 0.0065)</td>
+                      <td className="center-col"><span className="badge-tag badge-status" style={{ fontWeight: 700 }}>M_MKT (4/4)</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Economic Simulation & Friction Realism (Phase 8R.1 Verified) */}
+            <div className="card">
+              <div className="card-header" style={{ flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
+                <span className="card-title" style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <TrendingDown size={16} style={{ color: 'var(--accent-red)' }} />
+                  <span>Institutional Economic Simulation & Transaction Friction (Holdout 2022–2023)</span>
+                </span>
+                <div className="meta-chip-group">
+                  <div className="meta-chip">
+                    <span className="meta-chip-label">Strategy:</span>
+                    <span className="meta-chip-value">Q5 Long / Q1 Short Quintile</span>
+                  </div>
+                  <div className="meta-chip">
+                    <span className="meta-chip-label">Sessions:</span>
+                    <span className="meta-chip-value">490 Trading Days</span>
+                  </div>
+                  <span className="badge-tag badge-status font-mono">Phase 8R.1 Audited</span>
+                </div>
+              </div>
+
+              <div style={{ padding: '2px 0 12px', fontSize: '12px', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
+                Market-neutral top vs bottom quintile portfolio strategy. All metrics verified using Newey-West HAC calculations with 4-lag autocorrelation adjustments.
+              </div>
+
+              <div className="data-table-container">
+                <table className="data-table" style={{ minWidth: '960px' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ width: '230px' }}>Strategy / Metric</th>
+                      <th className="num-col" style={{ width: '135px' }}>M_MKT Baseline</th>
+                      <th className="num-col" style={{ width: '135px' }}>M_FIN Specialist</th>
+                      <th className="num-col" style={{ width: '135px' }}>M_COMB Combined</th>
+                      <th style={{ minWidth: '320px' }}>Economic Interpretation & Risk Reality</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="group-header-row">
+                      <td colSpan={5}>Tier 1: Pre-Friction Gross Simulation (Theoretical Benchmark)</td>
+                    </tr>
+                    <tr>
+                      <td style={{ fontWeight: 600 }}>Cumulative Gross Return</td>
+                      <td className="num-col text-positive">+5.49%</td>
+                      <td className="num-col">+1.27%</td>
+                      <td className="num-col text-positive">+6.64%</td>
+                      <td>Combined model produces marginally higher gross return before trading fees.</td>
+                    </tr>
+                    <tr>
+                      <td style={{ fontWeight: 600 }}>Annualized Gross Return</td>
+                      <td className="num-col">+2.84%</td>
+                      <td className="num-col">+0.65%</td>
+                      <td className="num-col">+3.44%</td>
+                      <td>Modest gross annualized alpha; insufficient to withstand real-world frictions.</td>
+                    </tr>
+                    <tr>
+                      <td style={{ fontWeight: 600 }}>Annualized Volatility</td>
+                      <td className="num-col">4.82%</td>
+                      <td className="num-col">4.06%</td>
+                      <td className="num-col">5.17%</td>
+                      <td>Market-neutral quintile portfolio variance is stable across all candidates.</td>
+                    </tr>
+                    <tr>
+                      <td style={{ fontWeight: 600 }}>Gross Sharpe Ratio</td>
+                      <td className="num-col text-positive" style={{ fontWeight: 600 }}>0.589</td>
+                      <td className="num-col">0.160</td>
+                      <td className="num-col text-positive" style={{ fontWeight: 600 }}>0.666</td>
+                      <td>Gross Sharpe appears positive prior to friction deduction.</td>
+                    </tr>
+                    <tr>
+                      <td style={{ fontWeight: 600 }}>Two-Way Empirical Turnover</td>
+                      <td className="num-col" style={{ color: 'var(--accent-amber)', fontWeight: 600 }}>119.2% / session</td>
+                      <td className="num-col" style={{ color: 'var(--accent-amber)', fontWeight: 600 }}>84.7% / session</td>
+                      <td className="num-col" style={{ color: 'var(--accent-amber)', fontWeight: 600 }}>118.4% / session</td>
+                      <td style={{ color: 'var(--accent-amber)' }}>Rapid rank churn creates massive daily turnover that eliminates gross profits.</td>
+                    </tr>
+
+                    <tr className="group-header-row">
+                      <td colSpan={5}>Tier 2: Institutional Cost Scenarios (Post-Friction Net Performance)</td>
+                    </tr>
+                    <tr style={{ background: 'rgba(244, 63, 94, 0.04)' }}>
+                      <td style={{ fontWeight: 600, color: 'var(--accent-red)' }}>Net Sharpe @ 10 bps Friction</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 600 }}>-2.35</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 600 }}>-1.48</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 600 }}>-2.22</td>
+                      <td style={{ color: 'var(--accent-red)' }}>Severely negative net Sharpe even under ultra-tight institutional execution costs.</td>
+                    </tr>
+                    <tr style={{ background: 'rgba(244, 63, 94, 0.07)' }}>
+                      <td style={{ fontWeight: 600, color: 'var(--accent-red)' }}>Net Sharpe @ 20 bps Friction</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 600 }}>-5.33</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 600 }}>-3.12</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 600 }}>-5.11</td>
+                      <td style={{ color: 'var(--accent-red)' }}>Catastrophic capital decay under realistic institutional prime-brokerage rates.</td>
+                    </tr>
+                    <tr style={{ background: 'rgba(244, 63, 94, 0.10)' }}>
+                      <td style={{ fontWeight: 600, color: 'var(--accent-red)' }}>Net Sharpe @ 30 bps Friction</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 700 }}>-8.30</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 700 }}>-4.76</td>
+                      <td className="num-col text-negative" style={{ fontWeight: 700 }}>-8.00</td>
+                      <td style={{ color: 'var(--accent-red)' }}>Complete capital loss; proves absolute non-viability as a live trading system.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* 15 Point-in-Time Financial Feature Catalog */}
+            <div className="card">
+              <div className="card-header" style={{ flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
+                <span className="card-title" style={{ fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Database size={16} style={{ color: 'var(--accent-cyan)' }} />
+                  <span>Phase 8 Point-in-Time Financial Feature Catalog (15 Features)</span>
+                </span>
+                <div className="meta-chip-group">
+                  <div className="meta-chip">
+                    <span className="meta-chip-label">Source:</span>
+                    <span className="meta-chip-value">SEC EDGAR Submissions API</span>
+                  </div>
+                  <div className="meta-chip">
+                    <span className="meta-chip-label">Safeguard:</span>
+                    <span className="meta-chip-value">Filing Time &lt; Market Close</span>
+                  </div>
+                  <span className="badge-tag badge-status font-mono">Zero Lookahead Guaranteed</span>
+                </div>
+              </div>
+
+              <div className="data-table-container">
+                <table className="data-table" style={{ minWidth: '1020px' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ width: '220px' }}>Feature Identifier</th>
+                      <th style={{ width: '160px' }}>Category</th>
+                      <th style={{ width: '300px' }}>Formal Definition / Accounting Formula</th>
+                      <th style={{ minWidth: '340px' }}>Point-in-Time Safety &amp; Staleness Policy</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><span className="feature-tag">fin_gross_margin</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(16, 185, 129, 0.12)', color: 'var(--accent-green)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                          Profitability
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Gross Profit / Total Revenue</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Available strictly after SEC EDGAR acceptance timestamp.</td>
+                    </tr>
+                    <tr>
+                      <td><span className="feature-tag">fin_operating_margin</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(16, 185, 129, 0.12)', color: 'var(--accent-green)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                          Profitability
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Operating Income / Total Revenue</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Available strictly after SEC EDGAR acceptance timestamp.</td>
+                    </tr>
+                    <tr>
+                      <td><span className="feature-tag">fin_net_margin</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(16, 185, 129, 0.12)', color: 'var(--accent-green)', border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+                          Profitability
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Net Income / Total Revenue</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Available strictly after SEC EDGAR acceptance timestamp.</td>
+                    </tr>
+                    <tr>
+                      <td><span className="feature-tag">fin_roa</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(6, 182, 212, 0.12)', color: 'var(--accent-cyan)', border: '1px solid rgba(6, 182, 212, 0.3)' }}>
+                          Return Quality
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Net Income / Total Assets</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Preserves original filing date; restatements strictly isolated.</td>
+                    </tr>
+                    <tr>
+                      <td><span className="feature-tag">fin_roe</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(6, 182, 212, 0.12)', color: 'var(--accent-cyan)', border: '1px solid rgba(6, 182, 212, 0.3)' }}>
+                          Return Quality
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Net Income / Stockholders' Equity</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Preserves original filing date; restatements strictly isolated.</td>
+                    </tr>
+                    <tr>
+                      <td><span className="feature-tag">fin_debt_to_assets</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(245, 158, 11, 0.12)', color: 'var(--accent-amber)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+                          Leverage
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Total Debt / Total Assets</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>180-day max staleness safeguard; imputed as NaN if older.</td>
+                    </tr>
+                    <tr>
+                      <td><span className="feature-tag">fin_debt_to_equity</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(245, 158, 11, 0.12)', color: 'var(--accent-amber)', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+                          Leverage
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Total Debt / Stockholders' Equity</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>180-day max staleness safeguard; imputed as NaN if older.</td>
+                    </tr>
+                    <tr>
+                      <td><span className="feature-tag">fin_current_ratio</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(59, 130, 246, 0.12)', color: 'var(--accent-blue)', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
+                          Liquidity
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Current Assets / Current Liabilities</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Point-in-time balance sheet facts from primary 10-Q/10-K.</td>
+                    </tr>
+                    <tr>
+                      <td><span className="feature-tag">fin_cash_to_assets</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(59, 130, 246, 0.12)', color: 'var(--accent-blue)', border: '1px solid rgba(59, 130, 246, 0.3)' }}>
+                          Liquidity
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Cash &amp; Equivalents / Total Assets</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Point-in-time balance sheet facts from primary 10-Q/10-K.</td>
+                    </tr>
+                    <tr>
+                      <td><span className="feature-tag">fin_ocf_to_assets</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(168, 85, 247, 0.12)', color: 'var(--accent-purple)', border: '1px solid rgba(168, 85, 247, 0.3)' }}>
+                          Cash Flow
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Operating Cash Flow / Total Assets</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Point-in-time statement of cash flows facts.</td>
+                    </tr>
+                    <tr>
+                      <td><span className="feature-tag">fin_fcf_to_assets</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(168, 85, 247, 0.12)', color: 'var(--accent-purple)', border: '1px solid rgba(168, 85, 247, 0.3)' }}>
+                          Cash Flow
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Free Cash Flow (OCF − Capex) / Total Assets</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Point-in-time cash flow facts; capex deducted.</td>
+                    </tr>
+                    <tr>
+                      <td><span className="feature-tag">fin_ocf_to_net_income</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(236, 72, 153, 0.12)', color: '#ec4899', border: '1px solid rgba(236, 72, 153, 0.3)' }}>
+                          Earnings Quality
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Operating Cash Flow / Net Income</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Earnings quality &amp; cash conversion ratio diagnostic.</td>
+                    </tr>
+                    <tr>
+                      <td><span className="feature-tag">fin_accruals</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(236, 72, 153, 0.12)', color: '#ec4899', border: '1px solid rgba(236, 72, 153, 0.3)' }}>
+                          Earnings Quality
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Sloan Accruals / Total Assets</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Measures non-cash accounting accrual intensity.</td>
+                    </tr>
+                    <tr>
+                      <td><span className="feature-tag">fin_earnings_yield</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(99, 102, 241, 0.12)', color: '#818cf8', border: '1px solid rgba(99, 102, 241, 0.3)' }}>
+                          Valuation
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Operating Income / Market Capitalization</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Combined with session T closing market equity.</td>
+                    </tr>
+                    <tr>
+                      <td><span className="feature-tag">fin_filing_age_days</span></td>
+                      <td>
+                        <span className="category-pill" style={{ background: 'rgba(148, 163, 184, 0.15)', color: 'var(--text-secondary)', border: '1px solid rgba(148, 163, 184, 0.3)' }}>
+                          Staleness Diagnostic
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Elapsed calendar days since SEC acceptance</td>
+                      <td style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>Diagnostic tracking elapsed point-in-time information decay.</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

@@ -96,6 +96,7 @@ class ModelEvaluationSummaryResponse(BaseModel):
 class PredictionRequest(BaseModel):
     ticker: str
     as_of_date: Optional[str] = None
+    model_id: Optional[str] = Field("m_market_only", description="Model identity: 'm_market_only', 'm_financial_specialist', or 'm_combined'")
 
 
 class PredictionResponse(BaseModel):
@@ -435,6 +436,67 @@ class CompanyArchivedPredictionsResponse(BaseModel):
         "and are NOT model predictions. Not investment advice or live runtime inference."
     )
     predictions: List[ArchivedPredictionRecord] = Field(default_factory=list)
+
+
+# =====================================================================
+# Phase 8 — Financial Reports Intelligence Model Integration Schemas
+# =====================================================================
+
+class Phase8ModelResearchResponse(BaseModel):
+    """Structured research evaluation metrics for Phase 8 Financial Reports Model."""
+    status: str = "available"
+    phase: str = "Phase 8: Financial Reports Specialist Model"
+    created_at_utc: Optional[str] = None
+    cohort_size: int = 305
+    models: List[str] = Field(default_factory=lambda: ["m_market_only", "m_financial_specialist", "m_combined"])
+    target_definition: str = (
+        "5-session forward sector-neutral excess return (target_sec_excess): "
+        "decision at session T close, entry at session T+1 open, exit at session T+5 close"
+    )
+    market_features: List[str] = Field(default_factory=list)
+    financial_features: List[str] = Field(default_factory=list)
+    development_results: Dict[str, Any] = Field(default_factory=dict)
+    development_incremental_delta: Dict[str, Any] = Field(default_factory=dict)
+    holdout_results: Dict[str, Any] = Field(default_factory=dict)
+    economic_friction_results: Dict[str, Any] = Field(default_factory=dict)
+    verdict: str
+    governance_notes: List[str] = Field(default_factory=list)
+
+
+class Phase8PredictionRecord(BaseModel):
+    """Comparative out-of-sample prediction record across Phase 8 models."""
+    trading_date: str
+    split: str  # "development" or "holdout"
+    fold: int   # 0, 1, 2, 3 (development) or -1 (holdout)
+    target_raw: Optional[float] = None
+    target_sec_excess: Optional[float] = None
+    pred_m_market_only: Optional[float] = None
+    pred_m_financial_specialist: Optional[float] = None
+    pred_m_combined: Optional[float] = None
+
+
+class CompanyPhase8PredictionsResponse(BaseModel):
+    """Verified out-of-sample prediction series for a company across Phase 8 models."""
+    status: str = "available"  # "available", "empty", "unavailable"
+    ticker: str
+    company_name: str
+    company_id: str
+    sector: str
+    total_records: int
+    returned_records: int
+    available_models: List[str] = Field(default_factory=lambda: ["m_market_only", "m_financial_specialist", "m_combined"])
+    earliest_date: Optional[str] = None
+    latest_date: Optional[str] = None
+    point_in_time_features: Optional[Dict[str, Any]] = None
+    predictions: List[Phase8PredictionRecord] = Field(default_factory=list)
+    disclaimer: str = (
+        "Phase 8 Financial Reports research archive (2020–2023). Predictions reflect strict "
+        "walk-forward and holdout out-of-sample Ridge regression models with 5-session purge gaps. "
+        "Target is 5-session sector-neutral excess return. Evaluation demonstrated statistically zero "
+        "incremental predictive power (holdout delta p = 0.3468, specialist p = 0.8893). Not investment advice or live runtime inference."
+    )
+    limitations: List[str] = Field(default_factory=list)
+
 
 
 

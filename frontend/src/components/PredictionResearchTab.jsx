@@ -16,11 +16,17 @@ export default function PredictionResearchTab({
   onSelectCompany,
 }) {
   // Runtime inference state
+  const [runtimeModelId, setRuntimeModelId] = useState('m_market_only');
   const [prediction, setPrediction] = useState(null);
   const [decision, setDecision] = useState(null);
   const [loadingRuntime, setLoadingRuntime] = useState(false);
   const [runtimeError, setRuntimeError] = useState('');
   const [asOfDate, setAsOfDate] = useState('');
+
+  // Phase 8 Comparative Research Predictions State
+  const [phase8Data, setPhase8Data] = useState(null);
+  const [loadingPhase8, setLoadingPhase8] = useState(false);
+  const [phase8Error, setPhase8Error] = useState('');
 
   // Archived predictions state (Phase 5K)
   const [archivedData, setArchivedData] = useState(null);
@@ -55,7 +61,7 @@ export default function PredictionResearchTab({
     }
   }, [marketData, asOfDate]);
 
-  // Fetch runtime inference whenever selectedTicker changes
+  // Fetch runtime inference whenever selectedTicker, asOfDate, or runtimeModelId changes
   useEffect(() => {
     if (!selectedTicker) return;
     let isCurrent = true;
@@ -66,7 +72,11 @@ export default function PredictionResearchTab({
       fetch('/api/models/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ticker: selectedTicker, as_of_date: asOfDate || undefined }),
+        body: JSON.stringify({
+          ticker: selectedTicker,
+          as_of_date: asOfDate || undefined,
+          model_id: runtimeModelId,
+        }),
       }).then((r) => r.json()),
       fetch('/api/models/decision', {
         method: 'POST',
@@ -88,6 +98,42 @@ export default function PredictionResearchTab({
       })
       .finally(() => {
         if (isCurrent) setLoadingRuntime(false);
+      });
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [selectedTicker, asOfDate, runtimeModelId]);
+
+  // Fetch Phase 8 Comparative Predictions
+  useEffect(() => {
+    if (!selectedTicker) return;
+    let isCurrent = true;
+    setLoadingPhase8(true);
+    setPhase8Error('');
+
+    let url = `/api/research/companies/${selectedTicker}/phase8_predictions?limit=100`;
+    if (asOfDate) {
+      url += `&as_of_date=${asOfDate}`;
+    }
+
+    fetch(url)
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}: Failed to fetch Phase 8 predictions`);
+        return res.json();
+      })
+      .then((data) => {
+        if (isCurrent) setPhase8Data(data);
+      })
+      .catch((err) => {
+        if (isCurrent) {
+          console.error('Error loading Phase 8 predictions:', err);
+          setPhase8Error(err.message);
+          setPhase8Data(null);
+        }
+      })
+      .finally(() => {
+        if (isCurrent) setLoadingPhase8(false);
       });
 
     return () => {
@@ -142,7 +188,11 @@ export default function PredictionResearchTab({
       fetch('/api/models/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ticker: selectedTicker, as_of_date: asOfDate || undefined }),
+        body: JSON.stringify({
+          ticker: selectedTicker,
+          as_of_date: asOfDate || undefined,
+          model_id: runtimeModelId,
+        }),
       }).then((r) => r.json()),
       fetch('/api/models/decision', {
         method: 'POST',
@@ -247,6 +297,29 @@ export default function PredictionResearchTab({
                 Test AA (Excluded)
               </button>
             </div>
+          </div>
+
+          <div>
+            <label style={{ display: 'block', fontSize: '11px', color: 'var(--text-muted)', marginBottom: '4px', textTransform: 'uppercase' }}>
+              Model Candidate
+            </label>
+            <select
+              value={runtimeModelId}
+              onChange={(e) => setRuntimeModelId(e.target.value)}
+              style={{
+                background: 'var(--bg-surface)',
+                border: '1px solid var(--border-medium)',
+                borderRadius: 'var(--radius-sm)',
+                color: 'var(--text-primary)',
+                padding: '6px 10px',
+                fontSize: '12px',
+              }}
+              id="select-runtime-model"
+            >
+              <option value="m_market_only">M_MKT: Market-Only Baseline (15 features)</option>
+              <option value="m_financial_specialist">M_FIN: Financial Specialist (15 XBRL features)</option>
+              <option value="m_combined">M_COMB: Combined Model (30 features)</option>
+            </select>
           </div>
 
           <div>
@@ -526,6 +599,206 @@ export default function PredictionResearchTab({
             </span>
             <span className="font-mono">
               Source: {archivedData.source_artifact}
+            </span>
+          </div>
+        )}
+      </div>
+
+      {/* =========================================================================
+          SECTION C: PHASE 8 FINANCIAL REPORTS SPECIALIST ARCHIVE & PIT DIAGNOSTICS
+          ========================================================================= */}
+      <div className="card" style={{ borderLeft: '4px solid var(--accent-cyan)' }}>
+        <div className="card-header">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Database size={16} style={{ color: 'var(--accent-cyan)' }} />
+            <div>
+              <span className="card-title" style={{ fontSize: '14px', fontWeight: 600 }}>
+                Phase 8 Financial Reports Specialist — 3-Way Comparative Forecasts & Diagnostics
+              </span>
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                Like-for-like out-of-sample forward return predictions (<span className="font-mono">target_sec_excess</span>) and point-in-time SEC XBRL facts
+              </div>
+            </div>
+          </div>
+          <span className="badge-tag badge-status">
+            {phase8Data ? `${phase8Data.total_records} Observations Available` : 'Checking Archive...'}
+          </span>
+        </div>
+
+        {/* Phase 8 Research Finding Banner */}
+        <div style={{ background: 'rgba(6, 182, 212, 0.08)', border: '1px solid rgba(6, 182, 212, 0.25)', padding: '8px 12px', borderRadius: 'var(--radius-sm)', fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '12px' }}>
+          <strong>RESEARCH FORECAST SEMANTICS:</strong> Out-of-sample forward return predictions for <strong style={{ color: 'var(--text-primary)' }}>{selectedTicker}</strong> across{' '}
+          <strong style={{ color: 'var(--accent-blue)' }}>M_MKT</strong> (15 market technical features),{' '}
+          <strong style={{ color: 'var(--accent-cyan)' }}>M_FIN</strong> (15 point-in-time SEC XBRL features), and{' '}
+          <strong style={{ color: 'var(--accent-purple, #a855f7)' }}>M_COMB</strong> (30 combined features).{' '}
+          All predictions reflect strict walk-forward (2020–2021) and holdout (2022–2023) Ridge models with 5-session purge gaps.{' '}
+          <span style={{ color: 'var(--accent-amber)' }}>Independent holdout evaluation demonstrated statistically zero incremental predictive power (p = 0.3468). Not live trading advice.</span>
+        </div>
+
+        {/* Point-in-Time Financial Feature Diagnostics (if date is selected and PIT facts exist) */}
+        {phase8Data?.point_in_time_features && (
+          <div style={{ marginBottom: '16px', background: 'var(--bg-surface)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', padding: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--accent-cyan)' }}>
+                Point-in-Time SEC XBRL Financial Diagnostics (Session {asOfDate})
+              </span>
+              <span className="badge-tag badge-status" style={{ fontSize: '10px' }}>
+                Filing Age: {phase8Data.point_in_time_features.fin_filing_age_days !== null ? `${phase8Data.point_in_time_features.fin_filing_age_days} days` : 'N/A'}
+              </span>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px', fontSize: '11px' }}>
+              <div style={{ padding: '6px 8px', background: 'var(--bg-card)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ color: 'var(--text-dim)', fontSize: '10px' }}>Gross Margin</div>
+                <div className="font-mono" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                  {phase8Data.point_in_time_features.fin_gross_margin !== null ? `${(phase8Data.point_in_time_features.fin_gross_margin * 100).toFixed(2)}%` : 'N/A'}
+                </div>
+              </div>
+              <div style={{ padding: '6px 8px', background: 'var(--bg-card)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ color: 'var(--text-dim)', fontSize: '10px' }}>Operating Margin</div>
+                <div className="font-mono" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                  {phase8Data.point_in_time_features.fin_operating_margin !== null ? `${(phase8Data.point_in_time_features.fin_operating_margin * 100).toFixed(2)}%` : 'N/A'}
+                </div>
+              </div>
+              <div style={{ padding: '6px 8px', background: 'var(--bg-card)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ color: 'var(--text-dim)', fontSize: '10px' }}>Net Margin</div>
+                <div className="font-mono" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                  {phase8Data.point_in_time_features.fin_net_margin !== null ? `${(phase8Data.point_in_time_features.fin_net_margin * 100).toFixed(2)}%` : 'N/A'}
+                </div>
+              </div>
+              <div style={{ padding: '6px 8px', background: 'var(--bg-card)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ color: 'var(--text-dim)', fontSize: '10px' }}>Return on Assets (ROA)</div>
+                <div className="font-mono" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                  {phase8Data.point_in_time_features.fin_roa !== null ? `${(phase8Data.point_in_time_features.fin_roa * 100).toFixed(2)}%` : 'N/A'}
+                </div>
+              </div>
+              <div style={{ padding: '6px 8px', background: 'var(--bg-card)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ color: 'var(--text-dim)', fontSize: '10px' }}>Return on Equity (ROE)</div>
+                <div className="font-mono" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                  {phase8Data.point_in_time_features.fin_roe !== null ? `${(phase8Data.point_in_time_features.fin_roe * 100).toFixed(2)}%` : 'N/A'}
+                </div>
+              </div>
+              <div style={{ padding: '6px 8px', background: 'var(--bg-card)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ color: 'var(--text-dim)', fontSize: '10px' }}>Debt to Assets</div>
+                <div className="font-mono" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                  {phase8Data.point_in_time_features.fin_debt_to_assets !== null ? `${(phase8Data.point_in_time_features.fin_debt_to_assets * 100).toFixed(2)}%` : 'N/A'}
+                </div>
+              </div>
+              <div style={{ padding: '6px 8px', background: 'var(--bg-card)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ color: 'var(--text-dim)', fontSize: '10px' }}>Debt to Equity</div>
+                <div className="font-mono" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                  {phase8Data.point_in_time_features.fin_debt_to_equity !== null ? phase8Data.point_in_time_features.fin_debt_to_equity.toFixed(2) : 'N/A'}
+                </div>
+              </div>
+              <div style={{ padding: '6px 8px', background: 'var(--bg-card)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ color: 'var(--text-dim)', fontSize: '10px' }}>Current Ratio</div>
+                <div className="font-mono" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                  {phase8Data.point_in_time_features.fin_current_ratio !== null ? phase8Data.point_in_time_features.fin_current_ratio.toFixed(2) : 'N/A'}
+                </div>
+              </div>
+              <div style={{ padding: '6px 8px', background: 'var(--bg-card)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ color: 'var(--text-dim)', fontSize: '10px' }}>Cash to Assets</div>
+                <div className="font-mono" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                  {phase8Data.point_in_time_features.fin_cash_to_assets !== null ? `${(phase8Data.point_in_time_features.fin_cash_to_assets * 100).toFixed(2)}%` : 'N/A'}
+                </div>
+              </div>
+              <div style={{ padding: '6px 8px', background: 'var(--bg-card)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ color: 'var(--text-dim)', fontSize: '10px' }}>OCF to Assets</div>
+                <div className="font-mono" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                  {phase8Data.point_in_time_features.fin_ocf_to_assets !== null ? `${(phase8Data.point_in_time_features.fin_ocf_to_assets * 100).toFixed(2)}%` : 'N/A'}
+                </div>
+              </div>
+              <div style={{ padding: '6px 8px', background: 'var(--bg-card)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ color: 'var(--text-dim)', fontSize: '10px' }}>FCF to Assets</div>
+                <div className="font-mono" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                  {phase8Data.point_in_time_features.fin_fcf_to_assets !== null ? `${(phase8Data.point_in_time_features.fin_fcf_to_assets * 100).toFixed(2)}%` : 'N/A'}
+                </div>
+              </div>
+              <div style={{ padding: '6px 8px', background: 'var(--bg-card)', borderRadius: 'var(--radius-xs)', border: '1px solid var(--border-subtle)' }}>
+                <div style={{ color: 'var(--text-dim)', fontSize: '10px' }}>Sloan Accruals</div>
+                <div className="font-mono" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
+                  {phase8Data.point_in_time_features.fin_accruals !== null ? phase8Data.point_in_time_features.fin_accruals.toFixed(4) : 'N/A'}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {loadingPhase8 ? (
+          <div style={{ padding: '30px', textAlign: 'center', color: 'var(--text-muted)' }}>
+            <span className="font-mono">Loading Phase 8 comparative predictions for {selectedTicker}...</span>
+          </div>
+        ) : phase8Error ? (
+          <div style={{ padding: '20px', color: 'var(--accent-red)', fontSize: '12px' }}>
+            Failed to load Phase 8 predictions: {phase8Error}
+          </div>
+        ) : !phase8Data || phase8Data.predictions.length === 0 ? (
+          <div style={{ padding: '30px', textAlign: 'center', color: 'var(--text-muted)' }}>
+            <p>No Phase 8 research predictions available for {selectedTicker} in the queried window.</p>
+            <p style={{ fontSize: '11px', color: 'var(--text-dim)', marginTop: '4px' }}>
+              Observations are present for the 290 verified research companies from 2020-01-08 to 2023-12-20.
+            </p>
+          </div>
+        ) : (
+          <div style={{ overflowX: 'auto', maxHeight: '400px' }}>
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Decision Date</th>
+                  <th>Partition / Split</th>
+                  <th>Realized Raw Return</th>
+                  <th>Realized Excess Target</th>
+                  <th>M_MKT Forecast (15 Mkt)</th>
+                  <th>M_FIN Forecast (15 Fin)</th>
+                  <th>M_COMB Forecast (30 Comb)</th>
+                  <th>Δ (COMB − MKT)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {phase8Data.predictions.map((p, idx) => {
+                  const delta = p.pred_m_combined !== null && p.pred_m_market_only !== null
+                    ? p.pred_m_combined - p.pred_m_market_only
+                    : null;
+                  return (
+                    <tr key={`${p.trading_date}-${idx}`}>
+                      <td className="font-mono">{p.trading_date}</td>
+                      <td>
+                        <span className={`badge-tag ${p.split === 'holdout' ? 'badge-status' : 'badge-experimental'}`} style={{ fontSize: '10px' }}>
+                          {p.split === 'holdout' ? 'Holdout (2022-23)' : `Dev Fold ${p.fold}`}
+                        </span>
+                      </td>
+                      <td className="font-mono" style={{ color: p.target_raw >= 0 ? 'var(--accent-green)' : 'var(--accent-red)' }}>
+                        {p.target_raw !== null ? `${p.target_raw >= 0 ? '+' : ''}${(p.target_raw * 100).toFixed(2)}%` : 'N/A'}
+                      </td>
+                      <td className="font-mono" style={{ color: p.target_sec_excess >= 0 ? 'var(--accent-green)' : 'var(--accent-red)' }}>
+                        {p.target_sec_excess !== null ? `${p.target_sec_excess >= 0 ? '+' : ''}${(p.target_sec_excess * 100).toFixed(2)}%` : 'N/A'}
+                      </td>
+                      <td className="font-mono" style={{ color: p.pred_m_market_only >= 0 ? 'var(--accent-blue)' : 'var(--text-muted)' }}>
+                        {p.pred_m_market_only !== null ? `${p.pred_m_market_only >= 0 ? '+' : ''}${(p.pred_m_market_only * 100).toFixed(2)}%` : 'N/A'}
+                      </td>
+                      <td className="font-mono" style={{ color: p.pred_m_financial_specialist >= 0 ? 'var(--accent-cyan)' : 'var(--text-muted)' }}>
+                        {p.pred_m_financial_specialist !== null ? `${p.pred_m_financial_specialist >= 0 ? '+' : ''}${(p.pred_m_financial_specialist * 100).toFixed(2)}%` : 'N/A'}
+                      </td>
+                      <td className="font-mono" style={{ color: p.pred_m_combined >= 0 ? 'var(--accent-purple, #a855f7)' : 'var(--text-muted)' }}>
+                        {p.pred_m_combined !== null ? `${p.pred_m_combined >= 0 ? '+' : ''}${(p.pred_m_combined * 100).toFixed(2)}%` : 'N/A'}
+                      </td>
+                      <td className="font-mono" style={{ color: delta !== null && delta >= 0 ? 'var(--accent-green)' : 'var(--text-dim)' }}>
+                        {delta !== null ? `${delta >= 0 ? '+' : ''}${(delta * 100).toFixed(2)}%` : 'N/A'}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {phase8Data && (
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px', fontSize: '11px', color: 'var(--text-dim)' }}>
+            <span>
+              Showing {phase8Data.returned_records} of {phase8Data.total_records} Phase 8 research predictions ({phase8Data.earliest_date} &rarr; {phase8Data.latest_date})
+            </span>
+            <span className="font-mono">
+              Target: 5-Day Sector-Neutral Excess Return
             </span>
           </div>
         )}

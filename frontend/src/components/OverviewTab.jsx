@@ -283,7 +283,7 @@ export default function OverviewTab({
                 <div>
                   <div style={{ fontWeight: 600, color: 'var(--text-primary)' }}>Layer 2: SEC EDGAR Financial Facts</div>
                   <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
-                    Point-in-time filing acceptances, restatement isolation, financial ratios
+                    Point-in-time filing acceptances, restatement isolation, 15 financial ratios (Phase 8: 305-Co Evaluated, p=0.3468)
                   </div>
                 </div>
               </div>

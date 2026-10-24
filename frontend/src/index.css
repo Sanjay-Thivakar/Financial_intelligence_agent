@@ -479,3 +479,146 @@ body {
   align-items: center;
   justify-content: space-between;
 }
+
+/* Research & Analytics Data Tables */
+.data-table-container {
+  overflow-x: auto;
+  width: 100%;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.data-table th {
+  background-color: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 11px 14px;
+  border-bottom: 2px solid var(--border-medium);
+  white-space: nowrap;
+}
+
+.data-table th.num-col,
+.data-table td.num-col {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+.data-table th.center-col,
+.data-table td.center-col {
+  text-align: center;
+}
+
+.data-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.data-table tbody tr:nth-child(even) td {
+  background-color: rgba(255, 255, 255, 0.015);
+}
+
+.data-table tbody tr:hover td {
+  background-color: var(--bg-card-hover);
+}
+
+/* Distinct Table Rows */
+.data-table tr.delta-row td {
+  background-color: rgba(244, 63, 94, 0.08) !important;
+  border-top: 1px solid rgba(244, 63, 94, 0.35);
+  border-bottom: 1px solid rgba(244, 63, 94, 0.35);
+  font-weight: 600;
+}
+
+.data-table tr.summary-row td {
+  background-color: var(--bg-elevated) !important;
+  border-top: 2px solid var(--border-medium);
+  border-bottom: none;
+  font-weight: 600;
+}
+
+.data-table tr.group-header-row td {
+  background-color: rgba(15, 23, 42, 0.95);
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 8px 14px;
+  border-top: 1px solid var(--border-medium);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Metadata Chips / Badges */
+.meta-chip-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.meta-chip-label {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+}
+
+.meta-chip-value {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Category Pill Badges */
+.category-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+/* Feature Code Tag */
+.feature-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-cyan);
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+

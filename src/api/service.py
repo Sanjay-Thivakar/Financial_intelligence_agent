@@ -44,6 +44,9 @@ from src.api.schemas import (
     CompanyCapabilityListResponse,
     ArchivedPredictionRecord,
     CompanyArchivedPredictionsResponse,
+    Phase8ModelResearchResponse,
+    Phase8PredictionRecord,
+    CompanyPhase8PredictionsResponse,
 )
 from src.decision.schema import (
     SignalType,
@@ -65,6 +68,24 @@ DATA_DIR = BASE_DIR / "data" / "processed"
 MARKET_DIR = DATA_DIR / "market"
 SEC_DIR = DATA_DIR / "sec" / "facts"
 NEWS_DIR = DATA_DIR / "news"
+
+PHASE8_MARKET_FEATURES = [
+    "market_return_1d", "market_return_5d", "market_return_21d",
+    "market_volatility_5d", "market_volatility_21d", "market_volatility_63d",
+    "market_momentum_63d",
+    "market_distance_sma20", "market_distance_sma50", "market_sma_ratio",
+    "market_zscore_20d", "market_zscore_50d", "market_rsi_14d",
+    "market_volume_change_1d", "market_volume_ratio_20d",
+]
+
+PHASE8_FINANCIAL_FEATURES = [
+    "fin_gross_margin", "fin_operating_margin", "fin_net_margin",
+    "fin_roa", "fin_roe", "fin_debt_to_assets", "fin_debt_to_equity",
+    "fin_current_ratio", "fin_cash_to_assets", "fin_ocf_to_assets",
+    "fin_fcf_to_assets", "fin_ocf_to_net_income", "fin_accruals",
+    "fin_earnings_yield", "fin_filing_age_days",
+]
+
 
 
 # Verified company catalog - AA is explicitly marked excluded with reasoning
@@ -135,6 +156,10 @@ class DashboardService:
         self._fitted_imputer: Optional[SimpleImputer] = None
         self._model_feature_cols: List[str] = []
         self._residual_uncertainty_estimator: Optional[ResidualUncertaintyEstimator] = None
+        self._phase8_initialized: bool = False
+        self._phase8_research_summary: Optional[Dict[str, Any]] = None
+        self._phase8_predictions_df: Optional[pd.DataFrame] = None
+        self._phase8_pit_df: Optional[pd.DataFrame] = None
         self._initialize_service()
 
     def _initialize_service(self):
@@ -759,7 +784,12 @@ class DashboardService:
             },
         }
 
-    def predict_experimental(self, ticker: str, as_of_date: Optional[str] = None) -> PredictionResponse:
+    def predict_experimental(
+        self,
+        ticker: str,
+        as_of_date: Optional[str] = None,
+        model_id: Optional[str] = "m_market_only",
+    ) -> PredictionResponse:
         """
         Executes genuine experimental forward return prediction if data and inference pipeline exist.
         Otherwise returns honest 'unavailable' response with specific cause.
@@ -772,6 +802,86 @@ class DashboardService:
                 target_horizon="5-trading-session (T+1 open to T+5 close)",
                 message=f"Company {ticker} is excluded: {EXCLUDED_COMPANIES[ticker]}",
                 limitations=["Ticker identity ambiguity prevents reproducible point-in-time feature construction."],
+                is_experimental=True,
+            )
+
+        # Validate candidate model ID
+        valid_models = {"m_market_only", "m_financial_specialist", "m_combined"}
+        active_model = model_id or "m_market_only"
+        if active_model not in valid_models:
+            return PredictionResponse(
+                status="unavailable",
+                ticker=ticker,
+                target_horizon="5-trading-session (T+1 open to T+5 close)",
+                message=f"Model identifier '{active_model}' is invalid. Valid models: {sorted(list(valid_models))}",
+                limitations=["Unsupported model_id parameter."],
+                is_experimental=True,
+            )
+
+        # Handle Phase 8 specialist and combined models
+        if active_model in ("m_financial_specialist", "m_combined"):
+            if not as_of_date:
+                return PredictionResponse(
+                    status="unavailable",
+                    ticker=ticker,
+                    target_horizon="5-trading-session (T+1 open to T+5 close) sector-neutral excess return",
+                    model_id=active_model,
+                    message=(
+                        f"Live runtime inference for '{active_model}' is unavailable without an historical research date. "
+                        "Phase 8 models evaluated historical holdouts without persisting live runtime estimators (.pkl/.joblib) "
+                        "or live SEC ingestion pipelines to disk. Please specify an historical date between 2020-01-08 and 2023-12-20."
+                    ),
+                    limitations=[
+                        "No fitted estimator (.joblib/.pkl) persisted on disk for live execution.",
+                        "Live SEC XBRL ingestion pipeline not implemented for real-time inference.",
+                        "Never fabricate predictions or substitute market-only model.",
+                    ],
+                    is_experimental=True,
+                )
+
+            # Look up historical prediction in Phase 8 archive
+            self._ensure_phase8_initialized()
+            if self._phase8_predictions_df is not None and not self._phase8_predictions_df.empty:
+                sub = self._phase8_predictions_df[
+                    (self._phase8_predictions_df["ticker"] == ticker) &
+                    (self._phase8_predictions_df["trading_date"] == as_of_date)
+                ]
+                if not sub.empty:
+                    col_name = "pred_m_financial_specialist" if active_model == "m_financial_specialist" else "pred_m_combined"
+                    pred_val = float(sub[col_name].iloc[0])
+                    cid = str(sub["company_id"].iloc[0])
+                    pct_formatted = f"{'+' if pred_val >= 0 else ''}{pred_val * 100:.2f}%"
+                    feats = PHASE8_FINANCIAL_FEATURES if active_model == "m_financial_specialist" else PHASE8_MARKET_FEATURES + PHASE8_FINANCIAL_FEATURES
+                    return PredictionResponse(
+                        status="available",
+                        ticker=ticker,
+                        company_id=cid,
+                        as_of_timestamp=f"{as_of_date}T21:00:00Z",
+                        target_horizon="5-trading-session (T+1 open to T+5 close) sector-neutral excess return",
+                        predicted_forward_return=round(pred_val, 6),
+                        predicted_forward_return_pct=pct_formatted,
+                        model_id=f"Phase 8 {active_model} (Ridge alpha=1000.0, sector-neutral)",
+                        features_used=feats,
+                        message=f"Verified out-of-sample research prediction retrieved from Phase 8 archive for session {as_of_date}.",
+                        limitations=[
+                            "RESEARCH FORECAST ONLY. Not financial advice or a live trading signal.",
+                            "Phase 8 research found statistically zero incremental predictive power over market baseline (holdout delta p = 0.3468, specialist p = 0.8893).",
+                            "Economic simulation demonstrates negative net Sharpe ratio (-1.29 to -5.19) once transaction friction (10-30 bps) is deducted.",
+                            "No live runtime estimators (.joblib/.pkl) were serialized to disk; predictions are strictly historical out-of-sample research records.",
+                        ],
+                        is_experimental=True,
+                    )
+
+            return PredictionResponse(
+                status="unavailable",
+                ticker=ticker,
+                target_horizon="5-trading-session (T+1 open to T+5 close) sector-neutral excess return",
+                model_id=active_model,
+                message=f"No Phase 8 research prediction found for {ticker} on date {as_of_date}. Observation may be a non-trading date or outside the 2020-2023 evaluation window.",
+                limitations=[
+                    "Date outside Phase 8 research panel bounds (2020-01-08 to 2023-12-20).",
+                    "Live model fitting on ad-hoc dates is prohibited to avoid lookahead bias.",
+                ],
                 is_experimental=True,
             )
 
@@ -2230,6 +2340,245 @@ class DashboardService:
         if tk in self._ticker_alias_map:
             tk = self._ticker_alias_map[tk]
         return self._capabilities_cache.get(tk)
+
+    # =====================================================================
+    # Phase 8 — Financial Reports Intelligence Model Integration
+    # =====================================================================
+
+    def _ensure_phase8_initialized(self):
+        """Loads and caches Phase 8 experiment results and out-of-sample predictions."""
+        if self._phase8_initialized:
+            return
+
+        p_results = DATA_DIR / "research" / "phase8" / "phase8_experiment_results.json"
+        p_r1 = DATA_DIR / "research" / "phase8" / "phase8r1_verification_summary.json"
+        p_dev = DATA_DIR / "research" / "phase8" / "phase8_predictions_development.parquet"
+        p_holdout = DATA_DIR / "research" / "phase8" / "phase8_predictions_final_holdout.parquet"
+
+        if p_results.exists():
+            try:
+                with open(p_results, "r", encoding="utf-8") as f:
+                    res = json.load(f)
+                if p_r1.exists():
+                    with open(p_r1, "r", encoding="utf-8") as f:
+                        r1 = json.load(f)
+                    res["economic_friction_results"] = r1
+                self._phase8_research_summary = res
+            except Exception as e:
+                logger.error(f"Failed to load Phase 8 JSON results: {e}")
+
+        dfs = []
+        if p_dev.exists():
+            try:
+                df_dev = pd.read_parquet(p_dev)
+                df_dev["split"] = "development"
+                dfs.append(df_dev)
+            except Exception as e:
+                logger.error(f"Failed to load Phase 8 dev predictions: {e}")
+
+        if p_holdout.exists():
+            try:
+                df_ho = pd.read_parquet(p_holdout)
+                df_ho["split"] = "holdout"
+                if "fold" not in df_ho.columns:
+                    df_ho["fold"] = -1
+                dfs.append(df_ho)
+            except Exception as e:
+                logger.error(f"Failed to load Phase 8 holdout predictions: {e}")
+
+        if dfs:
+            self._phase8_predictions_df = pd.concat(dfs, ignore_index=True)
+        else:
+            self._phase8_predictions_df = pd.DataFrame()
+
+        self._phase8_initialized = True
+
+    def get_phase8_research_summary(self) -> Phase8ModelResearchResponse:
+        """Returns Phase 8 Financial Reports specialist model research evaluation metrics."""
+        self._ensure_phase8_initialized()
+        if not self._phase8_research_summary:
+            return Phase8ModelResearchResponse(
+                status="unavailable",
+                phase="Phase 8: Financial Reports Specialist Model",
+                verdict="Artifacts unavailable",
+                governance_notes=["Phase 8 experiment results JSON not found."],
+            )
+
+        data = self._phase8_research_summary
+        verdict = (
+            "STATISTICALLY NULL INCREMENTAL ALPHA (holdout incremental delta p = 0.3468, specialist p = 0.8893). "
+            "Adding 15 point-in-time SEC XBRL financial features to 15 market features did not yield "
+            "statistically significant out-of-sample forward return improvement. Economic simulation shows "
+            "gross Sharpe ratio (0.666) is fully eliminated by high turnover (118.4% two-way) under realistic "
+            "transaction friction (net Sharpe -1.29 to -5.19). Model is not suitable for live trading or capital allocation."
+        )
+        governance_notes = [
+            "Strict 5-session purge gaps and point-in-time filing date eligibility enforced throughout.",
+            "Zero-budget constraint maintained: all facts retrieved from public SEC EDGAR XBRL archives.",
+            "No live runtime estimator (.joblib/.pkl) persisted; historical walk-forward and holdout predictions preserved.",
+            "Target definition: 5-session sector-neutral forward excess return (target_sec_excess).",
+        ]
+
+        return Phase8ModelResearchResponse(
+            status="available",
+            phase="Phase 8: Financial Reports Specialist Model",
+            created_at_utc=data.get("created_at_utc"),
+            cohort_size=305,
+            models=["m_market_only", "m_financial_specialist", "m_combined"],
+            target_definition=(
+                "5-session forward sector-neutral excess return (target_sec_excess): "
+                "decision at session T close, entry at session T+1 open, exit at session T+5 close"
+            ),
+            market_features=PHASE8_MARKET_FEATURES,
+            financial_features=PHASE8_FINANCIAL_FEATURES,
+            development_results=data.get("development_results", {}),
+            development_incremental_delta=data.get("development_incremental_delta", {}),
+            holdout_results=data.get("holdout_results", {}),
+            economic_friction_results=data.get("economic_friction_results", {}),
+            verdict=verdict,
+            governance_notes=governance_notes,
+        )
+
+    def _get_company_phase8_pit_features(self, ticker: str, date: str) -> Optional[Dict[str, Any]]:
+        """Extracts point-in-time financial features for a ticker and date from Phase 8 dataset."""
+        p_pit = DATA_DIR / "research" / "phase8" / "phase8_point_in_time_dataset.parquet"
+        if not p_pit.exists():
+            return None
+        try:
+            if self._phase8_pit_df is None:
+                cols = list(dict.fromkeys(["ticker", "trading_date", "fin_has_filing"] + PHASE8_FINANCIAL_FEATURES))
+                self._phase8_pit_df = pd.read_parquet(p_pit, columns=cols)
+            match = self._phase8_pit_df[
+                (self._phase8_pit_df["ticker"] == ticker) &
+                (self._phase8_pit_df["trading_date"] == date)
+            ]
+            if match.empty:
+                return None
+            row = match.iloc[0]
+            feats = {}
+            for col in PHASE8_FINANCIAL_FEATURES:
+                val = row[col]
+                feats[col] = round(float(val), 6) if pd.notna(val) else None
+            feats["fin_has_filing"] = bool(row["fin_has_filing"]) if pd.notna(row["fin_has_filing"]) else False
+            feats["fin_filing_age_days"] = float(row["fin_filing_age_days"]) if pd.notna(row["fin_filing_age_days"]) else None
+            return feats
+        except Exception as e:
+            logger.warning(f"Could not load PIT features for {ticker} on {date}: {e}")
+            return None
+
+    def get_company_phase8_predictions(
+        self,
+        ticker: str,
+        model_id: Optional[str] = None,
+        as_of_date: Optional[str] = None,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> Optional[CompanyPhase8PredictionsResponse]:
+        """
+        Returns verified out-of-sample Phase 8 predictions for a single company across
+        m_market_only, m_financial_specialist, and m_combined models.
+        """
+        self._ensure_phase8_initialized()
+        tk_clean = ticker.strip().upper()
+
+        if tk_clean in EXCLUDED_COMPANIES:
+            raise ValueError(f"Company {tk_clean} is excluded: {EXCLUDED_COMPANIES[tk_clean]}")
+
+        if model_id is not None:
+            valid_models = {"m_market_only", "m_financial_specialist", "m_combined"}
+            if model_id not in valid_models:
+                raise ValueError(f"Model identifier '{model_id}' is invalid. Valid models: {sorted(list(valid_models))}")
+
+        if self._phase8_predictions_df is None or self._phase8_predictions_df.empty:
+            return CompanyPhase8PredictionsResponse(
+                status="unavailable",
+                ticker=tk_clean,
+                company_name=tk_clean,
+                company_id="UNKNOWN",
+                sector="UNKNOWN",
+                total_records=0,
+                returned_records=0,
+                disclaimer="Phase 8 prediction archive is not available on disk.",
+                limitations=["Parquet predictions archive missing."],
+            )
+
+        # Filter for ticker
+        sub = self._phase8_predictions_df[self._phase8_predictions_df["ticker"] == tk_clean].copy()
+        if sub.empty:
+            cap = self.get_company_capability(tk_clean)
+            co_name = cap.identity.company_name if cap else tk_clean
+            co_id = cap.identity.company_id if cap else "UNKNOWN"
+            sec = cap.identity.sector if cap and cap.identity.sector else "UNKNOWN"
+            return CompanyPhase8PredictionsResponse(
+                status="empty",
+                ticker=tk_clean,
+                company_name=co_name,
+                company_id=co_id,
+                sector=sec,
+                total_records=0,
+                returned_records=0,
+                predictions=[],
+                limitations=[f"No Phase 8 research predictions found for {tk_clean} in the 2020-2023 evaluation panel."],
+            )
+
+        sub = sub.sort_values("trading_date")
+        c_name = tk_clean
+        cap = self.get_company_capability(tk_clean)
+        if cap:
+            c_name = cap.identity.company_name
+        elif tk_clean in COMPANY_CATALOG:
+            c_name = COMPANY_CATALOG[tk_clean]["company_name"]
+
+        c_id = str(sub["company_id"].iloc[0])
+        sec = str(sub["sector"].iloc[0]) if "sector" in sub.columns else "UNKNOWN"
+        earliest_d = str(sub["trading_date"].min())
+        latest_d = str(sub["trading_date"].max())
+
+        pit_features = None
+        if as_of_date:
+            sub = sub[sub["trading_date"] == as_of_date]
+            pit_features = self._get_company_phase8_pit_features(tk_clean, as_of_date)
+
+        total_records = len(sub)
+        paged = sub.iloc[offset : offset + limit]
+
+        records: List[Phase8PredictionRecord] = []
+        for _, r in paged.iterrows():
+            records.append(
+                Phase8PredictionRecord(
+                    trading_date=str(r["trading_date"]),
+                    split=str(r.get("split", "development")),
+                    fold=int(r.get("fold", -1)),
+                    target_raw=round(float(r["target_raw"]), 6) if pd.notna(r.get("target_raw")) else None,
+                    target_sec_excess=round(float(r["target_sec_excess"]), 6) if pd.notna(r.get("target_sec_excess")) else None,
+                    pred_m_market_only=round(float(r["pred_m_market_only"]), 6) if pd.notna(r.get("pred_m_market_only")) else None,
+                    pred_m_financial_specialist=round(float(r["pred_m_financial_specialist"]), 6) if pd.notna(r.get("pred_m_financial_specialist")) else None,
+                    pred_m_combined=round(float(r["pred_m_combined"]), 6) if pd.notna(r.get("pred_m_combined")) else None,
+                )
+            )
+
+        limitations = [
+            "Historical research archive (2020–2023) across 290 verified companies.",
+            "Statistically zero incremental predictive power demonstrated over market baseline (holdout delta p = 0.3468).",
+            "Target is 5-session forward sector-neutral excess return (target_sec_excess).",
+            "Turnover friction wipes out gross returns in realistic trading simulations.",
+        ]
+
+        return CompanyPhase8PredictionsResponse(
+            status="available" if total_records > 0 else "empty",
+            ticker=tk_clean,
+            company_name=c_name,
+            company_id=c_id,
+            sector=sec,
+            total_records=total_records,
+            returned_records=len(records),
+            earliest_date=earliest_d,
+            latest_date=latest_d,
+            point_in_time_features=pit_features,
+            predictions=records,
+            limitations=limitations,
+        )
+
 
 
 # Singleton instance
